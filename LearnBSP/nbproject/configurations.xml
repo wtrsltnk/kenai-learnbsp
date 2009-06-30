@@ -49,7 +49,8 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>3</platform>
+        <platform>2</platform>
+        <dependencyChecking>false</dependencyChecking>
       </toolsSet>
       <compileType>
         <linkerTool>
@@ -66,7 +67,8 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>3</platform>
+        <platform>2</platform>
+        <dependencyChecking>false</dependencyChecking>
       </toolsSet>
       <compileType>
         <cTool>
@@ -74,6 +76,7 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <architecture>1</architecture>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -92,7 +95,7 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>MinGW|MinGW</compilerSet>
-        <platform>3</platform>
+        <platform>2</platform>
       </toolsSet>
       <compileType>
         <linkerTool>
@@ -107,7 +110,7 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>MinGW|MinGW</compilerSet>
-        <platform>3</platform>
+        <platform>2</platform>
       </toolsSet>
       <compileType>
         <cTool>
