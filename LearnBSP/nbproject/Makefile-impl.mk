@@ -31,7 +31,7 @@ DEFAULTCONF=linuxDebug
 CONF=${DEFAULTCONF}
 
 # All Configurations
-ALLCONFS=linuxDebug linuxRelease 
+ALLCONFS=linuxDebug linuxRelease win32Debug win32Release 
 
 
 # build

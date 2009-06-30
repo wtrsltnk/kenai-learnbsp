@@ -20,7 +20,7 @@
 #ifndef _APPLICATION_H
 #define	_APPLICATION_H
 
-#include <GL/glfw.h>
+#include "opengl.h"
 #include "common/camera.h"
 
 /*

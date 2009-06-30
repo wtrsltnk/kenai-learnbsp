@@ -1,6 +1,5 @@
 #include "font.h"
-#include <GL/gl.h>
-#include <GL/glfw.h>
+#include "../opengl.h"
 #include <string.h>
 #include <stdarg.h>
 #include <stdio.h>

@@ -1,5 +1,5 @@
 #include "camera.h"
-#include <GL/gl.h>
+#include "../opengl.h"
 #include "math3d.h"
 
 /*
