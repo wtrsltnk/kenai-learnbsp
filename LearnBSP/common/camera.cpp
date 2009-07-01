@@ -2,7 +2,7 @@
 #include "../opengl.h"
 #include "math3d.h"
 
-/*
+/*!
  * \brief
  */
 Camera::Camera()
@@ -12,14 +12,14 @@ Camera::Camera()
     SetRotation(rotation);
 }
 
-/*
+/*!
  * \brief
  */
 Camera::~Camera()
 {
 }
 
-/*
+/*!
  * \brief
  */
 void Camera::Update()
@@ -35,7 +35,7 @@ void Camera::Update()
     ::glTranslatef(this->position[0], this->position[1], this->position[2]);
 }
 
-/*
+/*!
  * \brief
  * \param position
  */
@@ -45,7 +45,7 @@ void Camera::SetPosition(float position[3])
         this->position[i] = position[i];
 }
 
-/*
+/*!
  * \brief
  * \return
  */
@@ -54,7 +54,7 @@ const float* Camera::getPosition() const
     return this->position;
 }
 
-/*
+/*!
  * \brief
  * \param rotation
  */
@@ -73,7 +73,7 @@ void Camera::SetRotation(float rotation[3])
     multiplyMatrix(tmp, rz, this->rotationMatrix);
 }
 
-/*
+/*!
  * \brief
  * \return
  */
@@ -82,7 +82,7 @@ const float* Camera::getRotation() const
     return this->rotation;
 }
 
-/*
+/*!
  * \brief
  * \return
  */
@@ -97,7 +97,7 @@ const float* Camera::getForwardVector() const
     return forward;
 }
 
-/*
+/*!
  * \brief
  * \param up
  */
@@ -112,7 +112,7 @@ const float* Camera::getLeftVector() const
     return left;
 }
 
-/*
+/*!
  * \brief
  * \param up
  */
@@ -127,7 +127,7 @@ const float* Camera::getUpVector() const
     return up;
 }
 
-/*
+/*!
  * \brief
  * \param forward
  * \param left
@@ -140,7 +140,7 @@ void Camera::MoveGlobal(float forward, float left, float up)
     this->position[2] += up;
 }
 
-/*
+/*!
  * \brief
  * \param forward
  * \param left

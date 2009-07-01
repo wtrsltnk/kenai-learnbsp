@@ -4,21 +4,21 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-/*
+/*!
  * \brief
  */
 Font::Font()
 {
 }
 
-/*
+/*!
  * \brief
  */
 Font::~Font()
 {
 }
 
-/*
+/*!
  * \brief
  * \param file
  */
@@ -29,7 +29,7 @@ void Font::openFromFile(const char* file)
     glfwLoadTexture2D(file, GLFW_BUILD_MIPMAPS_BIT);
 }
 
-/*
+/*!
  * \brief
  */
 void Font::setup()
@@ -56,7 +56,7 @@ void Font::setup()
     }
 }
 
-/*
+/*!
  * \brief
  */
 void Font::cleanup()
@@ -64,7 +64,7 @@ void Font::cleanup()
     glDeleteLists(base, 256);
 }
 
-/*
+/*!
  * \brief
  * \param x
  * \param y

@@ -1,14 +1,14 @@
 #include "data.h"
 #include <string.h>
 
-/*
+/*!
  * \brief
  */
 Data::Data() : name(0), data(0), dataSize(0)
 {
 }
 
-/*
+/*!
  * \brief 
  * \param name
  */
@@ -18,7 +18,7 @@ Data::Data(const char* name) : name(0), data(0), dataSize(0)
     strcpy(this->name, name);
 }
 
-/*
+/*!
  * \brief
  */
 Data::~Data()
@@ -27,7 +27,7 @@ Data::~Data()
     if (data != 0) delete []data;
 }
 
-/*
+/*!
  * \brief
  * \return
  */
@@ -42,7 +42,7 @@ Data* Data::clone() const
     return result;
 }
 
-/*
+/*!
  * \brief
  * \param from
  */

@@ -22,6 +22,9 @@
 
 #include "common/math3d.h"
 
+/*!
+ * \brief
+ */
 class BspNode
 {
 public:
@@ -29,11 +32,11 @@ public:
     virtual ~BspNode();
     
 private:
-    /* \brief */
+    /*! \brief */
     BspNode* mFront;
-    /* \brief */
+    /*! \brief */
     BspNode* mBack;
-    /* \brief */
+    /*! \brief */
     Plane mSplit;
 
 };

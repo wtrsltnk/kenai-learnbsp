@@ -20,10 +20,10 @@
 #include "BspObject.h"
 #include <string.h>
 
-/* \brief */
+/*! \brief */
 int BspObject::sIDCount = 0;
 
-/*
+/*!
  * \brief
  */
 BspObject::BspObject(const char* name, int type)
@@ -33,7 +33,7 @@ BspObject::BspObject(const char* name, int type)
     strcpy(this->mName, name);
 }
 
-/*
+/*!
  * \brief
  */
 BspObject::~BspObject()
@@ -41,7 +41,7 @@ BspObject::~BspObject()
     delete []this->mName;
 }
 
-/*
+/*!
  * \brief
  * \return
  */
@@ -50,7 +50,7 @@ int BspObject::getID()
     return this->mID;
 }
 
-/*
+/*!
  * \brief
  * \return
  */
@@ -59,7 +59,7 @@ const char* BspObject::getName()
     return this->mName;
 }
 
-/*
+/*!
  * \brief 
  * \return 
  */

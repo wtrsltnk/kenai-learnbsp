@@ -19,14 +19,14 @@
 
 #include "BspNode.h"
 
-/*
+/*!
  * \brief
  */
 BspNode::BspNode()
 {
 }
 
-/*
+/*!
  * \brief
  */
 BspNode::~BspNode()

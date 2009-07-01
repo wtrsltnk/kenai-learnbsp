@@ -17,36 +17,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPOBJECT_H
-#define	_BSPOBJECT_H
+#ifndef _BSPLEAF_H
+#define	_BSPLEAF_H
+
+#include "BspFace.h"
+#include <set>
 
 /*!
  * \brief
  */
-class BspObject
+class BspLeaf
 {
 public:
-    BspObject(const char* name, int type);
-    virtual ~BspObject();
+    BspLeaf();
+    virtual ~BspLeaf();
 
-    int getID();
-    const char* getName();
-    int getType();
-
-    virtual void render(double time) = 0;
-    virtual BspObject* clone() const = 0;
+    void addVisibleLeaf(BspLeaf* leaf);
     
 private:
-    /*! \brief */
-    int mID;
-    /*! \brief */
-    char* mName;
-    /*! \brief */
-    int mType;
-    /*! \brief */
-    static int sIDCount;
+    /*! \brief  */
+    int mFaceCount;
+    /*! \brief  */
+    BspFace** mFaces;
+    /*! \brief  */
+    std::set<BspLeaf*> mVisibleLeafs;
 
 };
 
-#endif	/* _BSPOBJECT_H */
+#endif	/* _BSPLEAF_H */
 

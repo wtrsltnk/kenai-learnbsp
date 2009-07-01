@@ -1,6 +1,6 @@
 #include "math3d.h"
 
-/*
+/*! 
  * \brief
  * \param first
  * \param second
@@ -29,7 +29,7 @@ void multiplyMatrix(float first[16], float second[16], float out[16])
     out[15] = first[3]*second[12] + first[7]*second[13] + first[11]*second[14] + first[15]*second[15];
 }
 
-/*
+/*!
  * \brief
  * \param matrix
  * \param angle
@@ -54,7 +54,7 @@ void rotateMatrixX(float matrix[16], float angle)
     matrix[10] =  cosAngle;
 }
 
-/*
+/*!
  * \brief
  * \param matrix
  * \param angle
@@ -79,7 +79,7 @@ void rotateMatrixY(float matrix[16], float angle)
     matrix[10] =  cosAngle;
 }
 
-/*
+/*!
  * \brief
  * \param matrix
  * \param angle 
@@ -104,7 +104,7 @@ void rotateMatrixZ(float matrix[16], float angle)
     matrix[5] =  cosAngle;
 }
 
-/*
+/*!
  * \brief
  * \param matrix
  * \return
@@ -114,7 +114,7 @@ Vector3 forwardVector(float matrix[16])
     return Vector3(matrix[2], matrix[6], matrix[10]);
 }
 
-/*
+/*!
  * \brief
  * \param matrix
  * \return
@@ -124,7 +124,7 @@ Vector3 leftVector(float matrix[16])
     return Vector3(matrix[0], matrix[4], matrix[8]);
 }
 
-/*
+/*!
  * \brief
  * \param matrix
  * \return

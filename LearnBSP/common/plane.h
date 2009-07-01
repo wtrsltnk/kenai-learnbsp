@@ -3,7 +3,7 @@
 
 #include "vector3.h"
 
-/*
+/*!
  * \brief
  */
 class Plane
@@ -18,9 +18,9 @@ public:
     float distance(const Vector3& vec) const;
 
 private:
-    /* \brief */
+    /*! \brief */
     Vector3 mNormal;
-    /* \brief */
+    /*! \brief */
     float mDistance;
 
 };

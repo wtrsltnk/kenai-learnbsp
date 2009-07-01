@@ -1,7 +1,7 @@
 #ifndef _VECTOR3_H
 #define	_VECTOR3_H
 
-/*
+/*! 
  * \brief
  */
 class Vector3
@@ -95,7 +95,7 @@ public:
     float* copyTo(float f[3]);
 
 private:
-    /* \brief */
+    /*! \brief */
     float mVector[3];
 
     friend Vector3 operator * (float s, const Vector3& v);

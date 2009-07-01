@@ -17,36 +17,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPOBJECT_H
-#define	_BSPOBJECT_H
+#include "BspLeaf.h"
 
 /*!
  * \brief
  */
-class BspObject
+BspLeaf::BspLeaf()
+    : mFaceCount(0), mFaces(NULL)
 {
-public:
-    BspObject(const char* name, int type);
-    virtual ~BspObject();
+}
 
-    int getID();
-    const char* getName();
-    int getType();
+/*!
+ * \brief
+ */
+BspLeaf::~BspLeaf()
+{
+    if (this->mFaces != NULL)
+        delete []this->mFaces;
+}
 
-    virtual void render(double time) = 0;
-    virtual BspObject* clone() const = 0;
-    
-private:
-    /*! \brief */
-    int mID;
-    /*! \brief */
-    char* mName;
-    /*! \brief */
-    int mType;
-    /*! \brief */
-    static int sIDCount;
-
-};
-
-#endif	/* _BSPOBJECT_H */
-
+/*!
+ * \brief Adds a leaf to the posible visible leaf set of this leaf
+ * \param leaf A pointer to the leaf that is posible visible from this leaf
+ */
+void BspLeaf::addVisibleLeaf(BspLeaf* leaf)
+{
+    this->mVisibleLeafs.insert(leaf);
+}

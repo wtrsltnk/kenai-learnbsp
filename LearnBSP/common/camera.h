@@ -1,7 +1,7 @@
 #ifndef _CAMERA_H
 #define	_CAMERA_H
 
-/*
+/*!
  * \brief
  */
 class Camera
@@ -26,11 +26,11 @@ public:
     void MoveLocal(float forward, float left, float up);
 
 private:
-    /* \brief */
+    /*! \brief */
     float rotationMatrix[16];
-    /* \brief */
+    /*! \brief */
     float position[3];
-    /* \brief */
+    /*! \brief */
     float rotation[3];
    
 };

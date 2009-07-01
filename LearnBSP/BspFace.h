@@ -17,36 +17,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPOBJECT_H
-#define	_BSPOBJECT_H
+#ifndef _BSPFACE_H
+#define	_BSPFACE_H
 
 /*!
  * \brief
  */
-class BspObject
+class BspFace
 {
 public:
-    BspObject(const char* name, int type);
-    virtual ~BspObject();
+    BspFace();
+    virtual ~BspFace();
 
-    int getID();
-    const char* getName();
-    int getType();
-
-    virtual void render(double time) = 0;
-    virtual BspObject* clone() const = 0;
-    
 private:
-    /*! \brief */
-    int mID;
-    /*! \brief */
-    char* mName;
-    /*! \brief */
-    int mType;
-    /*! \brief */
-    static int sIDCount;
 
 };
 
-#endif	/* _BSPOBJECT_H */
+#endif	/* _BSPFACE_H */
 

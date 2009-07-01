@@ -1,7 +1,7 @@
 #ifndef _FONT_H
 #define	_FONT_H
 
-/*
+/*!
  * \brief
  */
 class Font
@@ -18,11 +18,11 @@ public:
     void render(int x, int y, const char* string, ...);
 
 private:
-    /* \brief */
+    /*! \brief */
     int mViewport[4];
-    /* \brief */
+    /*! \brief */
     int base;
-    /* \brief */
+    /*! \brief */
     unsigned int id;
 
 };

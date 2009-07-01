@@ -1,7 +1,7 @@
 #ifndef _TEXTURE_H
 #define	_TEXTURE_H
 
-/*
+/*!
  * \brief
  */
 class Texture
@@ -17,19 +17,19 @@ public:
     void copyFrom(const Texture& from);
 
 public:
-    /* \brief */
+    /*! \brief */
     char* name;
-    /* \brief */
+    /*! \brief */
     int width;
-    /* \brief */
+    /*! \brief */
     int height;
-    /* \brief */
+    /*! \brief */
     int bpp;
-    /* \brief */
+    /*! \brief */
     bool repeat;
-    /* \brief */
+    /*! \brief */
     unsigned char* data;
-    /* \brief */
+    /*! \brief */
     unsigned int glIndex;
 
 };

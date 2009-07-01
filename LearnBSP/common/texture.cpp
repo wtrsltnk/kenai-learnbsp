@@ -2,7 +2,7 @@
 #include "../opengl.h"
 #include <string.h>
 
-/*
+/*!
  * \brief
  */
 Texture::Texture()
@@ -10,7 +10,7 @@ Texture::Texture()
 {
 }
 
-/*
+/*!
  * \brief
  */
 Texture::~Texture()
@@ -19,7 +19,7 @@ Texture::~Texture()
     if (data != 0) delete []data;
 }
 
-/*
+/*!
  * \brief
  * \return 
  */
@@ -55,7 +55,7 @@ unsigned int Texture::upload()
         return this->glIndex;
 }
 
-/*
+/*!
  * \brief
  */
 void Texture::unload()
@@ -63,7 +63,7 @@ void Texture::unload()
     glDeleteTextures(1, &this->glIndex);
 }
 
-/*
+/*!
  * \brief
  * \return 
  */
@@ -94,7 +94,7 @@ Texture* Texture::copy() const
     return result;
 }
 
-/*
+/*!
  * \brief
  * \param from
  */

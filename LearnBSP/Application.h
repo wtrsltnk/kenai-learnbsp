@@ -23,7 +23,7 @@
 #include "opengl.h"
 #include "common/camera.h"
 
-/*
+/*!
  * \brief 
  */
 class Application
@@ -42,19 +42,19 @@ protected:
     virtual void keyPressed(int key, int action);
 
 private:
-    /* \brief */
+    /*! \brief */
     int mWidth;
-    /* \brief */
+    /*! \brief */
     int mHeight;
-    /* \brief */
+    /*! \brief */
     int mResult;
-    /* \brief */
+    /*! \brief */
     bool mRunning;
-    /* \brief */
+    /*! \brief */
     float mSpeed;
-    /* \brief */
+    /*! \brief */
     double mFPS;
-    /* \brief */
+    /*! \brief */
     Camera mCamera;
 
     bool openWindow(const char* title);

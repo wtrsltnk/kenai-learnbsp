@@ -1,7 +1,7 @@
 #ifndef _DATA_H
 #define	_DATA_H
 
-/*
+/*!
  * \brief 
  */
 class Data
@@ -11,7 +11,7 @@ public:
     Data(const char* name);
     virtual ~Data();
 
-    /*
+    /*!
      * \brief
      * \param array
      * \param count
@@ -39,11 +39,11 @@ public:
     void copyFrom(const Data& from);
 
 public:
-    /* \brief */
+    /*! \brief */
     char* name;
-    /* \brief */
+    /*! \brief */
     long dataSize;
-    /* \brief */
+    /*! \brief */
     unsigned char* data;
 
 };

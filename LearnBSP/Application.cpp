@@ -2,13 +2,13 @@
 #include "common/math3d.h"
 #include <stdio.h>
 
-/* \brief */
+/*! \brief */
 Application* Application::sCurrent = NULL;
 
-/*
- * \brief 
- * \param key
- * \param action
+/*!
+ * \brief
+ * \param key The key number
+ * \param action The action of the key press
  */
 void Application::staticKeyPressed(int key, int action)
 {
@@ -16,10 +16,10 @@ void Application::staticKeyPressed(int key, int action)
         Application::sCurrent->keyPressed(key, action);
 }
 
-/*
+/*!
  * \brief
- * \param width
- * \param height
+ * \param width The width of the window created for this Application
+ * \param height The height of the window created for this Application
  */
 Application::Application(int width, int height)
         : mWidth(width ? width : 1), mHeight(height ? height : 1), mResult(-1), mRunning(true), mSpeed(50.0f)
@@ -28,7 +28,7 @@ Application::Application(int width, int height)
     glfwInit();
 }
 
-/*
+/*!
  * \brief
  */
 Application::~Application()
@@ -36,10 +36,10 @@ Application::~Application()
     glfwTerminate();
 }
 
-/*
+/*!
  * \brief
- * \param title
- * \return 
+ * \param title The title of the window
+ * \return true means that the window is opened and initialization went OK.
  */
 bool Application::openWindow(const char* title)
 {
@@ -52,8 +52,8 @@ bool Application::openWindow(const char* title)
     return false;
 }
 
-/*
- * \brief
+/*!
+ * \brief Run the application
  */
 void Application::run()
 {
@@ -116,9 +116,10 @@ void Application::run()
         this->mResult = 0;
     }
 }
-/*
- * \brief
- * \return
+
+/*!
+ * \brief Cleanup all the resources of this application
+ * \return The result number for the application, 0 if OK else it returns the error code
  */
 int Application::cleanup()
 {
@@ -127,9 +128,13 @@ int Application::cleanup()
     return this->mResult;
 }
 
-/*
- * \brief
- * \return 
+/*!
+ * \brief Initialize the application
+ * \return true when initialization went OK
+ *
+ * The initialization done here is the resources that are neede for the
+ * application to run.
+ *
  */
 bool Application::initialize()
 {
@@ -137,25 +142,25 @@ bool Application::initialize()
     return true;
 }
 
-/*
- * \brief
- * \param time
+/*!
+ * \brief Render one frame of the application
+ * \param time The current time of the framestart
  */
 void Application::render(double time)
 {
 }
 
-/*
- * \brief
+/*!
+ * \brief Destroy when the OpenGL end running
  */
 void Application::destroy()
 {
 }
 
-/*
+/*!
  * \brief 
- * \param key
- * \param action
+ * \param key The key number
+ * \param action The action of the key press
  */
 void Application::keyPressed(int key, int action)
 {
