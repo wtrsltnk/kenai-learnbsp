@@ -231,7 +231,7 @@ void BspWorld::renderAllFaces() const
 const BspLeaf* BspWorld::getLeaf(const float position[3], int model) const
 {
     if (model < 0 || model >= this->mModelCount)
-        return NULL;
+        return &this->mLeafs[0];
     
     const BspNode* node = &this->mNodes[this->mModels[model].headnode[0]];
     const BspNode* child = node->getChild(position);
@@ -273,9 +273,22 @@ void BspWorld::close()
     this->mFaces = NULL;
     this->mFaceCount = 0;
 
-    delete this->mVertexIndices;
-    delete this->mTextureUV;
-    delete this->mLightmapUV;
+    if (this->mModels != NULL)
+        delete []this->mModels;
+    this->mModels = NULL;
+    this->mModelCount = 0;
+
+    if (this->mVertexIndices != NULL)
+        delete this->mVertexIndices;
+    this->mVertexIndices = NULL;
+
+    if (this->mTextureUV != NULL)
+        delete this->mTextureUV;
+    this->mTextureUV = NULL;
+
+    if (this->mLightmapUV != NULL)
+        delete this->mLightmapUV;
+    this->mLightmapUV = NULL;
 }
 
 /*!
