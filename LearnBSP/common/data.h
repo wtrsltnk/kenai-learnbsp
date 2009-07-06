@@ -8,7 +8,7 @@ class Data
 {
 public:
     Data();
-    Data(const char* name);
+    Data(const char* name, bool readFromFile = false);
     virtual ~Data();
 
     /*!

@@ -21,7 +21,7 @@
 #define	_BSPNODE_H
 
 #include "common/math3d.h"
-
+#include "BspLeaf.h"
 /*!
  * \brief
  */
@@ -29,8 +29,18 @@ class BspNode
 {
 public:
     BspNode();
+    BspNode(BspLeaf* leaf);
     virtual ~BspNode();
-    
+
+    void setPlane(float normal[3], float distance);
+    void setChildren(BspNode* front, BspNode* back);
+
+    const BspNode* getChild(const float point[3]) const;
+    const BspLeaf* getLeaf() const;
+
+    void render() const;
+
+    int index;
 private:
     /*! \brief */
     BspNode* mFront;
@@ -38,6 +48,8 @@ private:
     BspNode* mBack;
     /*! \brief */
     Plane mSplit;
+    /*! \brief */
+    BspLeaf* mLeaf;
 
 };
 

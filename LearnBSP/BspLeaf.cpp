@@ -37,10 +37,64 @@ BspLeaf::~BspLeaf()
 }
 
 /*!
+ * \brief Sets the number of faces and initializes the face array
+ * \param count The new number of faces
+ *
+ * This resets the array to all NULL values
+ */
+void BspLeaf::setFaceCount(int count)
+{
+    if (count <= 0)
+        return;
+
+    if (this->mFaces != NULL)
+        delete []this->mFaces;
+
+    this->mFaceCount = count;
+    this->mFaces= new BspFace*[count];
+    for (int i = 0; i < count; i++)
+        this->mFaces[i] = NULL;
+}
+
+/*!
+ * \brief Set the face in the given index
+ * \param face Pointer to the face to set
+ * \param index The index in the array for this face
+ */
+void BspLeaf::setFace(BspFace* face, int index)
+{
+    if (index < 0 || index >= this->mFaceCount)
+        return;
+
+    this->mFaces[index] = face;
+}
+
+/*!
  * \brief Adds a leaf to the posible visible leaf set of this leaf
  * \param leaf A pointer to the leaf that is posible visible from this leaf
  */
 void BspLeaf::addVisibleLeaf(BspLeaf* leaf)
 {
     this->mVisibleLeafs.insert(leaf);
+}
+
+/*!
+ * \brief
+ * \param renderPvs
+ */
+void BspLeaf::render(bool renderPvs) const
+{
+    for (int f = 0; f < this->mFaceCount; f++)
+    {
+        if (this->mFaces[f] != NULL) this->mFaces[f]->render();
+    }
+
+    if (renderPvs)
+    {
+        for (std::set<BspLeaf*>::const_iterator itr = this->mVisibleLeafs.begin(); itr != this->mVisibleLeafs.end(); ++itr)
+        {
+            const BspLeaf* leaf = *itr;
+            leaf->render(false);
+        }
+    }
 }

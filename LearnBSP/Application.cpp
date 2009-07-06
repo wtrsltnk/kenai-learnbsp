@@ -22,7 +22,7 @@ void Application::staticKeyPressed(int key, int action)
  * \param height The height of the window created for this Application
  */
 Application::Application(int width, int height)
-        : mWidth(width ? width : 1), mHeight(height ? height : 1), mResult(-1), mRunning(true), mSpeed(50.0f)
+        : mWidth(width ? width : 1), mHeight(height ? height : 1), mResult(-1), mRunning(true), mSpeed(500.0f), mWorld(NULL)
 {
     Application::sCurrent = this;
     glfwInit();
@@ -104,7 +104,7 @@ void Application::run()
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
             render(newTime);
 
@@ -138,6 +138,10 @@ int Application::cleanup()
  */
 bool Application::initialize()
 {
+    Data data("/media/data/Games/Half-Life/cstrike/maps/cs_siege.bsp", true);
+    this->mWorld = new BspWorld();
+    this->mWorld->open(data);
+    this->setPerspective(45.0f, 0.1f, 4096.0f);
     glClearColor(0.4f, 0.6f, 1.0f, 1.0f);
     return true;
 }
@@ -148,6 +152,15 @@ bool Application::initialize()
  */
 void Application::render(double time)
 {
+    mCamera.Update();
+
+    this->mWorld->getHeadNode(0)->render();
+
+    glBegin(GL_LINES);
+    glColor3f(1.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(10.0f, 0.0f, 0.0f);
+    glColor3f(0.0f, 1.0f, 0.0f); glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 10.0f, 0.0f);
+    glColor3f(0.0f, 0.0f, 1.0f); glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 10.0f);
+    glEnd();
 }
 
 /*!
@@ -164,4 +177,19 @@ void Application::destroy()
  */
 void Application::keyPressed(int key, int action)
 {
+}
+
+/*!
+ * \brief
+ * \param fieldOfView
+ * \param nearClipping
+ * \param farClipping
+ */
+void Application::setPerspective(float fieldOfView, float nearClipping, float farClipping)
+{
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(fieldOfView, this->mWidth / this->mHeight, nearClipping, farClipping);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }

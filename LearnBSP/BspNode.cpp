@@ -18,11 +18,22 @@
  */
 
 #include "BspNode.h"
+#include <iostream>
 
 /*!
  * \brief
  */
 BspNode::BspNode()
+    : mFront(NULL), mBack(NULL), mLeaf(NULL)
+{
+}
+
+/*!
+ * \brief
+ * \param leaf
+ */
+BspNode::BspNode(BspLeaf* leaf)
+    : mFront(NULL), mBack(NULL), mLeaf(leaf), index(-leaf->index)
 {
 }
 
@@ -33,3 +44,65 @@ BspNode::~BspNode()
 {
 }
 
+/*!
+ * \brief
+ * \param normal
+ * \param distance
+ */
+void BspNode::setPlane(float normal[3], float distance)
+{
+    this->mSplit = Plane(normal, distance);
+}
+
+/*!
+ * \brief
+ * \param front
+ * \param back
+ */
+void BspNode::setChildren(BspNode* front, BspNode* back)
+{
+    this->mFront = front;
+    this->mBack = back;
+}
+
+/*!
+ * \brief
+ * \param point
+ * \return
+ */
+const BspNode* BspNode::getChild(const float point[3]) const
+{
+    if (this->mLeaf == NULL)
+    {
+        float distance = this->mSplit.distance(Vector3(point));
+
+        if (distance >= 0)
+            return this->mFront;
+        else
+            return this->mBack;
+    }
+
+    return NULL;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const BspLeaf* BspNode::getLeaf() const
+{
+    return this->mLeaf;
+}
+
+void BspNode::render() const
+{
+    if (this->mLeaf != NULL)
+    {
+        this->mLeaf->render(false);
+    }
+    else
+    {
+        if (this->mFront != NULL) this->mFront->render();
+        if (this->mBack != NULL) this->mBack->render();
+    }
+}

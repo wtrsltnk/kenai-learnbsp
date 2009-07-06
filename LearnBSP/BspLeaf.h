@@ -32,8 +32,14 @@ public:
     BspLeaf();
     virtual ~BspLeaf();
 
+    void setFaceCount(int count);
+    void setFace(BspFace* face, int index);
+
     void addVisibleLeaf(BspLeaf* leaf);
-    
+
+    void render(bool renderPvs = true) const;
+
+    int index;
 private:
     /*! \brief  */
     int mFaceCount;

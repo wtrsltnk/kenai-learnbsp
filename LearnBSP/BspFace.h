@@ -20,6 +20,9 @@
 #ifndef _BSPFACE_H
 #define	_BSPFACE_H
 
+#include "common/plane.h"
+#include "opengl.h"
+
 /*!
  * \brief
  */
@@ -29,7 +32,23 @@ public:
     BspFace();
     virtual ~BspFace();
 
+    void render();
+    
+    void setPlane(float normal[3], float distance);
+    void setVertices(int first, int count);
+    void setFlags(int flags);
+    
 private:
+    /*! \brief */
+    Plane mPlane;
+    /*! \brief */
+    int mFirstVertex;
+    /*! \brief */
+    int mVertexCount;
+    /*! \brief */
+    GLuint mFaceType;
+    /*! \brief */
+    int mFaceFlags;
 
 };
 

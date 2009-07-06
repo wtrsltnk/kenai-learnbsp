@@ -32,7 +32,7 @@ void Camera::Update()
 
     // Then move the camera to the correct position in space
     // By tranlating in the opposite direction, we move the camera instead of moving the world
-    ::glTranslatef(this->position[0], this->position[1], this->position[2]);
+    ::glTranslatef(-this->position[0], -this->position[1], -this->position[2]);
 }
 
 /*!

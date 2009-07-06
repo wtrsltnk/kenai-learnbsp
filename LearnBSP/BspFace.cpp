@@ -33,3 +33,50 @@ BspFace::~BspFace()
 {
 }
 
+/*!
+ * \brief
+ */
+void BspFace::render()
+{
+    //glActiveTexture(GL_TEXTURE1);
+    //glBindTexture(GL_TEXTURE_2D, face.lightmap->glIndex);
+    glDrawArrays(this->mFaceType, this->mFirstVertex, this->mVertexCount);
+}
+
+/*!
+ * \brief
+ * \param normal
+ * \param distance
+ */
+void BspFace::setPlane(float normal[3], float distance)
+{
+    this->mPlane = Plane(normal, distance);
+}
+
+/*!
+ * \brief
+ * \param first
+ * \param count
+ */
+void BspFace::setVertices(int first, int count)
+{
+    this->mFirstVertex = first;
+    this->mVertexCount = count;
+    
+    switch (count)
+    {
+        case 3: this->mFaceType = GL_TRIANGLES; break;
+        case 4: this->mFaceType = GL_QUADS; break;
+        default: this->mFaceType = GL_POLYGON; break;
+    }
+}
+
+/*!
+ * \brief
+ * \param flags 
+ */
+void BspFace::setFlags(int flags)
+{
+    this->mFaceFlags = flags;
+}
+

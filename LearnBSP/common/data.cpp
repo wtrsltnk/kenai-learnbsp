@@ -1,5 +1,6 @@
 #include "data.h"
 #include <string.h>
+#include <stdio.h>
 
 /*!
  * \brief
@@ -12,10 +13,27 @@ Data::Data() : name(0), data(0), dataSize(0)
  * \brief 
  * \param name
  */
-Data::Data(const char* name) : name(0), data(0), dataSize(0)
+Data::Data(const char* name, bool readFromFile) : name(0), data(0), dataSize(0)
 {
     this->name = new char[strlen(name) + 1];
     strcpy(this->name, name);
+
+    if (readFromFile)
+    {
+        FILE* file = fopen(name, "rb");
+        if (file != NULL)
+        {
+            fseek(file, 0, SEEK_END);
+            this->dataSize = ftell(file);
+            fseek(file, 0, SEEK_SET);
+            if (this->dataSize > 0)
+            {
+                this->data = new unsigned char[this->dataSize];
+                fread(this->data, 1, this->dataSize, file);
+            }
+            fclose(file);
+        }
+    }
 }
 
 /*!

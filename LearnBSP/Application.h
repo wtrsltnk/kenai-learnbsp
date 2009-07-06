@@ -20,8 +20,9 @@
 #ifndef _APPLICATION_H
 #define	_APPLICATION_H
 
-#include "opengl.h"
 #include "common/camera.h"
+#include "opengl.h"
+#include "BspWorld.h"
 
 /*!
  * \brief 
@@ -40,6 +41,7 @@ protected:
     virtual void render(double time);
     virtual void destroy();
     virtual void keyPressed(int key, int action);
+    virtual void setPerspective(float fieldOfView, float nearClipping, float farClipping);
 
 private:
     /*! \brief */
@@ -56,6 +58,8 @@ private:
     double mFPS;
     /*! \brief */
     Camera mCamera;
+    /*! \brief */
+    BspWorld* mWorld;
 
     bool openWindow(const char* title);
 
