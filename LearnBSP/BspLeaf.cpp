@@ -57,6 +57,15 @@ void BspLeaf::setFaceCount(int count)
 }
 
 /*!
+ * \brief
+ * \return
+ */
+int BspLeaf::getFaceCount() const
+{
+    return this->mFaceCount;
+}
+
+/*!
  * \brief Set the face in the given index
  * \param face Pointer to the face to set
  * \param index The index in the array for this face

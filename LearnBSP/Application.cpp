@@ -173,7 +173,15 @@ void Application::render(double time)
 {
     mCamera.Update();
 
-    this->mWorld->getHeadNode(0)->render();
+    const BspLeaf* leaf = this->mWorld->getLeaf(mCamera.getPosition(), 0);
+
+    if (leaf->getFaceCount() == 0)
+    {
+        glColor3f(1, 1, 1);
+        this->mWorld->getHeadNode(0)->render();
+    }
+    glColor3f(1.0f, 0, 0);
+    leaf->render();
 
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(10.0f, 0.0f, 0.0f);

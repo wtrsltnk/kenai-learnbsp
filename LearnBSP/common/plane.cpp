@@ -55,5 +55,5 @@ Plane::~Plane()
  */
 float Plane::distance(const Vector3& vec) const
 {
-    return vec.dotProduct(this->mNormal) + this->mDistance;
+    return vec.dotProduct(this->mNormal) - this->mDistance;
 }

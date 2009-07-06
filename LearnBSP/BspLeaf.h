@@ -33,6 +33,7 @@ public:
     virtual ~BspLeaf();
 
     void setFaceCount(int count);
+    int getFaceCount() const;
     void setFace(BspFace* face, int index);
 
     void addVisibleLeaf(BspLeaf* leaf);

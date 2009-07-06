@@ -67,34 +67,6 @@ bool BspWorld::open(const Data& data)
     this->mTextureUV = new IndexArray<2>;
     this->mLightmapUV = new IndexArray<2>;
 
-    // Parse the nodes
-    {
-        tBSPNode *nodes = NULL;
-
-        this->loadLump(&nodes, header.lumps[HL1_BSP_NODELUMP], &data);
-
-        for (int n = 0; n < this->mNodeCount; n++)
-        {
-            tBSPNode& node = nodes[n];
-            tBSPPlane& plane = planes[node.planeIndex];
-            this->mNodes[n].index = n;
-            this->mNodes[n].setPlane(plane.normal, plane.distance);
-            BspNode* front = NULL;
-            BspNode* back = NULL;
-            if (node.children[0] >= 0)
-                front = &this->mNodes[node.children[0]];
-            else
-                front = new BspNode(&this->mLeafs[-(node.children[0] + 1)]);
-            if (node.children[1] >= 0)
-                back = &this->mNodes[node.children[1]];
-            else
-                back = new BspNode(&this->mLeafs[-(node.children[1] + 1)]);
-            this->mNodes[n].setChildren(front, back);
-        }
-
-        if (nodes != NULL) delete []nodes;
-    }
-
     // Parse the leafs
     {
         tBSPLeaf* leafs = NULL;
@@ -142,6 +114,40 @@ bool BspWorld::open(const Data& data)
         if (models != NULL) delete []models;
         if (marksurfaces != NULL) delete []marksurfaces;
         if (visibility != NULL) delete []visibility;
+    }
+
+    // Parse the nodes
+    {
+        tBSPNode *nodes = NULL;
+
+        this->loadLump(&nodes, header.lumps[HL1_BSP_NODELUMP], &data);
+
+        for (int n = 0; n < this->mNodeCount; n++)
+        {
+            tBSPNode& node = nodes[n];
+            tBSPPlane& plane = planes[node.planeIndex];
+            this->mNodes[n].index = n;
+            this->mNodes[n].setPlane(plane.normal, plane.distance);
+            BspNode* front = NULL;
+            BspNode* back = NULL;
+            if (node.children[0] >= 0)
+                front = &this->mNodes[node.children[0]];
+            else
+            {
+                BspLeaf* leaf = &this->mLeafs[-(node.children[0] + 1)];
+                front = new BspNode(leaf);
+            }
+            if (node.children[1] >= 0)
+                back = &this->mNodes[node.children[1]];
+            else
+            {
+                BspLeaf* leaf = &this->mLeafs[-(node.children[1] + 1)];
+                back = new BspNode(leaf);
+            }
+            this->mNodes[n].setChildren(front, back);
+        }
+
+        if (nodes != NULL) delete []nodes;
     }
 
     // Parse faces
