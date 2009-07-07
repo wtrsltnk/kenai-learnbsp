@@ -25,7 +25,8 @@
  */
 BspWorld::BspWorld()
     : mLeafCount(0), mLeafs(NULL), mNodeCount(0), mNodes(NULL), mFaceCount(0), mFaces(NULL),
-        mModelCount(0), mModels(NULL), mVertexIndices(NULL), mTextureUV(NULL), mLightmapUV(NULL)
+        mModelCount(0), mModels(NULL), mTextureCount(0), mTextures(NULL),
+        mVertexIndices(NULL), mTextureUV(NULL), mLightmapUV(NULL)
 {
 }
 
@@ -44,169 +45,188 @@ BspWorld::~BspWorld()
  */
 bool BspWorld::open(const Data& data)
 {
-    tBSPHeader header;
-    tBSPPlane* planes = NULL;
-
-    if (!this->testFile(data, header))
+    if (!BspData::testBSP(data))
         return false;
 
+    BspData bsp(data);
+
     // Load the data structtures from the BSP file
-    this->loadLump(&planes, header.lumps[HL1_BSP_PLANELUMP], &data);
-    this->mNodeCount = header.lumps[HL1_BSP_NODELUMP].size / sizeof(tBSPNode);
-    this->mLeafCount = header.lumps[HL1_BSP_LEAFLUMP].size / sizeof(tBSPLeaf);
-    this->mFaceCount = header.lumps[HL1_BSP_FACELUMP].size / sizeof(tBSPFace);
-    this->mModelCount = this->loadLump(&this->mModels, header.lumps[HL1_BSP_MODELLUMP], &data);
+    this->mNodeCount = bsp.nodeCount;
+    this->mLeafCount = bsp.leafCount;
+    this->mFaceCount = bsp.faceCount;
+    this->mModelCount = bsp.modelCount;
+    this->mTextureCount = ((int*)bsp.textureData)[0];
 
     // Create the Object instances fro nodes, leafs and faces
     this->mNodes = new BspNode[this->mNodeCount];
     this->mLeafs = new BspLeaf[this->mLeafCount];
     this->mFaces = new BspFace[this->mFaceCount];
+    this->mModels = new BspModel[this->mModelCount];
+    this->mTextures = new Texture[this->mTextureCount];
 
     // Setup the index arrays
     this->mVertexIndices = new IndexArray<3>;
     this->mTextureUV = new IndexArray<2>;
     this->mLightmapUV = new IndexArray<2>;
 
-    // Parse the leafs
-    {
-        tBSPLeaf* leafs = NULL;
-        tBSPModel* models = NULL;
-        unsigned short* marksurfaces = NULL;
-        unsigned char* visibility = NULL;
-
-        this->loadLump(&leafs, header.lumps[HL1_BSP_LEAFLUMP], &data);
-        this->loadLump(&marksurfaces, header.lumps[HL1_BSP_MARKSURFACELUMP], &data);
-        this->loadLump(&visibility, header.lumps[HL1_BSP_VISIBILITYLUMP], &data);
-        this->loadLump(&models, header.lumps[HL1_BSP_MODELLUMP], &data);
-
-        for (int l = 1; l < this->mLeafCount; l++)
-        {
-            tBSPLeaf& leaf = leafs[l];
-            this->mLeafs[l].index = l;
-            this->mLeafs[l].setFaceCount(leaf.markSurfacesCount);
-            for (int f = 0; f < leaf.markSurfacesCount; f++)
-            {
-                int faceIndex = marksurfaces[leaf.firstMarkSurface + f];
-                this->mLeafs[l].setFace(&this->mFaces[faceIndex], f);
-            }
-
-            // Decompress visibility data
-            int visibilityOffset = leafs[l].visiblityOffset;
-            for (int j = 1; j < models[0].visLeafCount; visibilityOffset++)
-            {
-                if (visibility[visibilityOffset] == 0)
-                {
-                    visibilityOffset++;
-                    j += (visibility[visibilityOffset]<<3);
-                }
-                else
-                {
-                    for (unsigned char bit = 1; bit; bit<<=1, j++)
-                    {
-                        if (visibility[visibilityOffset] & bit)
-                            this->mLeafs[l].addVisibleLeaf(&this->mLeafs[j]);
-                    }
-                }
-            }
-        }
-
-        if (leafs != NULL) delete []leafs;
-        if (models != NULL) delete []models;
-        if (marksurfaces != NULL) delete []marksurfaces;
-        if (visibility != NULL) delete []visibility;
-    }
-
-    // Parse the nodes
-    {
-        tBSPNode *nodes = NULL;
-
-        this->loadLump(&nodes, header.lumps[HL1_BSP_NODELUMP], &data);
-
-        for (int n = 0; n < this->mNodeCount; n++)
-        {
-            tBSPNode& node = nodes[n];
-            tBSPPlane& plane = planes[node.planeIndex];
-            this->mNodes[n].index = n;
-            this->mNodes[n].setPlane(plane.normal, plane.distance);
-            BspNode* front = NULL;
-            BspNode* back = NULL;
-            if (node.children[0] >= 0)
-                front = &this->mNodes[node.children[0]];
-            else
-            {
-                BspLeaf* leaf = &this->mLeafs[-(node.children[0] + 1)];
-                front = new BspNode(leaf);
-            }
-            if (node.children[1] >= 0)
-                back = &this->mNodes[node.children[1]];
-            else
-            {
-                BspLeaf* leaf = &this->mLeafs[-(node.children[1] + 1)];
-                back = new BspNode(leaf);
-            }
-            this->mNodes[n].setChildren(front, back);
-        }
-
-        if (nodes != NULL) delete []nodes;
-    }
-
-    // Parse faces
-    {
-        tBSPFace* faces = NULL;
-        tBSPTexInfo* texinfos = NULL;
-        tBSPEdge* edges = NULL;
-        tBSPVertex* vertices = NULL;
-        int * surfedges = NULL;
-
-        this->loadLump(&faces, header.lumps[HL1_BSP_FACELUMP], &data);
-        this->loadLump(&texinfos, header.lumps[HL1_BSP_TEXINFOLUMP], &data);
-        this->loadLump(&edges, header.lumps[HL1_BSP_EDGELUMP], &data);
-        this->loadLump(&vertices, header.lumps[HL1_BSP_VERTEXLUMP], &data);
-        this->loadLump(&surfedges, header.lumps[HL1_BSP_SURFEDGELUMP], &data);
-
-        for (int f = 0; f < this->mFaceCount; f++)
-        {
-            tBSPFace& face = faces[f];
-            tBSPPlane& plane = planes[face.planeIndex];
-            tBSPTexInfo& texinfo = texinfos[face.texinfoIndex];
-            this->mFaces[f].setPlane(plane.normal, plane.distance);
-            this->mFaces[f].setVertices(this->mVertexIndices->current(), face.edgeCount);
-            this->mFaces[f].setFlags(texinfo.flags);
-
-            for (int e = 0; e < face.edgeCount; e++)
-            {
-                float vertex[3] = { 0 };
-                int edgeIndex = surfedges[face.firstEdge + e];
-                if (edgeIndex < 0)
-                {
-                    const tBSPEdge& edge = edges[-edgeIndex];
-                    vertex[0] = vertices[edge.vertex[1]].point[0];
-                    vertex[1] = vertices[edge.vertex[1]].point[1];
-                    vertex[2] = vertices[edge.vertex[1]].point[2];
-                }
-                else
-                {
-                    const tBSPEdge& edge = edges[edgeIndex];
-                    vertex[0] = vertices[edge.vertex[0]].point[0];
-                    vertex[1] = vertices[edge.vertex[0]].point[1];
-                    vertex[2] = vertices[edge.vertex[0]].point[2];
-                }
-                this->mVertexIndices->add(vertex);
-            }
-        }
-
-        if (faces != NULL) delete []faces;
-        if (texinfos != NULL) delete []texinfos;
-        if (edges != NULL) delete []edges;
-        if (vertices != NULL) delete []vertices;
-        if (surfedges != NULL) delete []surfedges;
-    }
-
-    if (planes != NULL) delete []planes;
+    parseNodes(bsp);
+    parseLeafs(bsp);
+    parseFaces(bsp);
+    parseModels(bsp);
+    parseTextures(bsp);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, *this->mVertexIndices);
 
+    return true;
+}
+
+/*!
+ * \brief
+ * \param bsp
+ * \return
+ */
+bool BspWorld::parseNodes(BspData& bsp)
+{
+    for (int n = 0; n < this->mNodeCount; n++)
+    {
+        tBSPNode& node = bsp.nodes[n];
+        tBSPPlane& plane = bsp.planes[node.planeIndex];
+        this->mNodes[n].index = n;
+        this->mNodes[n].setPlane(plane.normal, plane.distance);
+        BspNode* front = NULL;
+        BspNode* back = NULL;
+        if (node.children[0] >= 0)
+            front = &this->mNodes[node.children[0]];
+        else
+        {
+            BspLeaf* leaf = &this->mLeafs[-(node.children[0] + 1)];
+            front = new BspNode(leaf);
+        }
+        if (node.children[1] >= 0)
+            back = &this->mNodes[node.children[1]];
+        else
+        {
+            BspLeaf* leaf = &this->mLeafs[-(node.children[1] + 1)];
+            back = new BspNode(leaf);
+        }
+        this->mNodes[n].setChildren(front, back);
+    }
+}
+
+/*!
+ * \brief
+ * \param bsp
+ * \return
+ */
+bool BspWorld::parseLeafs(BspData& bsp)
+{
+    for (int l = 1; l < this->mLeafCount; l++)
+    {
+        tBSPLeaf& leaf = bsp.leafs[l];
+        this->mLeafs[l].index = l;
+        this->mLeafs[l].setFaceCount(leaf.markSurfacesCount);
+        for (int f = 0; f < leaf.markSurfacesCount; f++)
+        {
+            int faceIndex = bsp.marksurfaces[leaf.firstMarkSurface + f];
+            this->mLeafs[l].setFace(&this->mFaces[faceIndex], f);
+        }
+
+        // Decompress visibility data
+        int visibilityOffset = bsp.leafs[l].visiblityOffset;
+        for (int j = 1; j < bsp.models[0].visLeafCount; visibilityOffset++)
+        {
+            if (bsp.visibilityData[visibilityOffset] == 0)
+            {
+                visibilityOffset++;
+                j += (bsp.visibilityData[visibilityOffset]<<3);
+            }
+            else
+            {
+                for (unsigned char bit = 1; bit; bit<<=1, j++)
+                {
+                    if (bsp.visibilityData[visibilityOffset] & bit)
+                        this->mLeafs[l].addVisibleLeaf(&this->mLeafs[j]);
+                }
+            }
+        }
+    }
+}
+
+/*!
+ * \brief
+ * \param bsp
+ * \return
+ */
+bool BspWorld::parseFaces(BspData& bsp)
+{
+    for (int f = 0; f < this->mFaceCount; f++)
+    {
+        tBSPFace& face = bsp.faces[f];
+        tBSPPlane& plane = bsp.planes[face.planeIndex];
+        tBSPTexInfo& texinfo = bsp.texinfos[face.texinfoIndex];
+        this->mFaces[f].setPlane(plane.normal, plane.distance);
+        this->mFaces[f].setVertices(this->mVertexIndices->current(), face.edgeCount);
+        this->mFaces[f].setFlags(texinfo.flags);
+
+        float min[2], max[2];
+        this->getFaceBounds(face, texinfo, bsp, min, max);
+        
+        for (int e = 0; e < face.edgeCount; e++)
+        {
+            float vertex[3] = { 0 };
+            int edgeIndex = bsp.surfedges[face.firstEdge + e];
+            if (edgeIndex < 0)
+            {
+                const tBSPEdge& edge = bsp.edges[-edgeIndex];
+                vertex[0] = bsp.vertices[edge.vertex[1]].point[0];
+                vertex[1] = bsp.vertices[edge.vertex[1]].point[1];
+                vertex[2] = bsp.vertices[edge.vertex[1]].point[2];
+            }
+            else
+            {
+                const tBSPEdge& edge = bsp.edges[edgeIndex];
+                vertex[0] = bsp.vertices[edge.vertex[0]].point[0];
+                vertex[1] = bsp.vertices[edge.vertex[0]].point[1];
+                vertex[2] = bsp.vertices[edge.vertex[0]].point[2];
+            }
+            this->mVertexIndices->add(vertex);
+        }
+    }
+    return true;
+}
+
+/*!
+ * \brief
+ * \param bsp
+ * \return
+ */
+bool BspWorld::parseModels(BspData& bsp)
+{
+    for (int m = 0; m < bsp.modelCount; m++)
+    {
+        tBSPModel& model = bsp.models[m];
+        mModels[m].setHeadNode(&this->mNodes[model.headnode[0]]);
+    }
+    return true;
+}
+
+/*!
+ * \brief
+ * \param bsp
+ * \return
+ */
+bool BspWorld::parseTextures(BspData& bsp)
+{
+    int* table = (int*)bsp.textureData;
+
+    for (int t = 0; t < this->mTextureCount; t++)
+    {
+        Texture& texture = this->mTextures[t];
+        unsigned char* textureData = bsp.textureData + table[t + 1];
+        tBSPMipTexHeader* miptex = (tBSPMipTexHeader*)textureData;
+    }
+    
     return true;
 }
 
@@ -233,7 +253,7 @@ const BspLeaf* BspWorld::getLeaf(const float position[3], int model) const
     if (model < 0 || model >= this->mModelCount)
         return &this->mLeafs[0];
     
-    const BspNode* node = &this->mNodes[this->mModels[model].headnode[0]];
+    const BspNode* node = this->mModels[model].getHeadNode();
     const BspNode* child = node->getChild(position);
 
     while (child != NULL)
@@ -250,7 +270,7 @@ const BspLeaf* BspWorld::getLeaf(const float position[3], int model) const
  */
 const BspNode* BspWorld::getHeadNode(int model) const
 {
-    return &this->mNodes[this->mModels[model].headnode[0]];
+    return this->mModels[model].getHeadNode();
 }
 
 /*!
@@ -278,6 +298,11 @@ void BspWorld::close()
     this->mModels = NULL;
     this->mModelCount = 0;
 
+    if (this->mTextures != NULL)
+        delete []this->mTextures;
+    this->mTextures = NULL;
+    this->mTextureCount = 0;
+
     if (this->mVertexIndices != NULL)
         delete this->mVertexIndices;
     this->mVertexIndices = NULL;
@@ -293,68 +318,38 @@ void BspWorld::close()
 
 /*!
  * \brief
- * \param file
- * \param header
- * \return
+ * \param bspFace
+ * \param texinfo
+ * \param surfedges
+ * \param edges
+ * \param vertices
+ * \param min
+ * \param max
  */
-bool BspWorld::testFile(const Data& file, tBSPHeader& header)
+void BspWorld::getFaceBounds(const tBSPFace& bspFace, const tBSPTexInfo& texinfo, BspData& bsp, float min[2], float max[2])
 {
-    if (!file.read(&header)) {
-        std::cout << "Could not read the BSP header" << std::endl;
-        return false;
-    }
-
-    if (header.signature != HL1_BSP_SIGNATURE) {
-        std::cout << "Wrong BSP signature" << std::endl;
-        return false;
-    }
-
-    if (header.lumps[HL1_BSP_PLANELUMP].size % sizeof(tBSPPlane) != 0)
-    {
-        std::cout << "Plane lump has the wrong size" << std::endl;
-        return false;
-    }
-    if (header.lumps[HL1_BSP_VERTEXLUMP].size % sizeof(tBSPVertex) != 0)
-    {
-        std::cout << "Vertex lump has the wrong size" << std::endl;
-        return false;
-    }
-    if (header.lumps[HL1_BSP_NODELUMP].size % sizeof(tBSPNode) != 0)
-    {
-        std::cout << " Node lump has the wrong size" << std::endl;
-        return false;
-    }
-    if (header.lumps[HL1_BSP_TEXINFOLUMP].size % sizeof(tBSPTexInfo) != 0)
-    {
-        std::cout << "Texture info lump has the wrong size" << std::endl;
-        return false;
-    }
-    if (header.lumps[HL1_BSP_FACELUMP].size % sizeof(tBSPFace) != 0)
-    {
-        std::cout << "Face lump has the wrong size" << std::endl;
-        return false;
-    }
-    if (header.lumps[HL1_BSP_CLIPNODELUMP].size % sizeof(tBSPClipNode) != 0)
-    {
-        std::cout << "Clipnode lump has the wrond size" << std::endl;
-        return false;
-    }
-    if (header.lumps[HL1_BSP_LEAFLUMP].size % sizeof(tBSPLeaf) != 0)
-    {
-        std::cout << "Leaf lump has the wrong size" << std::endl;
-        return false;
-    }
-    if (header.lumps[HL1_BSP_EDGELUMP].size % sizeof(tBSPEdge) != 0)
-    {
-        std::cout << "Edge lump has the wrong size" << std::endl;
-        return false;
-    }
-    if (header.lumps[HL1_BSP_MODELLUMP].size % sizeof(tBSPModel) != 0)
-    {
-        std::cout << "Model lump has the wrond size" << std::endl;
-        return false;
-    }
+    min[0] = min[1] =  999999;
+    max[0] = max[1] = -999999;
     
-    return true;
+    for (int e = 0; e < bspFace.edgeCount; e++)
+    {
+        const tBSPVertex* vertex = NULL;
+        int edgeIndex = bsp.surfedges[bspFace.firstEdge + e];
+        if (edgeIndex >= 0)
+            vertex = &bsp.vertices[bsp.edges[edgeIndex].vertex[0]];
+        else
+            vertex = &bsp.vertices[bsp.edges[-edgeIndex].vertex[1]];
+
+        for (int j = 0; j < 2 ; j++)
+        {
+            float value =  (vertex->point[0] * texinfo.vecs[j][0]) +
+                        (vertex->point[1] * texinfo.vecs[j][1]) +
+                        (vertex->point[2] * texinfo.vecs[j][2]) +
+                        texinfo.vecs[j][3];
+
+            if (value < min[j]) min[j] = value;
+            if (value > max[j])  max[j] = value;
+        }
+    }
 }
 

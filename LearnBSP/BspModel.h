@@ -17,44 +17,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPFACE_H
-#define	_BSPFACE_H
+#ifndef _BSPMODEL_H
+#define	_BSPMODEL_H
 
-#include "common/plane.h"
-#include "common/texture.h"
-#include "opengl.h"
+#include "BspNode.h"
 
 /*!
  * \brief
  */
-class BspFace
+class BspModel
 {
 public:
-    BspFace();
-    virtual ~BspFace();
+    BspModel();
+    virtual ~BspModel();
 
-    void render();
-    
-    void setPlane(float normal[3], float distance);
-    void setVertices(int first, int count);
-    void setFlags(int flags);
-    void setLightmap(Texture* lightmap);
-    
+    void setHeadNode(BspNode* node);
+    const BspNode* getHeadNode() const;
+
+    void setOrigin(Vector3 origin);
+    const Vector3& getOrigin() const;
 private:
     /*! \brief */
-    Plane mPlane;
+    BspNode* mHeadNode;
     /*! \brief */
-    int mFirstVertex;
-    /*! \brief */
-    int mVertexCount;
-    /*! \brief */
-    GLuint mFaceType;
-    /*! \brief */
-    int mFaceFlags;
-    /*! \brief */
-    Texture* mLightmap;
+    Vector3 mOrigin;
 
 };
 
-#endif	/* _BSPFACE_H */
+#endif	/* _BSPMODEL_H */
 

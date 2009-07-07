@@ -18,11 +18,13 @@
  */
 
 #include "BspFace.h"
+#include "common/texture.h"
 
 /*!
  * \brief
  */
 BspFace::BspFace()
+    : mLightmap(NULL)
 {
 }
 
@@ -38,8 +40,11 @@ BspFace::~BspFace()
  */
 void BspFace::render()
 {
-    //glActiveTexture(GL_TEXTURE1);
-    //glBindTexture(GL_TEXTURE_2D, face.lightmap->glIndex);
+    if (this->mLightmap != NULL)
+    {
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, this->mLightmap->glIndex);
+    }
     glDrawArrays(this->mFaceType, this->mFirstVertex, this->mVertexCount);
 }
 
@@ -78,5 +83,14 @@ void BspFace::setVertices(int first, int count)
 void BspFace::setFlags(int flags)
 {
     this->mFaceFlags = flags;
+}
+
+/*!
+ * \brief
+ * \param lightmap
+ */
+void BspFace::setLightmap(Texture* lightmap)
+{
+    this->mLightmap = lightmap;
 }
 

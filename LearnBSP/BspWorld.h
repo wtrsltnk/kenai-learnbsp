@@ -20,11 +20,14 @@
 #ifndef _BSPWORLD_H
 #define	_BSPWORLD_H
 
+#include "common/texture.h"
 #include "common/data.h"
 #include "common/indexarray.h"
 #include "BspNode.h"
 #include "BspLeaf.h"
 #include "BspFace.h"
+#include "BspModel.h"
+#include "BspData.h"
 #include "types.h"
 
 /*!
@@ -60,7 +63,11 @@ private:
     /*! \brief */
     int mModelCount;
     /*! \brief */
-    tBSPModel* mModels;
+    BspModel* mModels;
+    /*! \brief */
+    int mTextureCount;
+    /*! \brief */
+    Texture* mTextures;
     /*! \brief */
     IndexArray<3>* mVertexIndices;
     /*! \brief */
@@ -68,37 +75,14 @@ private:
     /*! \brief */
     IndexArray<2>* mTextureUV;
 
-    bool testFile(const Data& file, tBSPHeader& header);
+    bool parseNodes(BspData& bsp);
+    bool parseLeafs(BspData& bsp);
+    bool parseFaces(BspData& bsp);
+    bool parseModels(BspData& bsp);
+    bool parseTextures(BspData& bsp);
     
-    /*! 
-     * \brief
-     * \param array
-     * \param lump
-     * \param data
-     */
-    template <typename T>
-    static int loadLump(T** array, const tBSPLump& lump, const Data* data)
-    {
-        if (*array != NULL)
-        {
-            delete *array;
-            *array = NULL;
-        }
-
-        if (data->dataSize < (lump.offset + lump.size))
-            return 0;
-
-        int count = lump.size / sizeof(T);
-        if (count > 0)
-        {
-            *array = new T[count];
-            if (*array == NULL)
-                return 0;
-
-            data->read(*array, count, lump.offset);
-        }
-        return count;
-    }
+    void getFaceBounds(const tBSPFace& bspFace, const tBSPTexInfo& texinfo, BspData& bsp, float min[2], float max[2]);
+    
 };
 
 #endif	/* _BSPWORLD_H */

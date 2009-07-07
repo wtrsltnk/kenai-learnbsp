@@ -17,44 +17,56 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPFACE_H
-#define	_BSPFACE_H
-
-#include "common/plane.h"
-#include "common/texture.h"
-#include "opengl.h"
+#include "BspModel.h"
 
 /*!
  * \brief
  */
-class BspFace
+BspModel::BspModel()
+    : mHeadNode(NULL)
 {
-public:
-    BspFace();
-    virtual ~BspFace();
+}
 
-    void render();
-    
-    void setPlane(float normal[3], float distance);
-    void setVertices(int first, int count);
-    void setFlags(int flags);
-    void setLightmap(Texture* lightmap);
-    
-private:
-    /*! \brief */
-    Plane mPlane;
-    /*! \brief */
-    int mFirstVertex;
-    /*! \brief */
-    int mVertexCount;
-    /*! \brief */
-    GLuint mFaceType;
-    /*! \brief */
-    int mFaceFlags;
-    /*! \brief */
-    Texture* mLightmap;
+/*!
+ * \brief
+ */
+BspModel::~BspModel()
+{
+}
 
-};
+/*!
+ * \brief
+ * \param node
+ */
+void BspModel::setHeadNode(BspNode* node)
+{
+    this->mHeadNode = node;
+}
 
-#endif	/* _BSPFACE_H */
+/*!
+ * \brief
+ * \return
+ */
+const BspNode* BspModel::getHeadNode() const
+{
+    return this->mHeadNode;
+}
+
+/*!
+ * \brief
+ * \param origin
+ */
+void BspModel::setOrigin(Vector3 origin)
+{
+    this->mOrigin = origin;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const Vector3& BspModel::getOrigin() const
+{
+    return this->mOrigin;
+}
 

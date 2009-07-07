@@ -26,8 +26,10 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Application.h</itemPath>
+      <itemPath>BspData.h</itemPath>
       <itemPath>BspFace.h</itemPath>
       <itemPath>BspLeaf.h</itemPath>
+      <itemPath>BspModel.h</itemPath>
       <itemPath>BspNode.h</itemPath>
       <itemPath>BspObject.h</itemPath>
       <itemPath>BspWorld.h</itemPath>
@@ -38,8 +40,10 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>Application.cpp</itemPath>
+      <itemPath>BspData.cpp</itemPath>
       <itemPath>BspFace.cpp</itemPath>
       <itemPath>BspLeaf.cpp</itemPath>
+      <itemPath>BspModel.cpp</itemPath>
       <itemPath>BspNode.cpp</itemPath>
       <itemPath>BspObject.cpp</itemPath>
       <itemPath>BspWorld.cpp</itemPath>
