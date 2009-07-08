@@ -159,7 +159,7 @@ int Application::cleanup()
 bool Application::initialize()
 {
     TextureLoader textureLoader;
-    Data data("/media/data/Games/Half-Life/cstrike/maps/cs_siege.bsp", true);
+    Data data("./data/cs_siege.bsp", true);
     this->mWorld = new BspWorld();
     this->mWorld->open(data, textureLoader);
     this->setPerspective(45.0f, 0.1f, 4096.0f);
