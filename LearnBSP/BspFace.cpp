@@ -44,6 +44,11 @@ BspFace::~BspFace()
  */
 void BspFace::render()
 {
+    if (this->mTexture != NULL)
+    {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, this->mTexture->glIndex);
+    }
     if (this->mLightmap != NULL)
     {
         glActiveTexture(GL_TEXTURE1);
@@ -148,7 +153,7 @@ const Texture* BspFace::setLightmap(const tBSPFace& bspFace, float min[2], float
     for (int i = 0; i < dataSize; i++)
     {
         float f = powf((this->mLightmap->data[i] + 1) / 256.0f, brightness);
-        int inf = f * 255.0f + 0.5f;
+        int inf = int(f * 255.0f + 0.5f);
 
         // clamp between 0 and 255
         if (inf < 0) inf = 0;

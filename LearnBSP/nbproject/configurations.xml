@@ -63,7 +63,7 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>2</platform>
+        <platform>3</platform>
         <dependencyChecking>false</dependencyChecking>
       </toolsSet>
       <compileType>
@@ -81,7 +81,7 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>2</platform>
+        <platform>3</platform>
         <dependencyChecking>false</dependencyChecking>
       </toolsSet>
       <compileType>
@@ -109,13 +109,14 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>MinGW|MinGW</compilerSet>
-        <platform>2</platform>
+        <platform>3</platform>
       </toolsSet>
       <compileType>
         <linkerTool>
           <linkerLibItems>
             <linkerLibLibItem>glfw</linkerLibLibItem>
             <linkerLibLibItem>opengl32</linkerLibLibItem>
+            <linkerLibLibItem>glu32</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
@@ -124,7 +125,7 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>MinGW|MinGW</compilerSet>
-        <platform>2</platform>
+        <platform>3</platform>
       </toolsSet>
       <compileType>
         <cTool>
@@ -140,6 +141,7 @@
           <linkerLibItems>
             <linkerLibLibItem>glfw</linkerLibLibItem>
             <linkerLibLibItem>opengl32</linkerLibLibItem>
+            <linkerLibLibItem>glu32</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

@@ -155,9 +155,9 @@ void Texture::setName(const char* name)
  * \param width
  * \param height
  */
-void Texture::setDimentions(int width, int height)
+void Texture::setDimentions(int width, int height, int bpp)
 {
-    if (this->glIndex == 0)
+    if (this->glIndex != 0)
         return;
     
     if (this->data != NULL)
@@ -168,6 +168,7 @@ void Texture::setDimentions(int width, int height)
 
     this->width = width;
     this->height = height;
+    this->bpp = bpp;
     int dataSize = this->width * this->height * this->bpp;
     if (dataSize > 0)
     {

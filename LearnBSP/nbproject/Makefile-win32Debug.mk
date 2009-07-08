@@ -33,16 +33,22 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/Application.o \
 	${OBJECTDIR}/common/font.o \
+	${OBJECTDIR}/BspFace.o \
+	${OBJECTDIR}/BspLeaf.o \
+	${OBJECTDIR}/BspModel.o \
 	${OBJECTDIR}/common/camera.o \
 	${OBJECTDIR}/BspObject.o \
-	${OBJECTDIR}/common/data.o \
+	${OBJECTDIR}/BspData.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/common/plane.o \
 	${OBJECTDIR}/common/texture.o \
+	${OBJECTDIR}/GLee/GLee.o \
+	${OBJECTDIR}/common/math3d.o \
+	${OBJECTDIR}/BspWorld.o \
+	${OBJECTDIR}/common/data.o \
+	${OBJECTDIR}/common/plane.o \
 	${OBJECTDIR}/common/vector3.o \
 	${OBJECTDIR}/BspNode.o \
-	${OBJECTDIR}/GLee/GLee.o \
-	${OBJECTDIR}/common/math3d.o
+	${OBJECTDIR}/TextureLoader.o
 
 # C Compiler Flags
 CFLAGS=
@@ -58,7 +64,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-lglfw -lopengl32
+LDLIBSOPTIONS=-lglfw -lopengl32 -lglu32
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -78,6 +84,21 @@ ${OBJECTDIR}/common/font.o: nbproject/Makefile-${CND_CONF}.mk common/font.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/font.o common/font.cpp
 
+${OBJECTDIR}/BspFace.o: nbproject/Makefile-${CND_CONF}.mk BspFace.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspFace.o BspFace.cpp
+
+${OBJECTDIR}/BspLeaf.o: nbproject/Makefile-${CND_CONF}.mk BspLeaf.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspLeaf.o BspLeaf.cpp
+
+${OBJECTDIR}/BspModel.o: nbproject/Makefile-${CND_CONF}.mk BspModel.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspModel.o BspModel.cpp
+
 ${OBJECTDIR}/common/camera.o: nbproject/Makefile-${CND_CONF}.mk common/camera.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
 	${RM} $@.d
@@ -88,25 +109,45 @@ ${OBJECTDIR}/BspObject.o: nbproject/Makefile-${CND_CONF}.mk BspObject.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspObject.o BspObject.cpp
 
-${OBJECTDIR}/common/data.o: nbproject/Makefile-${CND_CONF}.mk common/data.cpp 
-	${MKDIR} -p ${OBJECTDIR}/common
+${OBJECTDIR}/BspData.o: nbproject/Makefile-${CND_CONF}.mk BspData.cpp 
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/data.o common/data.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspData.o BspData.cpp
 
 ${OBJECTDIR}/main.o: nbproject/Makefile-${CND_CONF}.mk main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
 
-${OBJECTDIR}/common/plane.o: nbproject/Makefile-${CND_CONF}.mk common/plane.cpp 
-	${MKDIR} -p ${OBJECTDIR}/common
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/plane.o common/plane.cpp
-
 ${OBJECTDIR}/common/texture.o: nbproject/Makefile-${CND_CONF}.mk common/texture.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/texture.o common/texture.cpp
+
+${OBJECTDIR}/GLee/GLee.o: nbproject/Makefile-${CND_CONF}.mk GLee/GLee.c 
+	${MKDIR} -p ${OBJECTDIR}/GLee
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/GLee/GLee.o GLee/GLee.c
+
+${OBJECTDIR}/common/math3d.o: nbproject/Makefile-${CND_CONF}.mk common/math3d.cpp 
+	${MKDIR} -p ${OBJECTDIR}/common
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/math3d.o common/math3d.cpp
+
+${OBJECTDIR}/BspWorld.o: nbproject/Makefile-${CND_CONF}.mk BspWorld.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspWorld.o BspWorld.cpp
+
+${OBJECTDIR}/common/data.o: nbproject/Makefile-${CND_CONF}.mk common/data.cpp 
+	${MKDIR} -p ${OBJECTDIR}/common
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/data.o common/data.cpp
+
+${OBJECTDIR}/common/plane.o: nbproject/Makefile-${CND_CONF}.mk common/plane.cpp 
+	${MKDIR} -p ${OBJECTDIR}/common
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/plane.o common/plane.cpp
 
 ${OBJECTDIR}/common/vector3.o: nbproject/Makefile-${CND_CONF}.mk common/vector3.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
@@ -118,15 +159,10 @@ ${OBJECTDIR}/BspNode.o: nbproject/Makefile-${CND_CONF}.mk BspNode.cpp
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspNode.o BspNode.cpp
 
-${OBJECTDIR}/GLee/GLee.o: nbproject/Makefile-${CND_CONF}.mk GLee/GLee.c 
-	${MKDIR} -p ${OBJECTDIR}/GLee
+${OBJECTDIR}/TextureLoader.o: nbproject/Makefile-${CND_CONF}.mk TextureLoader.cpp 
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
-	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/GLee/GLee.o GLee/GLee.c
-
-${OBJECTDIR}/common/math3d.o: nbproject/Makefile-${CND_CONF}.mk common/math3d.cpp 
-	${MKDIR} -p ${OBJECTDIR}/common
-	${RM} $@.d
-	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/math3d.o common/math3d.cpp
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/TextureLoader.o TextureLoader.cpp
 
 # Subprojects
 .build-subprojects:

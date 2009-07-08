@@ -17,7 +17,7 @@ public:
     void copyFrom(const Texture& from);
 
     void setName(const char* name);
-    void setDimentions(int width, int height);
+    void setDimentions(int width, int height, int bpp = 3);
 
 public:
     /*! \brief */

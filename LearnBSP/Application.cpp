@@ -166,6 +166,8 @@ bool Application::initialize()
     glClearColor(0.4f, 0.6f, 1.0f, 1.0f);
 
     glEnable(GL_DEPTH_TEST);
+    glActiveTexture(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
     glActiveTexture(GL_TEXTURE1);
     glEnable(GL_TEXTURE_2D);
     

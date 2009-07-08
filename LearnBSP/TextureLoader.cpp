@@ -53,8 +53,37 @@ bool TextureLoader::loadTexture(Texture& texture, const unsigned char* textureDa
     tBSPMipTexHeader* miptex = (tBSPMipTexHeader*)textureData;
     
     texture.setName(miptex->name);
-    texture.setDimentions(miptex->width, miptex->height);
+    texture.setDimentions(miptex->width, miptex->height, 4);
 
+    if (miptex->offsets[0] != 0)
+    {
+        int s = miptex->width * miptex->height;
+        int paletteOffset = miptex->offsets[0] + s + (s/4) + (s/16) + (s/64) + 2;
+
+        const unsigned char* source = textureData + miptex->offsets[0];
+        const unsigned char* palette = textureData + paletteOffset;
+
+        int j = 0;
+        for (int i = 0; i < s; i++)
+        {
+            char r, g, b, a;
+            r = palette[source[i]*3];
+            g = palette[source[i]*3+1];
+            b = palette[source[i]*3+2];
+            a = 255;
+
+            if (palette[source[i]*3] <= 5 && palette[source[i]*3+1] <= 5 && palette[source[i]*3+2] == 255)
+                r = g = b = a = 0;
+
+            texture.data[j++] = r;
+            texture.data[j++] = g;
+            texture.data[j++] = b;
+            texture.data[j++] = a;
+        }
+    }
+    else
+    {
+    }
     return true;
 }
 

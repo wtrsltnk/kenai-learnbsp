@@ -109,9 +109,11 @@ bool BspWorld::parseTextures(BspData& bsp, TextureLoader& textureLoader)
 {
     int* table = (int*)bsp.textureData;
 
+    glActiveTexture(GL_TEXTURE0);
     for (int t = 0; t < this->mTextureCount; t++)
     {
         textureLoader.loadTexture(this->mTextures[t], bsp.textureData + table[t + 1]);
+        this->mTextures[t].upload();
     }
 
     return true;
