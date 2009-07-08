@@ -23,6 +23,7 @@
 #include "common/texture.h"
 #include "common/data.h"
 #include "common/indexarray.h"
+#include "TextureLoader.h"
 #include "BspNode.h"
 #include "BspLeaf.h"
 #include "BspFace.h"
@@ -39,7 +40,7 @@ public:
     BspWorld();
     virtual ~BspWorld();
 
-    bool open(const Data& file);
+    bool open(const Data& file, TextureLoader& textureLoader);
     void close();
 
     void renderAllFaces() const;
@@ -75,14 +76,15 @@ private:
     /*! \brief */
     IndexArray<2>* mTextureUV;
 
+    bool parseEntities(BspData& bsp, TextureLoader& textureLoader);
+    bool parseTextures(BspData& bsp, TextureLoader& textureLoader);
     bool parseNodes(BspData& bsp);
     bool parseLeafs(BspData& bsp);
     bool parseFaces(BspData& bsp);
     bool parseModels(BspData& bsp);
-    bool parseTextures(BspData& bsp);
     
     void getFaceBounds(const tBSPFace& bspFace, const tBSPTexInfo& texinfo, BspData& bsp, float min[2], float max[2]);
-    
+
 };
 
 #endif	/* _BSPWORLD_H */

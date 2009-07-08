@@ -130,3 +130,47 @@ void Texture::copyFrom(const Texture& from)
         memcpy(this->data, from.data, dataSize);
     }
 }
+
+/*!
+ * \brief
+ * \param name
+ */
+void Texture::setName(const char* name)
+{
+    if (name != NULL)
+    {
+        if (this->name != NULL)
+        {
+            delete []this->name;
+            this->name = NULL;
+        }
+
+        this->name = new char[strlen(name) + 1];
+        strcpy(this->name, name);
+    }
+}
+
+/*!
+ * \brief
+ * \param width
+ * \param height
+ */
+void Texture::setDimentions(int width, int height)
+{
+    if (this->glIndex == 0)
+        return;
+    
+    if (this->data != NULL)
+    {
+        delete []this->data;
+        this->data = NULL;
+    }
+
+    this->width = width;
+    this->height = height;
+    int dataSize = this->width * this->height * this->bpp;
+    if (dataSize > 0)
+    {
+        this->data = new unsigned char[dataSize];
+    }
+}

@@ -43,7 +43,7 @@ BspWorld::~BspWorld()
  * \param data
  * \return 
  */
-bool BspWorld::open(const Data& data)
+bool BspWorld::open(const Data& data, TextureLoader& textureLoader)
 {
     if (!BspData::testBSP(data))
         return false;
@@ -69,14 +69,50 @@ bool BspWorld::open(const Data& data)
     this->mTextureUV = new IndexArray<2>;
     this->mLightmapUV = new IndexArray<2>;
 
+    parseEntities(bsp, textureLoader);
+    parseTextures(bsp, textureLoader);
     parseNodes(bsp);
     parseLeafs(bsp);
     parseFaces(bsp);
     parseModels(bsp);
-    parseTextures(bsp);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, *this->mVertexIndices);
+
+    glClientActiveTexture(GL_TEXTURE0);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glTexCoordPointer(2, GL_FLOAT, 0, *this->mTextureUV);
+
+    glClientActiveTexture(GL_TEXTURE1);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glTexCoordPointer(2, GL_FLOAT, 0, *this->mLightmapUV);
+
+    return true;
+}
+
+/*!
+ * \brief
+ * \param bsp
+ * \return
+ */
+bool BspWorld::parseEntities(BspData& bsp, TextureLoader& textureLoader)
+{
+    return true;
+}
+
+/*!
+ * \brief
+ * \param bsp
+ * \return
+ */
+bool BspWorld::parseTextures(BspData& bsp, TextureLoader& textureLoader)
+{
+    int* table = (int*)bsp.textureData;
+
+    for (int t = 0; t < this->mTextureCount; t++)
+    {
+        textureLoader.loadTexture(this->mTextures[t], bsp.textureData + table[t + 1]);
+    }
 
     return true;
 }
@@ -165,16 +201,23 @@ bool BspWorld::parseFaces(BspData& bsp)
         tBSPFace& face = bsp.faces[f];
         tBSPPlane& plane = bsp.planes[face.planeIndex];
         tBSPTexInfo& texinfo = bsp.texinfos[face.texinfoIndex];
+        Texture* texture = &this->mTextures[texinfo.miptexIndex];
         this->mFaces[f].setPlane(plane.normal, plane.distance);
         this->mFaces[f].setVertices(this->mVertexIndices->current(), face.edgeCount);
         this->mFaces[f].setFlags(texinfo.flags);
+        this->mFaces[f].setTexture(texture);
 
+        float is = 1.0f / float(texture->width);
+        float it = 1.0f / float(texture->height);
         float min[2], max[2];
         this->getFaceBounds(face, texinfo, bsp, min, max);
+        const Texture* lightmap = this->mFaces[f].setLightmap(face, min, max, bsp.lightingData);
         
         for (int e = 0; e < face.edgeCount; e++)
         {
             float vertex[3] = { 0 };
+            float st[2] = { 0 };
+            float lslt[2] = { 0 };
             int edgeIndex = bsp.surfedges[face.firstEdge + e];
             if (edgeIndex < 0)
             {
@@ -190,7 +233,25 @@ bool BspWorld::parseFaces(BspData& bsp)
                 vertex[1] = bsp.vertices[edge.vertex[0]].point[1];
                 vertex[2] = bsp.vertices[edge.vertex[0]].point[2];
             }
+
+            float s = DotProduct(vertex, texinfo.vecs[0]) + texinfo.vecs[0][3];
+            float t = DotProduct(vertex, texinfo.vecs[1]) + texinfo.vecs[1][3];
+
+            // Compute the texture coordinates
+            st[0] = s * is;
+            st[1] = t * it;
+
+            // Compute the lightmap texture coordinates
+            float midPolyS = (min[0] + max[0])/2.0f;
+            float midPolyT = (min[1] + max[1])/2.0f;
+            float midTexS = float(lightmap->width) / 2.0f;
+            float midTexT = float(lightmap->height) / 2.0f;
+            lslt[0] = (midTexS + (s - midPolyS) / 16.0f) / float(lightmap->width);
+            lslt[1] = (midTexT + (t - midPolyT) / 16.0f) / float(lightmap->height);
+
             this->mVertexIndices->add(vertex);
+            this->mTextureUV->add(st);
+            this->mLightmapUV->add(lslt);
         }
     }
     return true;
@@ -208,25 +269,6 @@ bool BspWorld::parseModels(BspData& bsp)
         tBSPModel& model = bsp.models[m];
         mModels[m].setHeadNode(&this->mNodes[model.headnode[0]]);
     }
-    return true;
-}
-
-/*!
- * \brief
- * \param bsp
- * \return
- */
-bool BspWorld::parseTextures(BspData& bsp)
-{
-    int* table = (int*)bsp.textureData;
-
-    for (int t = 0; t < this->mTextureCount; t++)
-    {
-        Texture& texture = this->mTextures[t];
-        unsigned char* textureData = bsp.textureData + table[t + 1];
-        tBSPMipTexHeader* miptex = (tBSPMipTexHeader*)textureData;
-    }
-    
     return true;
 }
 

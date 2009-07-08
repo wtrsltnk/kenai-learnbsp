@@ -39,7 +39,7 @@ BspData::BspData(const Data& data)
     }
 
     this->entitySize = loadLump(&this->entityData, header.lumps[HL1_BSP_ENTITYLUMP], &data);
-    planeCount = loadLump(&this->planes, header.lumps[HL1_BSP_PLANELUMP], &data);
+    this->planeCount = loadLump(&this->planes, header.lumps[HL1_BSP_PLANELUMP], &data);
     this->textureSize = loadLump(&this->textureData, header.lumps[HL1_BSP_TEXTURELUMP], &data);
     this->vertexCount = loadLump(&this->vertices, header.lumps[HL1_BSP_VERTEXLUMP], &data);
     this->visibilitySize = loadLump(&this->visibilityData, header.lumps[HL1_BSP_VISIBILITYLUMP], &data);

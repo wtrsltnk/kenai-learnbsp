@@ -18,6 +18,7 @@
  */
 
 #include "Application.h"
+#include "TextureLoader.h"
 #include "common/math3d.h"
 #include <stdio.h>
 
@@ -123,7 +124,7 @@ void Application::run()
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
             render(newTime);
 
@@ -157,11 +158,17 @@ int Application::cleanup()
  */
 bool Application::initialize()
 {
+    TextureLoader textureLoader;
     Data data("/media/data/Games/Half-Life/cstrike/maps/cs_siege.bsp", true);
     this->mWorld = new BspWorld();
-    this->mWorld->open(data);
+    this->mWorld->open(data, textureLoader);
     this->setPerspective(45.0f, 0.1f, 4096.0f);
     glClearColor(0.4f, 0.6f, 1.0f, 1.0f);
+
+    glEnable(GL_DEPTH_TEST);
+    glActiveTexture(GL_TEXTURE1);
+    glEnable(GL_TEXTURE_2D);
+    
     return true;
 }
 
@@ -177,10 +184,10 @@ void Application::render(double time)
 
     if (leaf->getFaceCount() == 0)
     {
-        glColor3f(1, 1, 1);
+        glColor3f(1.0f, 0, 0);
         this->mWorld->getHeadNode(0)->render();
     }
-    glColor3f(1.0f, 0, 0);
+    glColor3f(1, 1, 1);
     leaf->render();
 
     glBegin(GL_LINES);

@@ -17,48 +17,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPFACE_H
-#define	_BSPFACE_H
+#ifndef _TEXTURELOADER_H
+#define	_TEXTURELOADER_H
 
-#include "common/plane.h"
 #include "common/texture.h"
-#include "opengl.h"
-#include "types.h"
+
 /*!
  * \brief
  */
-class BspFace
+class TextureLoader
 {
 public:
-    BspFace();
-    virtual ~BspFace();
+    TextureLoader();
+    virtual ~TextureLoader();
 
-    void render();
-    
-    void setPlane(float normal[3], float distance);
-    void setVertices(int first, int count);
-    void setFlags(int flags);
-    void setTexture(Texture* texture);
-    const Texture* getTexture() const;
-    const Texture* setLightmap(const tBSPFace& bspFace, float min[2], float max[2], const unsigned char* lightData, float brightness = 0.5f);
+    void setWadFiles(const char* wadstring);
+    bool loadTexture(Texture& texture, const unsigned char* textureData);
     
 private:
-    /*! \brief */
-    Plane mPlane;
-    /*! \brief */
-    int mFirstVertex;
-    /*! \brief */
-    int mVertexCount;
-    /*! \brief */
-    GLuint mFaceType;
-    /*! \brief */
-    int mFaceFlags;
-    /*! \brief */
-    Texture* mTexture;
-    /*! \brief */
-    Texture* mLightmap;
 
 };
 
-#endif	/* _BSPFACE_H */
+#endif	/* _TEXTURELOADER_H */
 
