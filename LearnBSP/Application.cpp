@@ -22,20 +22,6 @@
 #include "common/math3d.h"
 #include <stdio.h>
 
-/*! \brief */
-Application* Application::sCurrent = NULL;
-
-/*!
- * \brief
- * \param key The key number
- * \param action The action of the key press
- */
-void Application::staticKeyPressed(int key, int action)
-{
-    if (Application::sCurrent != NULL)
-        Application::sCurrent->keyPressed(key, action);
-}
-
 /*!
  * \brief
  * \param width The width of the window created for this Application
@@ -54,6 +40,66 @@ Application::Application(int width, int height)
 Application::~Application()
 {
     glfwTerminate();
+}
+
+/*!
+ * \brief Initialize the application
+ * \return true when initialization went OK
+ *
+ * The initialization done here is the resources that are neede for the
+ * application to run.
+ *
+ */
+bool Application::initialize()
+{
+    TextureLoader textureLoader;
+    Data data("./data/cs_siege.bsp", true);
+    this->mWorld = new BspWorld();
+    this->mWorld->open(data, textureLoader);
+    this->mWorld->setCamera(&this->mCamera);
+    this->setPerspective(45.0f, 0.1f, 4096.0f);
+    glClearColor(0.4f, 0.6f, 1.0f, 1.0f);
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+    glActiveTexture(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
+    glActiveTexture(GL_TEXTURE1);
+    glEnable(GL_TEXTURE_2D);
+
+    return true;
+}
+
+/*!
+ * \brief Render one frame of the application
+ * \param time The current time of the framestart
+ */
+void Application::render(double time)
+{
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    this->mCamera.Update();
+
+    this->mWorld->render();
+}
+
+/*!
+ * \brief Destroy when the OpenGL end running
+ */
+void Application::destroy()
+{
+    delete this->mWorld;
+    this->mWorld = NULL;
+}
+
+/*!
+ * \brief
+ * \param key The key number
+ * \param action The action of the key press
+ */
+void Application::keyPressed(int key, int action)
+{
 }
 
 /*!
@@ -99,6 +145,7 @@ void Application::run()
                 time = newTime;
             }
 
+            this->mCamera.resetChanged();
             if (glfwGetKey('W'))
                 mCamera.MoveLocal(-mSpeed * timeDiff, 0, 0);
             if (glfwGetKey('S'))
@@ -124,8 +171,6 @@ void Application::run()
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
             render(newTime);
 
             glfwSwapBuffers();
@@ -149,73 +194,6 @@ int Application::cleanup()
 }
 
 /*!
- * \brief Initialize the application
- * \return true when initialization went OK
- *
- * The initialization done here is the resources that are neede for the
- * application to run.
- *
- */
-bool Application::initialize()
-{
-    TextureLoader textureLoader;
-    Data data("./data/cs_siege.bsp", true);
-    this->mWorld = new BspWorld();
-    this->mWorld->open(data, textureLoader);
-    this->setPerspective(45.0f, 0.1f, 4096.0f);
-    glClearColor(0.4f, 0.6f, 1.0f, 1.0f);
-
-    glEnable(GL_DEPTH_TEST);
-    glActiveTexture(GL_TEXTURE0);
-    glEnable(GL_TEXTURE_2D);
-    glActiveTexture(GL_TEXTURE1);
-    glEnable(GL_TEXTURE_2D);
-    
-    return true;
-}
-
-/*!
- * \brief Render one frame of the application
- * \param time The current time of the framestart
- */
-void Application::render(double time)
-{
-    mCamera.Update();
-
-    const BspLeaf* leaf = this->mWorld->getLeaf(mCamera.getPosition(), 0);
-
-    if (leaf->getFaceCount() == 0)
-    {
-        glColor3f(1.0f, 0, 0);
-        this->mWorld->getHeadNode(0)->render();
-    }
-    glColor3f(1, 1, 1);
-    leaf->render();
-
-    glBegin(GL_LINES);
-    glColor3f(1.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(10.0f, 0.0f, 0.0f);
-    glColor3f(0.0f, 1.0f, 0.0f); glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 10.0f, 0.0f);
-    glColor3f(0.0f, 0.0f, 1.0f); glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 10.0f);
-    glEnd();
-}
-
-/*!
- * \brief Destroy when the OpenGL end running
- */
-void Application::destroy()
-{
-}
-
-/*!
- * \brief 
- * \param key The key number
- * \param action The action of the key press
- */
-void Application::keyPressed(int key, int action)
-{
-}
-
-/*!
  * \brief
  * \param fieldOfView
  * \param nearClipping
@@ -228,4 +206,18 @@ void Application::setPerspective(float fieldOfView, float nearClipping, float fa
     gluPerspective(fieldOfView, this->mWidth / this->mHeight, nearClipping, farClipping);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+}
+
+/*! \brief */
+Application* Application::sCurrent = NULL;
+
+/*!
+ * \brief
+ * \param key The key number
+ * \param action The action of the key press
+ */
+void Application::staticKeyPressed(int key, int action)
+{
+    if (Application::sCurrent != NULL)
+        Application::sCurrent->keyPressed(key, action);
 }

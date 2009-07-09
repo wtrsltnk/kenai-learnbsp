@@ -18,6 +18,7 @@
  */
 
 #include "BspNode.h"
+#include "BspModel.h"
 #include <iostream>
 
 /*!
@@ -42,6 +43,22 @@ BspNode::BspNode(BspLeaf* leaf)
  */
 BspNode::~BspNode()
 {
+}
+
+/*!
+ * \brief
+ */
+void BspNode::render() const
+{
+    if (this->mLeaf != NULL)
+    {
+        this->mLeaf->render(false);
+    }
+    else
+    {
+        if (this->mFront != NULL) this->mFront->render();
+        if (this->mBack != NULL) this->mBack->render();
+    }
 }
 
 /*!
@@ -94,15 +111,20 @@ const BspLeaf* BspNode::getLeaf() const
     return this->mLeaf;
 }
 
-void BspNode::render() const
+/*!
+ * \brief
+ * \param bb
+ */
+void BspNode::setBoundingBox(const BoundingBox& bb)
 {
-    if (this->mLeaf != NULL)
-    {
-        this->mLeaf->render(false);
-    }
-    else
-    {
-        if (this->mFront != NULL) this->mFront->render();
-        if (this->mBack != NULL) this->mBack->render();
-    }
+    this->mBB = bb;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const BoundingBox& BspNode::getBoundingBox() const
+{
+    return this->mBB;
 }

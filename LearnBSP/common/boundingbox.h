@@ -17,45 +17,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPLEAF_H
-#define	_BSPLEAF_H
-
-#include "BspFace.h"
-#include "common/boundingbox.h"
-#include <set>
+#ifndef _BOUNDINGBOX_H
+#define	_BOUNDINGBOX_H
 
 /*!
  * \brief
  */
-class BspLeaf
+class BoundingBox
 {
 public:
-    BspLeaf();
-    virtual ~BspLeaf();
+    BoundingBox();
+    BoundingBox(float mins[3], float maxs[3]);
+    BoundingBox(short mins[3], short maxs[3]);
+    BoundingBox(const BoundingBox& orig);
+    virtual ~BoundingBox();
 
-    void setFaceCount(int count);
-    int getFaceCount() const;
-    void setFace(BspFace* face, int index);
+    void addPoint(float point[3]);
 
-    void addVisibleLeaf(BspLeaf* leaf);
-
-    void render(bool renderPvs = true) const;
-
-    void setBoundingBox(const BoundingBox& bb);
-    const BoundingBox& getBoundingBox() const;
-
-    int index;
+    const float* getMins() const;
+    const float* getMaxs() const;
+    
 private:
-    /*! \brief  */
-    int mFaceCount;
-    /*! \brief  */
-    BspFace** mFaces;
-    /*! \brief  */
-    std::set<BspLeaf*> mVisibleLeafs;
-    /*! \brief */
-    BoundingBox mBB;
+    float mMins[3];
+    float mMaxs[3];
 
 };
 
-#endif	/* _BSPLEAF_H */
+#endif	/* _BOUNDINGBOX_H */
 

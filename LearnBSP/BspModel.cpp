@@ -17,7 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <GL/gl.h>
+
 #include "BspModel.h"
+#include "common/renderoperations.h"
 
 /*!
  * \brief
@@ -32,6 +35,50 @@ BspModel::BspModel()
  */
 BspModel::~BspModel()
 {
+}
+
+/*!
+ * \brief
+ */
+void BspModel::render(bool renderHeadNode) const
+{
+    for (std::vector<BspFace*>::const_iterator face = this->mFaces.begin(); face != this->mFaces.end(); ++face)
+    {
+        (*face)->render();
+    }
+    glActiveTexture(GL_TEXTURE0);
+    glDisable(GL_TEXTURE_2D);
+    glActiveTexture(GL_TEXTURE1);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_DEPTH_TEST);
+    if (renderHeadNode)
+    {
+        glColor3f(1.0f, 0, 0);
+        if (this->mHeadNode != NULL) RenderOperations::renderBoundingBox(this->mHeadNode->getBoundingBox());
+    }
+    glActiveTexture(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
+    glActiveTexture(GL_TEXTURE1);
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_DEPTH_TEST);
+    glColor3f(1.0f, 1.0f, 1.0f);
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const BspLeaf* BspModel::getLeaf(const float position[3]) const
+{
+    const BspNode* node = this->getHeadNode();
+    const BspNode* child = node->getChild(position);
+
+    while (child != NULL)
+    {
+        node = child;
+        child = node->getChild(position);
+    }
+    return node->getLeaf();
 }
 
 /*!
@@ -54,6 +101,33 @@ const BspNode* BspModel::getHeadNode() const
 
 /*!
  * \brief
+ * \param entity
+ */
+void BspModel::setEntity(BspEntity* entity)
+{
+    this->mEntity = entity;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const BspEntity* BspModel::getEntity() const
+{
+    return this->mEntity;
+}
+
+/*!
+ * \brief
+ * \param face
+ */
+void BspModel::addFace(BspFace* face)
+{
+    this->mFaces.push_back(face);
+}
+
+/*!
+ * \brief
  * \param origin
  */
 void BspModel::setOrigin(Vector3 origin)
@@ -70,3 +144,20 @@ const Vector3& BspModel::getOrigin() const
     return this->mOrigin;
 }
 
+/*!
+ * \brief
+ * \param bb
+ */
+void BspModel::setBoundingBox(const BoundingBox& bb)
+{
+    this->mBB = bb;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const BoundingBox& BspModel::getBoundingBox() const
+{
+    return this->mBB;
+}

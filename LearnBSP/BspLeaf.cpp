@@ -18,6 +18,7 @@
  */
 
 #include "BspLeaf.h"
+#include "common/renderoperations.h"
 
 /*!
  * \brief
@@ -106,4 +107,22 @@ void BspLeaf::render(bool renderPvs) const
             leaf->render(false);
         }
     }
+}
+
+/*!
+ * \brief
+ * \param bb
+ */
+void BspLeaf::setBoundingBox(const BoundingBox& bb)
+{
+    this->mBB = bb;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const BoundingBox& BspLeaf::getBoundingBox() const
+{
+    return this->mBB;
 }

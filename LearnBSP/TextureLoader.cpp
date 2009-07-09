@@ -19,6 +19,7 @@
 
 #include "TextureLoader.h"
 #include "types.h"
+#include <iostream>
 
 /*!
  * \brief
@@ -40,6 +41,7 @@ TextureLoader::~TextureLoader()
  */
 void TextureLoader::setWadFiles(const char* wadstring)
 {
+    std::cout << wadstring << std::endl;
 }
 
 /*!

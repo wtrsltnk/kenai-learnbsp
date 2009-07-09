@@ -21,7 +21,9 @@
 #define	_BSPNODE_H
 
 #include "common/math3d.h"
+#include "common/boundingbox.h"
 #include "BspLeaf.h"
+
 /*!
  * \brief
  */
@@ -32,13 +34,16 @@ public:
     BspNode(BspLeaf* leaf);
     virtual ~BspNode();
 
+    void render() const;
+
     void setPlane(float normal[3], float distance);
     void setChildren(BspNode* front, BspNode* back);
 
     const BspNode* getChild(const float point[3]) const;
     const BspLeaf* getLeaf() const;
 
-    void render() const;
+    void setBoundingBox(const BoundingBox& bb);
+    const BoundingBox& getBoundingBox() const;
 
     int index;
 private:
@@ -50,7 +55,9 @@ private:
     Plane mSplit;
     /*! \brief */
     BspLeaf* mLeaf;
-
+    /*! \brief */
+    BoundingBox mBB;
+    
 };
 
 #endif	/* _BSPNODE_H */

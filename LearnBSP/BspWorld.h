@@ -20,16 +20,19 @@
 #ifndef _BSPWORLD_H
 #define	_BSPWORLD_H
 
-#include "common/texture.h"
+#include "common/camera.h"
 #include "common/data.h"
 #include "common/indexarray.h"
+#include "common/texture.h"
 #include "TextureLoader.h"
 #include "BspNode.h"
 #include "BspLeaf.h"
 #include "BspFace.h"
 #include "BspModel.h"
 #include "BspData.h"
+#include "BspEntity.h"
 #include "types.h"
+#include <vector>
 
 /*!
  * \brief
@@ -43,12 +46,16 @@ public:
     bool open(const Data& file, TextureLoader& textureLoader);
     void close();
 
+    void render() const;
     void renderAllFaces() const;
+
+    void setCamera(Camera* camera);
 
     const BspLeaf* getLeaf(const float position[3], int model = 0) const;
     const BspNode* getHeadNode(int model = 0) const;
     
 private:
+    Camera* mCamera;
     /*! \brief */
     int mNodeCount;
     /*! \brief */
@@ -69,6 +76,8 @@ private:
     int mTextureCount;
     /*! \brief */
     Texture* mTextures;
+    /*! \brief */
+    std::vector<BspEntity*> mEntities;
     /*! \brief */
     IndexArray<3>* mVertexIndices;
     /*! \brief */

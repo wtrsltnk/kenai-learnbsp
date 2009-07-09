@@ -17,45 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPLEAF_H
-#define	_BSPLEAF_H
+#ifndef _RENDEROPERATIONS_H
+#define	_RENDEROPERATIONS_H
 
-#include "BspFace.h"
-#include "common/boundingbox.h"
-#include <set>
+#include "boundingbox.h"
 
-/*!
- * \brief
- */
-class BspLeaf
+class RenderOperations
 {
 public:
-    BspLeaf();
-    virtual ~BspLeaf();
+    RenderOperations();
+    virtual ~RenderOperations();
 
-    void setFaceCount(int count);
-    int getFaceCount() const;
-    void setFace(BspFace* face, int index);
+    static void renderBoundingBox(const BoundingBox& bb);
 
-    void addVisibleLeaf(BspLeaf* leaf);
-
-    void render(bool renderPvs = true) const;
-
-    void setBoundingBox(const BoundingBox& bb);
-    const BoundingBox& getBoundingBox() const;
-
-    int index;
 private:
-    /*! \brief  */
-    int mFaceCount;
-    /*! \brief  */
-    BspFace** mFaces;
-    /*! \brief  */
-    std::set<BspLeaf*> mVisibleLeafs;
-    /*! \brief */
-    BoundingBox mBB;
 
 };
 
-#endif	/* _BSPLEAF_H */
+#endif	/* _RENDEROPERATIONS_H */
 

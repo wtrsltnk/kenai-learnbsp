@@ -6,6 +6,7 @@
  * \brief
  */
 Camera::Camera()
+    : mHasChanged(true)
 {
     for (int i = 0; i < 3; i++)
         position[i] = rotation[i] = 0.0f;
@@ -56,10 +57,22 @@ const float* Camera::getPosition() const
 
 /*!
  * \brief
+ * \return
+ */
+const float* Camera::getPreviousPosition() const
+{
+    return this->previousPosition;
+}
+
+/*!
+ * \brief
  * \param rotation
  */
 void Camera::SetRotation(float rotation[3])
 {
+    if (rotation[0] == 0 && rotation[1] == 0 && rotation[2] == 0)
+        return;
+    
     for (int i = 0; i < 3; i++)
         this->rotation[i] = rotation[i];
 
@@ -71,6 +84,7 @@ void Camera::SetRotation(float rotation[3])
 
     multiplyMatrix(rx, ry, tmp);
     multiplyMatrix(tmp, rz, this->rotationMatrix);
+    this->mHasChanged = true;
 }
 
 /*!
@@ -135,9 +149,13 @@ const float* Camera::getUpVector() const
  */
 void Camera::MoveGlobal(float forward, float left, float up)
 {
+    if (forward == 0 && left == 0 && up == 0)
+        return;
+
     this->position[0] += forward;
     this->position[1] += left;
     this->position[2] += up;
+    this->mHasChanged = true;
 }
 
 /*!
@@ -148,6 +166,9 @@ void Camera::MoveGlobal(float forward, float left, float up)
  */
 void Camera::MoveLocal(float forward, float left, float up)
 {
+    if (forward == 0 && left == 0 && up == 0)
+        return;
+
     Vector3 vForward = forwardVector(rotationMatrix) * forward;
     Vector3 vLeft = leftVector(rotationMatrix) * left;
     Vector3 vUp = upVector(rotationMatrix) * up;
@@ -155,4 +176,24 @@ void Camera::MoveLocal(float forward, float left, float up)
 
     pos += vForward + vLeft + vUp;
     pos.copyTo(position);
+    this->mHasChanged = true;
+}
+
+/*!
+ * \brief
+ */
+void Camera::resetChanged()
+{
+    this->mHasChanged = false;
+    for (int i = 0; i < 3; i++)
+        this->previousPosition[i] = this->position[i];
+}
+
+/*!
+ * \brief
+ * \return
+ */
+bool Camera::hasChanged() const
+{
+    return this->mHasChanged;
 }

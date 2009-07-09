@@ -18,7 +18,9 @@
  */
 
 #include "BspWorld.h"
+#include "common/tokenizer.h"
 #include <iostream>
+#include <string.h>
 
 /*!
  * \brief
@@ -69,12 +71,23 @@ bool BspWorld::open(const Data& data, TextureLoader& textureLoader)
     this->mTextureUV = new IndexArray<2>;
     this->mLightmapUV = new IndexArray<2>;
 
-    parseEntities(bsp, textureLoader);
-    parseTextures(bsp, textureLoader);
-    parseNodes(bsp);
-    parseLeafs(bsp);
-    parseFaces(bsp);
-    parseModels(bsp);
+    if (!parseEntities(bsp, textureLoader))
+        return false;
+
+    if (!parseTextures(bsp, textureLoader))
+        return false;
+
+    if (!parseNodes(bsp))
+        return false;
+
+    if (!parseLeafs(bsp))
+        return false;
+
+    if (!parseFaces(bsp))
+        return false;
+
+    if (!parseModels(bsp))
+        return false;
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, *this->mVertexIndices);
@@ -97,6 +110,31 @@ bool BspWorld::open(const Data& data, TextureLoader& textureLoader)
  */
 bool BspWorld::parseEntities(BspData& bsp, TextureLoader& textureLoader)
 {
+    Tokenizer tok(bsp.entityData, bsp.entitySize);
+
+    while (tok.nextToken() && strcmp(tok.getToken(), "{") == 0)
+    {
+        BspEntity* entity = new BspEntity();
+        if (!entity->parseFromTokenizer(tok))
+            return false;
+
+        const char* classname = entity->getClassName();
+        if (strcasecmp(classname, "worldspawn") == 0)
+        {
+            textureLoader.setWadFiles(entity->getValue("wad"));
+        }
+        const char* strModel = entity->getValue("model");
+        if (strModel != NULL)
+        {
+            int model = atoi(strModel);
+            if (model >= 0 && model < this->mModelCount)
+            {
+                this->mModels[model].setEntity(entity);
+            }
+        }
+
+        this->mEntities.push_back(entity);
+    }
     return true;
 }
 
@@ -132,6 +170,7 @@ bool BspWorld::parseNodes(BspData& bsp)
         tBSPPlane& plane = bsp.planes[node.planeIndex];
         this->mNodes[n].index = n;
         this->mNodes[n].setPlane(plane.normal, plane.distance);
+        this->mNodes[n].setBoundingBox(BoundingBox(node.mins, node.maxs));
         BspNode* front = NULL;
         BspNode* back = NULL;
         if (node.children[0] >= 0)
@@ -150,6 +189,7 @@ bool BspWorld::parseNodes(BspData& bsp)
         }
         this->mNodes[n].setChildren(front, back);
     }
+    return true;
 }
 
 /*!
@@ -163,6 +203,7 @@ bool BspWorld::parseLeafs(BspData& bsp)
     {
         tBSPLeaf& leaf = bsp.leafs[l];
         this->mLeafs[l].index = l;
+        this->mLeafs[l].setBoundingBox(BoundingBox(leaf.mins, leaf.maxs));
         this->mLeafs[l].setFaceCount(leaf.markSurfacesCount);
         for (int f = 0; f < leaf.markSurfacesCount; f++)
         {
@@ -189,6 +230,7 @@ bool BspWorld::parseLeafs(BspData& bsp)
             }
         }
     }
+    return true;
 }
 
 /*!
@@ -269,9 +311,46 @@ bool BspWorld::parseModels(BspData& bsp)
     for (int m = 0; m < bsp.modelCount; m++)
     {
         tBSPModel& model = bsp.models[m];
-        mModels[m].setHeadNode(&this->mNodes[model.headnode[0]]);
+        this->mModels[m].setHeadNode(&this->mNodes[model.headnode[0]]);
+        this->mModels[m].setBoundingBox(BoundingBox(model.mins, model.maxs));
+        for (int f = 0; f < model.faceCount; f++)
+        {
+            this->mModels[m].addFace(&this->mFaces[model.firstFace + f]);
+        }
     }
     return true;
+}
+
+/*!
+ * \brief
+ * \param camera
+ */
+void BspWorld::setCamera(Camera* camera)
+{
+    this->mCamera = camera;
+}
+
+/*!
+ * \brief
+ */
+void BspWorld::render() const
+{
+    const BspLeaf* leaf = this->mModels[0].getLeaf(mCamera->getPosition());
+
+    if (leaf->getFaceCount() > 0)
+    {
+        glColor3f(1.0f, 1.0f, 1.0f);
+        leaf->render();
+        for (int m = 1; m < this->mModelCount; m++)
+        {
+            this->mModels[m].render(true);
+        }
+    }
+    else
+    {
+        glColor3f(1.0f, 0.0f, 0.0f);
+        this->mModels[0].getHeadNode()->render();
+    }
 }
 
 /*!
@@ -297,15 +376,7 @@ const BspLeaf* BspWorld::getLeaf(const float position[3], int model) const
     if (model < 0 || model >= this->mModelCount)
         return &this->mLeafs[0];
     
-    const BspNode* node = this->mModels[model].getHeadNode();
-    const BspNode* child = node->getChild(position);
-
-    while (child != NULL)
-    {
-        node = child;
-        child = node->getChild(position);
-    }
-    return node->getLeaf();
+    return this->mModels[model].getLeaf(position);
 }
 
 /*!
@@ -358,6 +429,13 @@ void BspWorld::close()
     if (this->mLightmapUV != NULL)
         delete this->mLightmapUV;
     this->mLightmapUV = NULL;
+
+    while (!this->mEntities.empty())
+    {
+        BspEntity* entity = this->mEntities.back();
+        this->mEntities.pop_back();
+        delete entity;
+    }
 }
 
 /*!

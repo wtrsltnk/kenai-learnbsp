@@ -21,6 +21,9 @@
 #define	_BSPMODEL_H
 
 #include "BspNode.h"
+#include "BspEntity.h"
+#include "common/boundingbox.h"
+#include <vector>
 
 /*!
  * \brief
@@ -31,16 +34,35 @@ public:
     BspModel();
     virtual ~BspModel();
 
+    void render(bool renderHeadNode) const;
+
+    const BspLeaf* getLeaf(const float position[3]) const;
+
     void setHeadNode(BspNode* node);
     const BspNode* getHeadNode() const;
 
+    void setEntity(BspEntity* entity);
+    const BspEntity* getEntity() const;
+
+    void addFace(BspFace* face);
+
     void setOrigin(Vector3 origin);
     const Vector3& getOrigin() const;
+
+    void setBoundingBox(const BoundingBox& bb);
+    const BoundingBox& getBoundingBox() const;
+    
 private:
     /*! \brief */
     BspNode* mHeadNode;
     /*! \brief */
+    BspEntity* mEntity;
+    /*! \brief */
+    std::vector<BspFace*> mFaces;
+    /*! \brief */
     Vector3 mOrigin;
+    /*! \brief */
+    BoundingBox mBB;
 
 };
 

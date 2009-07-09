@@ -2,6 +2,8 @@
 <configurationDescriptor version="62">
   <logicalFolder name="root" displayName="root" projectFiles="true">
     <logicalFolder name="f1" displayName="Common" projectFiles="true">
+      <itemPath>common/boundingbox.cpp</itemPath>
+      <itemPath>common/boundingbox.h</itemPath>
       <itemPath>common/camera.cpp</itemPath>
       <itemPath>common/camera.h</itemPath>
       <itemPath>common/data.cpp</itemPath>
@@ -13,8 +15,12 @@
       <itemPath>common/math3d.h</itemPath>
       <itemPath>common/plane.cpp</itemPath>
       <itemPath>common/plane.h</itemPath>
+      <itemPath>common/renderoperations.cpp</itemPath>
+      <itemPath>common/renderoperations.h</itemPath>
       <itemPath>common/texture.cpp</itemPath>
       <itemPath>common/texture.h</itemPath>
+      <itemPath>common/tokenizer.cpp</itemPath>
+      <itemPath>common/tokenizer.h</itemPath>
       <itemPath>common/vector3.cpp</itemPath>
       <itemPath>common/vector3.h</itemPath>
     </logicalFolder>
@@ -27,6 +33,7 @@
                    projectFiles="true">
       <itemPath>Application.h</itemPath>
       <itemPath>BspData.h</itemPath>
+      <itemPath>BspEntity.h</itemPath>
       <itemPath>BspFace.h</itemPath>
       <itemPath>BspLeaf.h</itemPath>
       <itemPath>BspModel.h</itemPath>
@@ -42,6 +49,7 @@
                    projectFiles="true">
       <itemPath>Application.cpp</itemPath>
       <itemPath>BspData.cpp</itemPath>
+      <itemPath>BspEntity.cpp</itemPath>
       <itemPath>BspFace.cpp</itemPath>
       <itemPath>BspLeaf.cpp</itemPath>
       <itemPath>BspModel.cpp</itemPath>
@@ -63,7 +71,7 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>3</platform>
+        <platform>2</platform>
         <dependencyChecking>false</dependencyChecking>
       </toolsSet>
       <compileType>
@@ -81,7 +89,7 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>3</platform>
+        <platform>2</platform>
         <dependencyChecking>false</dependencyChecking>
       </toolsSet>
       <compileType>
@@ -109,7 +117,7 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>MinGW|MinGW</compilerSet>
-        <platform>3</platform>
+        <platform>2</platform>
       </toolsSet>
       <compileType>
         <linkerTool>
@@ -125,7 +133,7 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>MinGW|MinGW</compilerSet>
-        <platform>3</platform>
+        <platform>2</platform>
       </toolsSet>
       <compileType>
         <cTool>

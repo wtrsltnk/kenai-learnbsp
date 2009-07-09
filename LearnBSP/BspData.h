@@ -36,7 +36,7 @@ public:
     
 //#define HL1_BSP_ENTITYLUMP 0
     int entitySize;
-    char* entityData;
+    unsigned char* entityData;
 
 //#define HL1_BSP_PLANELUMP 1
     int planeCount;
