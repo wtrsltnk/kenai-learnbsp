@@ -17,8 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <GL/gl.h>
-
 #include "BspModel.h"
 #include "common/renderoperations.h"
 
