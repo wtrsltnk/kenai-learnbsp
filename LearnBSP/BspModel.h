@@ -20,10 +20,13 @@
 #ifndef _BSPMODEL_H
 #define	_BSPMODEL_H
 
-#include "BspNode.h"
-#include "BspEntity.h"
 #include "common/boundingbox.h"
 #include <vector>
+
+class BspFace;
+class BspNode;
+class BspLeaf;
+class BspEntity;
 
 /*!
  * \brief
@@ -34,7 +37,8 @@ public:
     BspModel();
     virtual ~BspModel();
 
-    void render(bool renderHeadNode) const;
+    void render() const;
+    void render(const float position[3]) const;
 
     const BspLeaf* getLeaf(const float position[3]) const;
 
@@ -45,13 +49,14 @@ public:
     const BspEntity* getEntity() const;
 
     void addFace(BspFace* face);
+    void addModel(BspModel* model);
 
     void setOrigin(Vector3 origin);
     const Vector3& getOrigin() const;
 
     void setBoundingBox(const BoundingBox& bb);
     const BoundingBox& getBoundingBox() const;
-    
+
 private:
     /*! \brief */
     BspNode* mHeadNode;
