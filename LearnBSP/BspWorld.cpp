@@ -204,11 +204,10 @@ bool BspWorld::parseLeafs(BspData& bsp)
         tBSPLeaf& leaf = bsp.leafs[l];
         this->mLeafs[l].index = l;
         this->mLeafs[l].setBoundingBox(BoundingBox(leaf.mins, leaf.maxs));
-        this->mLeafs[l].setFaceCount(leaf.markSurfacesCount);
         for (int f = 0; f < leaf.markSurfacesCount; f++)
         {
             int faceIndex = bsp.marksurfaces[leaf.firstMarkSurface + f];
-            this->mLeafs[l].setFace(&this->mFaces[faceIndex], f);
+            this->mLeafs[l].addFace(&this->mFaces[faceIndex]);
         }
 
         // Decompress visibility data
@@ -317,6 +316,19 @@ bool BspWorld::parseModels(BspData& bsp)
         {
             this->mModels[m].addFace(&this->mFaces[model.firstFace + f]);
         }
+        if (m > 0)
+        {
+            this->mModels[0].addModel(&this->mModels[m]);
+            for (int l = 0; l < this->mLeafCount; l++)
+            {
+                BoundingBox modelBB = this->mModels[m].getBoundingBox();
+                BoundingBox leafBB = this->mLeafs[l].getBoundingBox();
+                if (leafBB.intersect(modelBB))
+                {
+                    this->mLeafs[l].addModel(&this->mModels[m]);
+                }
+            }
+        }
     }
     return true;
 }
@@ -333,24 +345,33 @@ void BspWorld::setCamera(Camera* camera)
 /*!
  * \brief
  */
-void BspWorld::render() const
+void BspWorld::render()
 {
     const BspLeaf* leaf = this->mModels[0].getLeaf(mCamera->getPosition());
+    static const BspLeaf* lastLeaf = leaf;
+
+    if (lastLeaf != leaf)
+    {
+        this->mRenderModels.clear();
+        this->mModels[0].getHeadNode()->gatherVisibleModels(mCamera->getPosition(), this->mRenderModels);
+    }
 
     if (leaf->getFaceCount() > 0)
     {
         glColor3f(1.0f, 1.0f, 1.0f);
-        leaf->render();
-        for (int m = 1; m < this->mModelCount; m++)
-        {
-            this->mModels[m].render(true);
-        }
+        this->mModels[0].getHeadNode()->render(mCamera->getPosition());
     }
     else
     {
         glColor3f(1.0f, 0.0f, 0.0f);
         this->mModels[0].getHeadNode()->render();
     }
+
+    for (std::set<BspModel*>::const_iterator model = this->mRenderModels.begin(); model != this->mRenderModels.end(); ++model)
+    {
+        (*model)->render();
+    }
+
 }
 
 /*!
@@ -363,29 +384,6 @@ void BspWorld::renderAllFaces() const
     {
         this->mFaces[f].render();
     }
-}
-
-/*!
- * \brief
- * \param position
- * \param model
- * \return
- */
-const BspLeaf* BspWorld::getLeaf(const float position[3], int model) const
-{
-    if (model < 0 || model >= this->mModelCount)
-        return &this->mLeafs[0];
-    
-    return this->mModels[model].getLeaf(position);
-}
-
-/*!
- * \brief
- * \param model
- */
-const BspNode* BspWorld::getHeadNode(int model) const
-{
-    return this->mModels[model].getHeadNode();
 }
 
 /*!

@@ -18,13 +18,15 @@
  */
 
 #include "BspLeaf.h"
+#include "BspModel.h"
+#include "BspFace.h"
 #include "common/renderoperations.h"
+#include <iostream>
 
 /*!
  * \brief
  */
 BspLeaf::BspLeaf()
-    : mFaceCount(0), mFaces(NULL)
 {
 }
 
@@ -33,37 +35,51 @@ BspLeaf::BspLeaf()
  */
 BspLeaf::~BspLeaf()
 {
-    if (this->mFaces != NULL)
-        delete []this->mFaces;
-}
-
-/*!
- * \brief Sets the number of faces and initializes the face array
- * \param count The new number of faces
- *
- * This resets the array to all NULL values
- */
-void BspLeaf::setFaceCount(int count)
-{
-    if (count <= 0)
-        return;
-
-    if (this->mFaces != NULL)
-        delete []this->mFaces;
-
-    this->mFaceCount = count;
-    this->mFaces= new BspFace*[count];
-    for (int i = 0; i < count; i++)
-        this->mFaces[i] = NULL;
 }
 
 /*!
  * \brief
- * \return
+ * \param renderPvs
  */
-int BspLeaf::getFaceCount() const
+void BspLeaf::render(bool renderPvs) const
 {
-    return this->mFaceCount;
+    for (std::set<BspFace*>::const_iterator face = this->mFaces.begin(); face != this->mFaces.end(); ++face)
+    {
+        (*face)->render();
+    }
+
+    if (renderPvs)
+    {
+        for (std::set<BspLeaf*>::const_iterator itr = this->mVisibleLeafs.begin(); itr != this->mVisibleLeafs.end(); ++itr)
+        {
+            const BspLeaf* leaf = *itr;
+            leaf->render(false);
+        }
+    }
+    /*
+    glColor3f(0,0,1);
+    RenderOperations::renderBoundingBox(this->mBB);
+    glColor3f(1,1,1);
+    //*/
+}
+
+/*!
+ * \brief
+ * \param set
+ */
+void BspLeaf::gatherVisibleModels(std::set<BspModel*>& set, bool gatherPVS) const
+{
+    for (std::set<BspModel*>::const_iterator model = this->mModels.begin(); model != this->mModels.end(); ++model)
+    {
+        set.insert(*model);
+    }
+    if (gatherPVS)
+    {
+        for (std::set<BspLeaf*>::const_iterator itr = this->mVisibleLeafs.begin(); itr != this->mVisibleLeafs.end(); ++itr)
+        {
+            (*itr)->gatherVisibleModels(set, false);
+        }
+    }
 }
 
 /*!
@@ -71,12 +87,18 @@ int BspLeaf::getFaceCount() const
  * \param face Pointer to the face to set
  * \param index The index in the array for this face
  */
-void BspLeaf::setFace(BspFace* face, int index)
+void BspLeaf::addFace(BspFace* face)
 {
-    if (index < 0 || index >= this->mFaceCount)
-        return;
+    this->mFaces.insert(face);
+}
 
-    this->mFaces[index] = face;
+/*!
+ * \brief Get's the number of faces in this leaf
+ * \return Returns the number of faces in this leaf
+ */
+int BspLeaf::getFaceCount() const
+{
+    return this->mFaces.size();
 }
 
 /*!
@@ -90,23 +112,11 @@ void BspLeaf::addVisibleLeaf(BspLeaf* leaf)
 
 /*!
  * \brief
- * \param renderPvs
+ * \param model
  */
-void BspLeaf::render(bool renderPvs) const
+void BspLeaf::addModel(BspModel* model)
 {
-    for (int f = 0; f < this->mFaceCount; f++)
-    {
-        if (this->mFaces[f] != NULL) this->mFaces[f]->render();
-    }
-
-    if (renderPvs)
-    {
-        for (std::set<BspLeaf*>::const_iterator itr = this->mVisibleLeafs.begin(); itr != this->mVisibleLeafs.end(); ++itr)
-        {
-            const BspLeaf* leaf = *itr;
-            leaf->render(false);
-        }
-    }
+    this->mModels.insert(model);
 }
 
 /*!

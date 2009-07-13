@@ -20,6 +20,8 @@
 #ifndef _BOUNDINGBOX_H
 #define	_BOUNDINGBOX_H
 
+#include "plane.h"
+
 /*!
  * \brief
  */
@@ -36,6 +38,10 @@ public:
 
     const float* getMins() const;
     const float* getMaxs() const;
+
+    int intersect(const Plane& plane) const;
+    bool intersect(const BoundingBox& bb) const;
+    bool contains(const BoundingBox& bb) const;
     
 private:
     float mMins[3];

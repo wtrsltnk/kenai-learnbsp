@@ -33,6 +33,7 @@
 #include "BspEntity.h"
 #include "types.h"
 #include <vector>
+#include <set>
 
 /*!
  * \brief
@@ -46,14 +47,11 @@ public:
     bool open(const Data& file, TextureLoader& textureLoader);
     void close();
 
-    void render() const;
+    void render();
     void renderAllFaces() const;
 
     void setCamera(Camera* camera);
 
-    const BspLeaf* getLeaf(const float position[3], int model = 0) const;
-    const BspNode* getHeadNode(int model = 0) const;
-    
 private:
     Camera* mCamera;
     /*! \brief */
@@ -78,6 +76,8 @@ private:
     Texture* mTextures;
     /*! \brief */
     std::vector<BspEntity*> mEntities;
+    /*! \brief */
+    std::set<BspModel*> mRenderModels;
     /*! \brief */
     IndexArray<3>* mVertexIndices;
     /*! \brief */

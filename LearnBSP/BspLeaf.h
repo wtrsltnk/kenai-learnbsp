@@ -20,9 +20,11 @@
 #ifndef _BSPLEAF_H
 #define	_BSPLEAF_H
 
-#include "BspFace.h"
 #include "common/boundingbox.h"
 #include <set>
+
+class BspFace;
+class BspModel;
 
 /*!
  * \brief
@@ -33,13 +35,15 @@ public:
     BspLeaf();
     virtual ~BspLeaf();
 
-    void setFaceCount(int count);
+    void render(bool renderPvs = true) const;
+
+    void gatherVisibleModels(std::set<BspModel*>& set, bool gatherPVS = true) const;
+
+    void addFace(BspFace* face);
     int getFaceCount() const;
-    void setFace(BspFace* face, int index);
 
     void addVisibleLeaf(BspLeaf* leaf);
-
-    void render(bool renderPvs = true) const;
+    void addModel(BspModel* model);
 
     void setBoundingBox(const BoundingBox& bb);
     const BoundingBox& getBoundingBox() const;
@@ -47,11 +51,11 @@ public:
     int index;
 private:
     /*! \brief  */
-    int mFaceCount;
-    /*! \brief  */
-    BspFace** mFaces;
+    std::set<BspFace*> mFaces;
     /*! \brief  */
     std::set<BspLeaf*> mVisibleLeafs;
+    /*! \brief */
+    std::set<BspModel*> mModels;
     /*! \brief */
     BoundingBox mBB;
 

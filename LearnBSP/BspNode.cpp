@@ -18,6 +18,7 @@
  */
 
 #include "BspNode.h"
+#include "BspLeaf.h"
 #include "BspModel.h"
 #include <iostream>
 
@@ -25,7 +26,7 @@
  * \brief
  */
 BspNode::BspNode()
-    : mFront(NULL), mBack(NULL), mLeaf(NULL)
+    : mParent(NULL), mFront(NULL), mBack(NULL), mLeaf(NULL)
 {
 }
 
@@ -56,8 +57,51 @@ void BspNode::render() const
     }
     else
     {
-        if (this->mFront != NULL) this->mFront->render();
-        if (this->mBack != NULL) this->mBack->render();
+        this->mFront->render();
+        this->mBack->render();
+    }
+}
+
+/*!
+ * \brief
+ * \param position
+ */
+void BspNode::render(const float point[3]) const
+{
+    if (this->mLeaf != NULL)
+    {
+        this->mLeaf->render();
+    }
+    else
+    {
+        float distance = this->mSplit.distance(Vector3(point));
+
+        if (distance >= 0)
+            this->mFront->render(point);
+        else
+            this->mBack->render(point);
+    }
+}
+
+/*!
+ * \brief
+ * \param point
+ * \param set
+ */
+void BspNode::gatherVisibleModels(const float point[3], std::set<BspModel*>& set) const
+{
+    if (this->mLeaf != NULL)
+    {
+        this->mLeaf->gatherVisibleModels(set, true);
+    }
+    else
+    {
+        float distance = this->mSplit.distance(Vector3(point));
+
+        if (distance >= 0)
+            this->mFront->gatherVisibleModels(point, set);
+        else
+            this->mBack->gatherVisibleModels(point, set);
     }
 }
 
@@ -73,13 +117,53 @@ void BspNode::setPlane(float normal[3], float distance)
 
 /*!
  * \brief
+ * \return
+ */
+const Plane& BspNode::getPlane() const
+{
+    return this->mSplit;
+}
+
+/*!
+ * \brief
  * \param front
  * \param back
  */
 void BspNode::setChildren(BspNode* front, BspNode* back)
 {
     this->mFront = front;
+    if (this->mFront != NULL)
+        this->mFront->mParent = this;
     this->mBack = back;
+    if (this->mBack != NULL)
+        this->mBack->mParent = this;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const BspNode* BspNode::getFront() const
+{
+    return this->mFront;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const BspNode* BspNode::getBack() const
+{
+    return this->mBack;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const BspNode* BspNode::getParent() const
+{
+    return this->mParent;
 }
 
 /*!
@@ -127,4 +211,33 @@ void BspNode::setBoundingBox(const BoundingBox& bb)
 const BoundingBox& BspNode::getBoundingBox() const
 {
     return this->mBB;
+}
+
+/*!
+ * \brief
+ * \param model
+ */
+void BspNode::addModel(BspModel* model)
+{
+    bool foundChild = false;
+    if (this->mFront)
+    {
+        if (this->mFront->getBoundingBox().contains(model->getBoundingBox()))
+        {
+            foundChild = true;
+            this->mFront->addModel(model);
+        }
+    }
+    if (this->mBack)
+    {
+        if (this->mBack->getBoundingBox().contains(model->getBoundingBox()))
+        {
+            foundChild = true;
+            this->mBack->addModel(model);
+        }
+    }
+    if (foundChild == false)
+    {
+        this->mModels.push_back(model);
+    }
 }

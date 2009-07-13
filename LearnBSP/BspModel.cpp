@@ -18,6 +18,9 @@
  */
 
 #include "BspModel.h"
+#include "BspFace.h"
+#include "BspNode.h"
+#include "BspEntity.h"
 #include "common/renderoperations.h"
 
 /*!
@@ -38,28 +41,25 @@ BspModel::~BspModel()
 /*!
  * \brief
  */
-void BspModel::render(bool renderHeadNode) const
+void BspModel::render() const
 {
     for (std::vector<BspFace*>::const_iterator face = this->mFaces.begin(); face != this->mFaces.end(); ++face)
     {
         (*face)->render();
     }
-    glActiveTexture(GL_TEXTURE0);
-    glDisable(GL_TEXTURE_2D);
-    glActiveTexture(GL_TEXTURE1);
-    glDisable(GL_TEXTURE_2D);
-    glDisable(GL_DEPTH_TEST);
-    if (renderHeadNode)
-    {
-        glColor3f(1.0f, 0, 0);
-        if (this->mHeadNode != NULL) RenderOperations::renderBoundingBox(this->mHeadNode->getBoundingBox());
-    }
-    glActiveTexture(GL_TEXTURE0);
-    glEnable(GL_TEXTURE_2D);
-    glActiveTexture(GL_TEXTURE1);
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_DEPTH_TEST);
-    glColor3f(1.0f, 1.0f, 1.0f);
+
+    glColor3f(1,0,0);
+    RenderOperations::renderBoundingBox(this->mBB);
+    glColor3f(1,1,1);
+}
+
+/*!
+ * \brief
+ * \param position
+ */
+void BspModel::render(const float position[3]) const
+{
+    this->mHeadNode->render(position);
 }
 
 /*!
@@ -122,6 +122,15 @@ const BspEntity* BspModel::getEntity() const
 void BspModel::addFace(BspFace* face)
 {
     this->mFaces.push_back(face);
+}
+
+/*!
+ * \brief
+ * \param model
+ */
+void BspModel::addModel(BspModel* model)
+{
+    this->mHeadNode->addModel(model);
 }
 
 /*!

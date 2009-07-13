@@ -22,7 +22,11 @@
 
 #include "common/math3d.h"
 #include "common/boundingbox.h"
-#include "BspLeaf.h"
+#include <vector>
+#include <set>
+
+class BspLeaf;
+class BspModel;
 
 /*!
  * \brief
@@ -35,9 +39,17 @@ public:
     virtual ~BspNode();
 
     void render() const;
+    void render(const float position[3]) const;
+
+    void gatherVisibleModels(const float point[3], std::set<BspModel*>& set) const;
 
     void setPlane(float normal[3], float distance);
+    const Plane& getPlane() const;
+
     void setChildren(BspNode* front, BspNode* back);
+    const BspNode* getFront() const;
+    const BspNode* getBack() const;
+    const BspNode* getParent() const;
 
     const BspNode* getChild(const float point[3]) const;
     const BspLeaf* getLeaf() const;
@@ -45,8 +57,12 @@ public:
     void setBoundingBox(const BoundingBox& bb);
     const BoundingBox& getBoundingBox() const;
 
+    void addModel(BspModel* model);
+
     int index;
 private:
+    /*! \brief */
+    BspNode* mParent;
     /*! \brief */
     BspNode* mFront;
     /*! \brief */
@@ -57,6 +73,8 @@ private:
     BspLeaf* mLeaf;
     /*! \brief */
     BoundingBox mBB;
+    /*! \brief */
+    std::vector<BspModel*> mModels;
     
 };
 

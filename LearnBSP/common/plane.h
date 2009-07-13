@@ -16,6 +16,8 @@ public:
     virtual ~Plane();
 
     float distance(const Vector3& vec) const;
+    const Vector3& normal() const;
+    float distance() const;
 
 private:
     /*! \brief */

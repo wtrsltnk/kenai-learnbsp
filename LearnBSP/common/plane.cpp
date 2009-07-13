@@ -57,3 +57,21 @@ float Plane::distance(const Vector3& vec) const
 {
     return vec.dotProduct(this->mNormal) - this->mDistance;
 }
+
+/*!
+ * \brief
+ * \return
+ */
+const Vector3& Plane::normal() const
+{
+    return this->mNormal;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+float Plane::distance() const
+{
+    return this->mDistance;
+}

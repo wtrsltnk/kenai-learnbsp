@@ -18,6 +18,7 @@
  */
 
 #include "boundingbox.h"
+#include "math3d.h"
 
 /*!
  * \brief
@@ -109,3 +110,67 @@ const float* BoundingBox::getMaxs() const
     return this->mMaxs;
 }
 
+int BoundingBox::intersect(const Plane& plane) const
+{
+    Vector3 diagMin, diagMax;
+
+    if(plane.normal().x() >= 0)
+    {
+        diagMin.x(this->mMins[0]);
+        diagMax.x(this->mMaxs[0]);
+    }
+    else
+    {
+        diagMin.x(this->mMaxs[0]);
+        diagMax.x(this->mMins[0]);
+    }
+
+    if(plane.normal().y() >= 0)
+    {
+        diagMin.y(this->mMins[1]);
+        diagMax.y(this->mMaxs[1]);
+    }
+    else
+    {
+        diagMin.y(this->mMaxs[1]);
+        diagMax.y(this->mMins[1]);
+    }
+
+    if(plane.normal().z() >= 0)
+    {
+        diagMin.z(this->mMins[2]);
+        diagMax.z(this->mMaxs[2]);
+    }
+    else
+    {
+        diagMin.z(this->mMaxs[2]);
+        diagMax.z(this->mMins[2]);
+    }
+
+    float test = DotProduct(plane.normal(), diagMin) + plane.distance();
+    if(test > 0.0f)
+        return 1;
+
+    test = DotProduct(plane.normal(), diagMax) + plane.distance();
+    if(test > 0.0f)
+        return -1;
+
+    return 0;
+}
+
+bool BoundingBox::intersect(const BoundingBox& bb) const
+{
+    if (mMins[0] > bb.mMaxs[0] || mMaxs[0] < bb.mMins[0]) return false;
+    if (mMins[1] > bb.mMaxs[1] || mMaxs[1] < bb.mMins[1]) return false;
+    if (mMins[2] > bb.mMaxs[2] || mMaxs[2] < bb.mMins[2]) return false;
+
+    return true;
+}
+
+bool BoundingBox::contains(const BoundingBox& bb) const
+{
+    return
+        bb.mMins[0] >= this->mMins[0] && bb.mMaxs[0] <= this->mMaxs[0] &&
+        bb.mMins[1] >= this->mMins[1] && bb.mMaxs[1] <= this->mMaxs[1] &&
+        bb.mMins[2] >= this->mMins[2] && bb.mMaxs[2] <= this->mMaxs[2];
+}

@@ -30,6 +30,14 @@ RenderOperations::~RenderOperations()
 
 void RenderOperations::renderBoundingBox(const BoundingBox& bb)
 {
+    glPushAttrib(GL_ENABLE_BIT);
+    glDisable(GL_DEPTH_TEST);
+    glCullFace(GL_FRONT);
+    glActiveTexture(GL_TEXTURE0);
+    glDisable(GL_TEXTURE_2D);
+    glActiveTexture(GL_TEXTURE1);
+    glDisable(GL_TEXTURE_2D);
+
     glBegin(GL_LINES);
     // bottom
     glVertex3f(bb.getMins()[0], bb.getMins()[1], bb.getMins()[2]);
@@ -69,5 +77,7 @@ void RenderOperations::renderBoundingBox(const BoundingBox& bb)
     glVertex3f(bb.getMins()[0], bb.getMins()[1], bb.getMins()[2]);
     glVertex3f(bb.getMins()[0], bb.getMins()[1], bb.getMaxs()[2]);
     glEnd();
+
+    glPopAttrib();
 }
 
