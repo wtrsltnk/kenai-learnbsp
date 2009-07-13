@@ -68,6 +68,14 @@ private:
     Vector3 mOrigin;
     /*! \brief */
     BoundingBox mBB;
+    /*! \brief */
+    int mFxMode;
+    /*! \brief */
+    float mFxColor[3];
+    /*! \brief */
+    float mFxAmount;
+
+    void setupShader() const;
 
 };
 

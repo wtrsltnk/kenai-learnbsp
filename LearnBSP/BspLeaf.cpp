@@ -56,11 +56,6 @@ void BspLeaf::render(bool renderPvs) const
             leaf->render(false);
         }
     }
-    /*
-    glColor3f(0,0,1);
-    RenderOperations::renderBoundingBox(this->mBB);
-    glColor3f(1,1,1);
-    //*/
 }
 
 /*!
