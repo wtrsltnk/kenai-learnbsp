@@ -57,7 +57,7 @@ bool Application::initialize()
     this->mWorld = new BspWorld();
     this->mWorld->open(data, textureLoader);
     this->mWorld->setCamera(&this->mCamera);
-    this->setPerspective(45.0f, 0.1f, 4096.0f);
+    this->setPerspective(45.0f, 0.1f, this->mWorld->getMaxRange());
     glClearColor(0.4f, 0.6f, 1.0f, 1.0f);
 
     glEnable(GL_DEPTH_TEST);

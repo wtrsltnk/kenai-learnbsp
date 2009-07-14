@@ -52,6 +52,12 @@ public:
 
     void setCamera(Camera* camera);
 
+    const char* getTitle() const;
+    const char* getSkyName() const;
+    const char* getWad() const;
+    int getWaveHeight() const;
+    int getMaxRange() const;
+
 private:
     Camera* mCamera;
     /*! \brief */
@@ -77,6 +83,20 @@ private:
     /*! \brief */
     std::vector<BspEntity*> mEntities;
     /*! \brief */
+    BspEntity* mWorldEntity;
+
+    /*! \brief */
+    char* mTitle;
+    /*! \brief */
+    char* mSkyName;
+    /*! \brief */
+    char* mWad;
+    /*! \brief */
+    int mWaveHeight;
+    /*! \brief */
+    int mMaxRange;
+    
+    /*! \brief */
     std::set<BspModel*> mRenderModels;
     /*! \brief */
     IndexArray<3>* mVertexIndices;
@@ -92,6 +112,7 @@ private:
     bool parseFaces(BspData& bsp);
     bool parseModels(BspData& bsp);
     
+    void setWorldEntity(BspEntity* world);
     void getFaceBounds(const tBSPFace& bspFace, const tBSPTexInfo& texinfo, BspData& bsp, float min[2], float max[2]);
 
 };

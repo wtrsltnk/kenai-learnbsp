@@ -27,8 +27,9 @@
  */
 BspWorld::BspWorld()
     : mLeafCount(0), mLeafs(NULL), mNodeCount(0), mNodes(NULL), mFaceCount(0), mFaces(NULL),
-        mModelCount(0), mModels(NULL), mTextureCount(0), mTextures(NULL),
-        mVertexIndices(NULL), mTextureUV(NULL), mLightmapUV(NULL)
+        mModelCount(0), mModels(NULL), mTextureCount(0), mTextures(NULL), mWorldEntity(NULL),
+        mVertexIndices(NULL), mTextureUV(NULL), mLightmapUV(NULL),
+        mTitle(NULL), mSkyName(NULL), mWad(NULL), mWaveHeight(5), mMaxRange(4096)
 {
 }
 
@@ -121,6 +122,7 @@ bool BspWorld::parseEntities(BspData& bsp, TextureLoader& textureLoader)
         const char* classname = entity->getClassName();
         if (strcasecmp(classname, "worldspawn") == 0)
         {
+            this->mWorldEntity = entity;
             textureLoader.setWadFiles(entity->getValue("wad"));
         }
         const char* strModel = entity->getValue("model");
@@ -438,6 +440,61 @@ void BspWorld::close()
 
 /*!
  * \brief
+ * \param world
+ */
+void BspWorld::setWorldEntity(BspEntity* world)
+{
+    const char* wad = world->getValue("wad");
+    if (wad != NULL)
+    {
+        this->mWad = new char[strlen(wad) + 1];
+        strcpy(this->mWad, wad);
+    }
+    else
+    {
+        this->mWad = new char[9];
+        strcpy(this->mWad, "zhlt.wad");
+    }
+
+    const char* chaptertitle = world->getValue("chaptertitle");
+    if (chaptertitle != NULL)
+    {
+        this->mWad = new char[strlen(chaptertitle) + 1];
+        strcpy(this->mWad, chaptertitle);
+    }
+    else
+    {
+        this->mWad = new char[9];
+        strcpy(this->mWad, "No Title");
+    }
+
+    const char* skyname = world->getValue("skyname");
+    if (skyname != NULL)
+    {
+        this->mSkyName = new char[strlen(wad) + 1];
+        strcpy(this->mSkyName, skyname);
+    }
+    else
+    {
+        this->mWad = new char[5];
+        strcpy(this->mWad, "dusk");
+    }
+
+    const char* waveheight = world->getValue("WaveHeight");
+    if (waveheight != NULL)
+    {
+        this->mWaveHeight = atoi(waveheight);
+    }
+
+    const char* maxrange = world->getValue("MaxRange");
+    if (maxrange != NULL)
+    {
+        this->mWaveHeight = atoi(maxrange);
+    }
+}
+
+/*!
+ * \brief
  * \param bspFace
  * \param texinfo
  * \param surfedges
@@ -473,3 +530,47 @@ void BspWorld::getFaceBounds(const tBSPFace& bspFace, const tBSPTexInfo& texinfo
     }
 }
 
+/*!
+ * \brief
+ * \return
+ */
+const char* BspWorld::getTitle() const
+{
+    return this->mTitle;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const char* BspWorld::getSkyName() const
+{
+    return this->mSkyName;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const char* BspWorld::getWad() const
+{
+    return this->mWad;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+int BspWorld::getWaveHeight() const
+{
+    return this->mWaveHeight;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+int BspWorld::getMaxRange() const
+{
+    return this->mMaxRange;
+}
