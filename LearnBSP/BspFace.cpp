@@ -44,6 +44,8 @@ BspFace::~BspFace()
  */
 void BspFace::render()
 {
+    if (this->mFaceFlags != 0)
+        return;
     if (this->mTexture != NULL)
     {
         glActiveTexture(GL_TEXTURE0);
