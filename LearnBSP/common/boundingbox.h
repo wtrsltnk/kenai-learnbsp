@@ -35,6 +35,8 @@ public:
     virtual ~BoundingBox();
 
     void addPoint(float point[3]);
+    void offset(float point[3]);
+    void offset(float x, float y, float z);
 
     const float* getMins() const;
     const float* getMaxs() const;

@@ -332,6 +332,8 @@ bool BspWorld::parseModels(BspData& bsp)
             for (int l = 0; l < this->mLeafCount; l++)
             {
                 BoundingBox modelBB = this->mModels[m].getBoundingBox();
+                Vector3 modelOrigin = this->mModels[m].getOrigin();
+                modelBB.offset(-modelOrigin.x(), -modelOrigin.y(), -modelOrigin.z());
                 BoundingBox leafBB = this->mLeafs[l].getBoundingBox();
                 if (leafBB.intersect(modelBB))
                 {

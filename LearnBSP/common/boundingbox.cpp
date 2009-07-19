@@ -94,6 +94,32 @@ void BoundingBox::addPoint(float point[3])
 
 /*!
  * \brief
+ * \param point
+ */
+void BoundingBox::offset(float point[3])
+{
+    for (int i = 0; i < 3; i++)
+    {
+        this->mMins[i] += point[i];
+        this->mMaxs[i] += point[i];
+    }
+}
+
+/*!
+ * \brief
+ * \param x
+ * \param y
+ * \param z
+ */
+void BoundingBox::offset(float x, float y, float z)
+{
+    this->mMins[0] += x;
+    this->mMins[1] += y;
+    this->mMins[2] += z;
+}
+
+/*!
+ * \brief
  * \return
  */
 const float* BoundingBox::getMins() const

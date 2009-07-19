@@ -64,11 +64,13 @@ void BspModel::render() const
  */
 void BspModel::render(const float position[3]) const
 {
+    glPushAttrib(GL_COLOR_BUFFER_BIT);
     setupShader();
     glPushMatrix();
     glTranslatef(this->mOrigin.x(), this->mOrigin.y(), this->mOrigin.z());
     this->mHeadNode->render(position);
     glPopMatrix();
+    glPopAttrib();
 }
 
 /*!
@@ -111,10 +113,23 @@ void BspModel::setupShader() const
             break;
         }
         case 0:	// Normal blending
-        case 2:	// Texture blending
         {
             glEnable(GL_TEXTURE_2D);
             glDisable(GL_ALPHA_TEST);
+            glDisable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+            glColor4f(1.0f, 1.0f, 1.0f, mFxAmount);
+            break;
+        }
+        case 2:	// Texture blending
+        {
+            glEnable(GL_TEXTURE_2D);
+            
+            // Enable alpha testing to make sure transparent textures are drawn correct
+            glDisable(GL_ALPHA_TEST);
+            glAlphaFunc(GL_GEQUAL, 0.8f);
+
+            // Default blending acoording to the alpha value of texture
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE);
             glColor4f(1.0f, 1.0f, 1.0f, mFxAmount);
@@ -125,6 +140,8 @@ void BspModel::setupShader() const
             glEnable(GL_TEXTURE_2D);
             glDisable(GL_ALPHA_TEST);
             glDisable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
             break;
         }
     }
@@ -183,10 +200,12 @@ void BspModel::setEntity(BspEntity* entity)
             int renderamt;
             sscanf(value, "%d", &renderamt);
             this->mFxAmount = (float)renderamt / 255.0f;
+            std::cout << key << " " << value << "=" << this->mFxAmount << std::endl;
         }
         else if (strcasecmp(key, "rendermode") == 0)
         {
             sscanf(value, "%d", &this->mFxMode);
+            std::cout << key << " " << value << "=" << this->mFxMode << std::endl;
         }
         else if (strcasecmp(key, "rendercolor") == 0)
         {
