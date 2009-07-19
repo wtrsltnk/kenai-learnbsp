@@ -1,8 +1,11 @@
 #include "stringfunctions.h"
 #include <string.h>
 
-char* StringFunctions::getFilename(char* fullname)
+const char* StringFunctions::getFilename(const char* fullname)
 {
+    if (fullname == NULL)
+        return NULL;
+    
     char* slash = strrchr(fullname, '\\');
     char* backslash = strrchr(fullname, '/');
 
@@ -21,3 +24,9 @@ char* StringFunctions::getFilename(char* fullname)
 
     return NULL;
 }
+
+const char* StringFunctions::getExtention(const char* fullname)
+{
+    return strrchr(fullname, '.');
+}
+

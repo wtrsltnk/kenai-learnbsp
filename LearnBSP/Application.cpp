@@ -32,6 +32,7 @@ Application::Application(int width, int height)
 {
     Application::sCurrent = this;
     glfwInit();
+    this->mFileSystem = new fs::FileSystem("./data");
 }
 
 /*!
@@ -39,6 +40,7 @@ Application::Application(int width, int height)
  */
 Application::~Application()
 {
+    delete this->mFileSystem;
     glfwTerminate();
 }
 
@@ -52,12 +54,16 @@ Application::~Application()
  */
 bool Application::initialize()
 {
-    TextureLoader textureLoader;
-    Data data("./data/cs_siege.bsp", true);
-    this->mWorld = new BspWorld();
-    this->mWorld->open(data, textureLoader);
-    this->mWorld->setCamera(&this->mCamera);
-    this->setPerspective(45.0f, 0.1f, this->mWorld->getMaxRange());
+    TextureLoader textureLoader(this->mFileSystem);
+    Data data;
+    
+    if (this->mFileSystem->openFile(data, this->mFileSystem->findFile("cs_militia.bsp")))
+    {
+        this->mWorld = new BspWorld();
+        this->mWorld->open(data, textureLoader);
+        this->mWorld->setCamera(&this->mCamera);
+        this->setPerspective(45.0f, 0.1f, this->mWorld->getMaxRange());
+    }
     glClearColor(0.4f, 0.6f, 1.0f, 1.0f);
 
     glEnable(GL_DEPTH_TEST);
@@ -81,7 +87,7 @@ void Application::render(double time)
 
     this->mCamera.Update();
 
-    this->mWorld->render();
+    if (this->mWorld != NULL) this->mWorld->render();
 }
 
 /*!
@@ -89,7 +95,8 @@ void Application::render(double time)
  */
 void Application::destroy()
 {
-    delete this->mWorld;
+    if (this->mWorld != NULL)
+        delete this->mWorld;
     this->mWorld = NULL;
 }
 

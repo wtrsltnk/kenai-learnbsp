@@ -6,7 +6,8 @@ class StringFunctions
 public: virtual ~StringFunctions() {}
 
 public:
-    static char* getFilename(char* fullname);
+    static const char* getFilename(const char* fullname);
+    static const char* getExtention(const char* fullname);;
 
 };
 

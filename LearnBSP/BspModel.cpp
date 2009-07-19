@@ -46,11 +46,16 @@ BspModel::~BspModel()
  */
 void BspModel::render() const
 {
+    glPushAttrib(GL_ENABLE_BIT);
     setupShader();
+    glPushMatrix();
+    glTranslatef(this->mOrigin.x(), this->mOrigin.y(), this->mOrigin.z());
     for (std::vector<BspFace*>::const_iterator face = this->mFaces.begin(); face != this->mFaces.end(); ++face)
     {
         (*face)->render();
     }
+    glPopMatrix();
+    glPopAttrib();
 }
 
 /*!
@@ -60,7 +65,10 @@ void BspModel::render() const
 void BspModel::render(const float position[3]) const
 {
     setupShader();
+    glPushMatrix();
+    glTranslatef(this->mOrigin.x(), this->mOrigin.y(), this->mOrigin.z());
     this->mHeadNode->render(position);
+    glPopMatrix();
 }
 
 /*!
@@ -169,7 +177,7 @@ void BspModel::setEntity(BspEntity* entity)
     {
         const char* key = this->mEntity->getKey(k);
         const char* value = this->mEntity->getValue(k);
-        
+
         if (strcasecmp(key, "renderamt") == 0)
         {
             int renderamt;
@@ -190,6 +198,12 @@ void BspModel::setEntity(BspEntity* entity)
                 this->mFxColor[1] = (float)g / 255.0f;
                 this->mFxColor[2] = (float)b / 255.0f;
             }
+        }
+        else if (strcasecmp(key, "origin") == 0)
+        {
+            int x, y, z;
+            sscanf(value, "%d %d %d", &x, &y, &z);
+            this->mOrigin = Vector3(x, y, z);
         }
     }
 }

@@ -23,6 +23,7 @@
 #include "common/camera.h"
 #include "opengl.h"
 #include "BspWorld.h"
+#include "fs/FileSystem.h"
 
 /*!
  * \brief 
@@ -60,6 +61,8 @@ private:
     Camera mCamera;
     /*! \brief */
     BspWorld* mWorld;
+    /*! \brief */
+    fs::FileSystem* mFileSystem;
 
     bool openWindow(const char* title);
 

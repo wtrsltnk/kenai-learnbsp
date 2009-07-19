@@ -17,29 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEXTURELOADER_H
-#define	_TEXTURELOADER_H
+#ifndef _IMAGE_H
+#define	_IMAGE_H
 
-#include "common/texture.h"
-#include "fs/FileSystem.h"
+#include "../../common/texture.h"
+#include "../../common/data.h"
 
-/*!
- * \brief
- */
-class TextureLoader
-{
-public:
-    TextureLoader(fs::FileSystem* fs);
-    virtual ~TextureLoader();
+bool openTarga(Texture& texture, const Data& data);
+bool openBitmap(Texture& texture, const Data& data);
+bool openMiptex(Texture& texture, const Data& data);
 
-    void setWadFiles(const char* wadstring);
-    bool loadMiptexTexture(Texture& texture, const unsigned char* textureData);
-    bool loadTextureFromFile(Texture& texture, const char* filename);
-
-private:
-    fs::FileSystem* mFileSystem;
-    
-};
-
-#endif	/* _TEXTURELOADER_H */
+#endif	/* _IMAGE_H */
 

@@ -20,11 +20,17 @@
 #include "TextureLoader.h"
 #include "types.h"
 #include <iostream>
+#include <string.h>
+#include <dirent.h>
+#include <vector>
+#include "fs/image/image.h"
+#include "common/stringfunctions.h"
 
 /*!
  * \brief
  */
-TextureLoader::TextureLoader()
+TextureLoader::TextureLoader(fs::FileSystem* fs)
+    : mFileSystem(fs)
 {
 }
 
@@ -41,7 +47,26 @@ TextureLoader::~TextureLoader()
  */
 void TextureLoader::setWadFiles(const char* wadstring)
 {
-    std::cout << wadstring << std::endl;
+    std::vector<const char*> wadFiles;
+    const char* value = wadstring;
+    char* wads = new char[strlen(value) + 1];
+    strcpy(wads, value);
+
+    char* wad = strrchr(wads, ';');
+    while (wad != NULL)
+    {
+        wad[0] = '\0'; wad++;
+        const char* file = StringFunctions::getFilename(wad);
+        if (file != NULL) wadFiles.push_back(file);
+
+        wad = strrchr(wads, ';');
+    }
+
+    const char* file = StringFunctions::getFilename(wad);
+    if (file != NULL) wadFiles.push_back(file);
+
+    for (std::vector<const char*>::iterator itr = wadFiles.begin(); itr != wadFiles.end(); ++itr)
+        this->mFileSystem->addPackage(*itr);
 }
 
 /*!
@@ -50,7 +75,7 @@ void TextureLoader::setWadFiles(const char* wadstring)
  * \param textureData
  * \return
  */
-bool TextureLoader::loadTexture(Texture& texture, const unsigned char* textureData)
+bool TextureLoader::loadMiptexTexture(Texture& texture, const unsigned char* textureData)
 {
     tBSPMipTexHeader* miptex = (tBSPMipTexHeader*)textureData;
     
@@ -85,7 +110,44 @@ bool TextureLoader::loadTexture(Texture& texture, const unsigned char* textureDa
     }
     else
     {
+        if (!this->mFileSystem->openTexture(texture, this->mFileSystem->findFile(miptex->name)))
+        {
+            int s = miptex->width * miptex->height;
+            int j = 0;
+            for (int i = 0; i < s; i++)
+            {
+                char r, g, b, a;
+                r = g = b = a = 255;
+
+                texture.data[j++] = r;
+                texture.data[j++] = g;
+                texture.data[j++] = b;
+                texture.data[j++] = a;
+            }
+        }
     }
     return true;
+}
+
+/*!
+ * \brief
+ * \param texture
+ * \param filename
+ * \return
+ */
+bool TextureLoader::loadTextureFromFile(Texture& texture, const char* filename)
+{
+    Data data(filename, true);
+    const char* ext = StringFunctions::getExtention(filename);
+
+    if (strcasecmp(ext, ".tga") == 0)
+    {
+        return openTarga(texture, data);
+    }
+    else if (strcasecmp(ext, ".bmp") == 0)
+    {
+        return openBitmap(texture, data);
+    }
+    return false;
 }
 

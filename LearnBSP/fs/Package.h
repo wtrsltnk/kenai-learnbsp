@@ -17,29 +17,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEXTURELOADER_H
-#define	_TEXTURELOADER_H
+#ifndef _PACKAGE_H
+#define	_PACKAGE_H
 
-#include "common/texture.h"
-#include "fs/FileSystem.h"
+#include "../common/data.h"
+
+namespace fs
+{
 
 /*!
  * \brief
  */
-class TextureLoader
+class Package
 {
 public:
-    TextureLoader(fs::FileSystem* fs);
-    virtual ~TextureLoader();
+    Package(const char* name);
+    virtual ~Package();
 
-    void setWadFiles(const char* wadstring);
-    bool loadMiptexTexture(Texture& texture, const unsigned char* textureData);
-    bool loadTextureFromFile(Texture& texture, const char* filename);
-
-private:
-    fs::FileSystem* mFileSystem;
+    virtual const char* getPackagename() const;
     
+    virtual const char* findFile(const char* filename) = 0;
+    virtual bool openFile(Data& data, const char* filename) = 0;
+    
+private:
+    /*! \brief */
+    char* mPackageName;
+
 };
 
-#endif	/* _TEXTURELOADER_H */
+}
+
+#endif	/* _PACKAGE_H */
 

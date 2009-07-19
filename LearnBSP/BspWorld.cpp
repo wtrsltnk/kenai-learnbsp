@@ -115,26 +115,32 @@ bool BspWorld::parseEntities(BspData& bsp, TextureLoader& textureLoader)
 
     while (tok.nextToken() && strcmp(tok.getToken(), "{") == 0)
     {
+        // Parse the entity data into the entity instance
         BspEntity* entity = new BspEntity();
         if (!entity->parseFromTokenizer(tok))
             return false;
 
+        // Check the classname for special cases entities like the worldspawn
         const char* classname = entity->getClassName();
         if (strcasecmp(classname, "worldspawn") == 0)
         {
-            this->mWorldEntity = entity;
+            this->setWorldEntity(entity);
             textureLoader.setWadFiles(entity->getValue("wad"));
         }
+
+        // Check if this entity is a brush entity
         const char* strModel = entity->getValue("model");
         if (strModel != NULL)
         {
-            int model = atoi(strModel);
+            int model = 0;
+            sscanf(strModel, "*%d", &model);
             if (model >= 0 && model < this->mModelCount)
             {
                 this->mModels[model].setEntity(entity);
             }
         }
 
+        // Add the entity to the entity list
         this->mEntities.push_back(entity);
     }
     return true;
@@ -147,12 +153,14 @@ bool BspWorld::parseEntities(BspData& bsp, TextureLoader& textureLoader)
  */
 bool BspWorld::parseTextures(BspData& bsp, TextureLoader& textureLoader)
 {
+    // Save the texture index table with in the first place the number of textures so this one is skipped
     int* table = (int*)bsp.textureData;
 
     glActiveTexture(GL_TEXTURE0);
     for (int t = 0; t < this->mTextureCount; t++)
     {
-        textureLoader.loadTexture(this->mTextures[t], bsp.textureData + table[t + 1]);
+        // Load texture with the texture loader and upload it to GL
+        textureLoader.loadMiptexTexture(this->mTextures[t], bsp.textureData + table[t + 1]);
         this->mTextures[t].upload();
     }
 

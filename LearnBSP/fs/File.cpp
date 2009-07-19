@@ -17,29 +17,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _TEXTURELOADER_H
-#define	_TEXTURELOADER_H
+#include "File.h"
+#include <stdio.h>
+#include <string.h>
 
-#include "common/texture.h"
-#include "fs/FileSystem.h"
+using namespace fs;
 
-/*!
- * \brief
- */
-class TextureLoader
+File::File(const char* filename)
+                : Data()
 {
-public:
-    TextureLoader(fs::FileSystem* fs);
-    virtual ~TextureLoader();
+    this->name = new char[strlen(filename) + 1];
+    strcpy(this->name, filename);
 
-    void setWadFiles(const char* wadstring);
-    bool loadMiptexTexture(Texture& texture, const unsigned char* textureData);
-    bool loadTextureFromFile(Texture& texture, const char* filename);
+    FILE* file = fopen(filename, "rb");
+    if (file != 0)
+    {
+        fseek(file, 0, SEEK_END);
+        this->dataSize = ftell(file);
+        fseek(file, 0, SEEK_SET);
 
-private:
-    fs::FileSystem* mFileSystem;
-    
-};
+        this->data = new unsigned char[this->dataSize];
+        fread(this->data, this->dataSize, 1, file);
 
-#endif	/* _TEXTURELOADER_H */
+        fclose(file);
+    }
+    else throw "Cannot open file";
+}
 
+File::~File()
+{
+}

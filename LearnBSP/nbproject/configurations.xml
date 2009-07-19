@@ -17,12 +17,45 @@
       <itemPath>common/plane.h</itemPath>
       <itemPath>common/renderoperations.cpp</itemPath>
       <itemPath>common/renderoperations.h</itemPath>
+      <itemPath>common/stringfunctions.cpp</itemPath>
+      <itemPath>common/stringfunctions.h</itemPath>
       <itemPath>common/texture.cpp</itemPath>
       <itemPath>common/texture.h</itemPath>
       <itemPath>common/tokenizer.cpp</itemPath>
       <itemPath>common/tokenizer.h</itemPath>
       <itemPath>common/vector3.cpp</itemPath>
       <itemPath>common/vector3.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="f4" displayName="FileSystem" projectFiles="true">
+      <logicalFolder name="f1" displayName="Image" projectFiles="true">
+        <itemPath>fs/image/bitmap.cpp</itemPath>
+        <itemPath>fs/image/image.h</itemPath>
+        <itemPath>fs/image/miptex.cpp</itemPath>
+        <itemPath>fs/image/targa.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="Zip" projectFiles="true">
+        <itemPath>fs/zip/crypt.h</itemPath>
+        <itemPath>fs/zip/ioapi.c</itemPath>
+        <itemPath>fs/zip/ioapi.h</itemPath>
+        <itemPath>fs/zip/mztools.c</itemPath>
+        <itemPath>fs/zip/mztools.h</itemPath>
+        <itemPath>fs/zip/unzip.c</itemPath>
+        <itemPath>fs/zip/unzip.h</itemPath>
+        <itemPath>fs/zip/zip.c</itemPath>
+        <itemPath>fs/zip/zip.h</itemPath>
+      </logicalFolder>
+      <itemPath>fs/File.cpp</itemPath>
+      <itemPath>fs/File.h</itemPath>
+      <itemPath>fs/FileSystem.cpp</itemPath>
+      <itemPath>fs/FileSystem.h</itemPath>
+      <itemPath>fs/FileSystemException.cpp</itemPath>
+      <itemPath>fs/FileSystemException.h</itemPath>
+      <itemPath>fs/Package.cpp</itemPath>
+      <itemPath>fs/Package.h</itemPath>
+      <itemPath>fs/WadPackage.cpp</itemPath>
+      <itemPath>fs/WadPackage.h</itemPath>
+      <itemPath>fs/ZipPackage.cpp</itemPath>
+      <itemPath>fs/ZipPackage.h</itemPath>
     </logicalFolder>
     <logicalFolder name="f2" displayName="GLee" projectFiles="true">
       <itemPath>GLee/GLee.c</itemPath>
@@ -71,7 +104,7 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>3</platform>
+        <platform>2</platform>
         <dependencyChecking>false</dependencyChecking>
       </toolsSet>
       <compileType>
@@ -81,6 +114,7 @@
             <linkerLibLibItem>GLU</linkerLibLibItem>
             <linkerLibLibItem>pthread</linkerLibLibItem>
             <linkerLibLibItem>Xrandr</linkerLibLibItem>
+            <linkerLibFileItem>lib/libz.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
@@ -89,7 +123,7 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>3</platform>
+        <platform>2</platform>
         <dependencyChecking>false</dependencyChecking>
       </toolsSet>
       <compileType>
@@ -109,6 +143,7 @@
             <linkerLibLibItem>GLU</linkerLibLibItem>
             <linkerLibLibItem>pthread</linkerLibLibItem>
             <linkerLibLibItem>Xrandr</linkerLibLibItem>
+            <linkerLibFileItem>lib/libz.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
@@ -117,7 +152,7 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>MinGW|MinGW</compilerSet>
-        <platform>3</platform>
+        <platform>2</platform>
       </toolsSet>
       <compileType>
         <linkerTool>
@@ -133,7 +168,7 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <compilerSet>MinGW|MinGW</compilerSet>
-        <platform>3</platform>
+        <platform>2</platform>
       </toolsSet>
       <compileType>
         <cTool>
