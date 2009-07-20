@@ -200,12 +200,10 @@ void BspModel::setEntity(BspEntity* entity)
             int renderamt;
             sscanf(value, "%d", &renderamt);
             this->mFxAmount = (float)renderamt / 255.0f;
-            std::cout << key << " " << value << "=" << this->mFxAmount << std::endl;
         }
         else if (strcasecmp(key, "rendermode") == 0)
         {
             sscanf(value, "%d", &this->mFxMode);
-            std::cout << key << " " << value << "=" << this->mFxMode << std::endl;
         }
         else if (strcasecmp(key, "rendercolor") == 0)
         {

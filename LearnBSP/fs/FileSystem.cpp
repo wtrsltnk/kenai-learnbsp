@@ -72,11 +72,10 @@ FileSystem::~FileSystem()
 void FileSystem::addPackage(const char* filename)
 {
     const char* ext = strrchr(filename, '.');
+    const char* fullpath = findFile(filename);
 
     if (strcasecmp(ext, ".wad") == 0)
     {
-        char fullpath[256] = { 0 };
-        sprintf(fullpath, "%s/%s", gameRoot, filename);
         try
         {
             WadPackage* package = new WadPackage(fullpath);
@@ -86,8 +85,6 @@ void FileSystem::addPackage(const char* filename)
     }
     else if (strcasecmp(ext, ".zip") == 0)
     {
-        char fullpath[256] = { 0 };
-        sprintf(fullpath, "%s/%s", gameRoot, filename);
         try
         {
             ZipPackage* package = new ZipPackage(fullpath);

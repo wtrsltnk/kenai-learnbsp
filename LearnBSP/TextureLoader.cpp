@@ -62,11 +62,14 @@ void TextureLoader::setWadFiles(const char* wadstring)
         wad = strrchr(wads, ';');
     }
 
-    const char* file = StringFunctions::getFilename(wad);
+    const char* file = StringFunctions::getFilename(wads);
     if (file != NULL) wadFiles.push_back(file);
 
     for (std::vector<const char*>::iterator itr = wadFiles.begin(); itr != wadFiles.end(); ++itr)
+    {
+        std::cout << "Adding " << *itr << " for texture loading" << std::endl;
         this->mFileSystem->addPackage(*itr);
+    }
 }
 
 /*!
