@@ -67,8 +67,11 @@ void TextureLoader::setWadFiles(const char* wadstring)
 
     for (std::vector<const char*>::iterator itr = wadFiles.begin(); itr != wadFiles.end(); ++itr)
     {
-        std::cout << "Adding " << *itr << " for texture loading" << std::endl;
-        this->mFileSystem->addPackage(*itr);
+        std::cout << "Adding " << *itr << " for texture loading...";
+        if (this->mFileSystem->addPackage(*itr))
+            std::cout << "done!" << std::endl;
+        else
+            std::cout << "failed!" << std::endl;
     }
 }
 

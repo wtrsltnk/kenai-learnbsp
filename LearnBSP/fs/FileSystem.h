@@ -41,7 +41,7 @@ public:
     FileSystem(const char* gameRoot);
     virtual ~FileSystem();
 
-    virtual void addPackage(const char* filename);
+    virtual bool addPackage(const char* filename);
     virtual const char* findFile(const char* name);
     virtual bool openFile(Data& data, const char* filename);
     virtual bool openTexture(Texture& texture, const char* filename);

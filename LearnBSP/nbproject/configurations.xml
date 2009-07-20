@@ -43,6 +43,7 @@
         <itemPath>fs/zip/unzip.h</itemPath>
         <itemPath>fs/zip/zip.c</itemPath>
         <itemPath>fs/zip/zip.h</itemPath>
+        <itemPath>fs/zip/zlib.h</itemPath>
       </logicalFolder>
       <itemPath>fs/File.cpp</itemPath>
       <itemPath>fs/File.h</itemPath>

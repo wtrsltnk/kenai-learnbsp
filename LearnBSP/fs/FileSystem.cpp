@@ -69,11 +69,14 @@ FileSystem::~FileSystem()
 {
 }
 
-void FileSystem::addPackage(const char* filename)
+bool FileSystem::addPackage(const char* filename)
 {
     const char* ext = strrchr(filename, '.');
     const char* fullpath = findFile(filename);
 
+    if (fullpath == NULL)
+        return false;
+    
     if (strcasecmp(ext, ".wad") == 0)
     {
         try
@@ -81,7 +84,11 @@ void FileSystem::addPackage(const char* filename)
             WadPackage* package = new WadPackage(fullpath);
             this->packages.push_back(package);
         }
-        catch (const FileSystemException& error) { std::cout << error.getMessage() << std::endl; }
+        catch (const FileSystemException& error)
+        {
+            std::cout << error.getMessage() << std::endl;
+            return false;
+        }
     }
     else if (strcasecmp(ext, ".zip") == 0)
     {
@@ -90,8 +97,13 @@ void FileSystem::addPackage(const char* filename)
             ZipPackage* package = new ZipPackage(fullpath);
             this->packages.push_back(package);
         }
-        catch (const FileSystemException& error) { std::cout << error.getMessage() << std::endl; }
+        catch (const FileSystemException& error)
+        {
+            std::cout << error.getMessage() << std::endl;
+            return false;
+        }
     }
+    return true;
 }
 
 const char* FileSystem::findFile(const char* name)
