@@ -20,6 +20,11 @@
 #include "BspData.h"
 #include <iostream>
 
+
+/*!
+ * \brief
+ * \param data
+ */
 BspData::BspData(const Data& data)
     : entitySize(0), entityData(NULL), planeCount(0), planes(NULL), textureSize(0), textureData(NULL), vertexCount(0), vertices(NULL),
         visibilitySize(0), visibilityData(NULL), nodeCount(0), nodes(NULL), texinfoCount(0), texinfos(NULL), faceCount(0), faces(NULL),
@@ -55,6 +60,9 @@ BspData::BspData(const Data& data)
     this->modelCount = loadLump(&this->models, header.lumps[HL1_BSP_MODELLUMP], &data);
 }
 
+/*!
+ * \brief
+ */
 BspData::~BspData()
 {
     if (entityData) delete []entityData;
@@ -74,6 +82,11 @@ BspData::~BspData()
     if (models) delete []models;
 }
 
+/*!
+ * \brief
+ * \param data
+ * \return
+ */
 bool BspData::testBSP(const Data& data)
 {
     tBSPHeader header;
