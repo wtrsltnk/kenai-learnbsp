@@ -20,8 +20,18 @@
 #ifndef _PLUGINMANAGER_H
 #define	_PLUGINMANAGER_H
 
-#include "BspPlugin.h"
+#include <BspPlugin.h>
 #include <vector>
+
+/*!
+ * \brief
+ */
+typedef BspPlugin* tCreatePlugin();
+
+/*!
+ * \brief
+ */
+typedef void tDestroyPlugin(BspPlugin*);
 
 /*!
  * \brief

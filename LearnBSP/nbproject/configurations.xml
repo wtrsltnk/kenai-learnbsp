@@ -72,8 +72,8 @@
       <itemPath>BspLeaf.h</itemPath>
       <itemPath>BspModel.h</itemPath>
       <itemPath>BspNode.h</itemPath>
-      <itemPath>BspObject.h</itemPath>
       <itemPath>BspWorld.h</itemPath>
+      <itemPath>PluginManager.h</itemPath>
       <itemPath>TextureLoader.h</itemPath>
       <itemPath>opengl.h</itemPath>
       <itemPath>types.h</itemPath>
@@ -88,8 +88,8 @@
       <itemPath>BspLeaf.cpp</itemPath>
       <itemPath>BspModel.cpp</itemPath>
       <itemPath>BspNode.cpp</itemPath>
-      <itemPath>BspObject.cpp</itemPath>
       <itemPath>BspWorld.cpp</itemPath>
+      <itemPath>PluginManager.cpp</itemPath>
       <itemPath>TextureLoader.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
