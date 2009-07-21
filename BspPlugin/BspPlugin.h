@@ -44,16 +44,5 @@ private:
 
 };
 
-/*!
- * \brief
- */
-typedef BspPlugin* tCreatePlugin();
-
-/*!
- * \brief
- */
-typedef void tDestroyPlugin(BspPlugin*);
-
-
 #endif	/* _BSPPLUGIN_H */
 
