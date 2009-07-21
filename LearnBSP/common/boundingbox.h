@@ -46,7 +46,9 @@ public:
     bool contains(const BoundingBox& bb) const;
     
 private:
+    /*! \brief */
     float mMins[3];
+    /*! \brief */
     float mMaxs[3];
 
 };

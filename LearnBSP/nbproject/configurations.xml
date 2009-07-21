@@ -109,6 +109,11 @@
         <dependencyChecking>false</dependencyChecking>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>../BspPlugin</pElem>
+          </incDir>
+        </ccTool>
         <linkerTool>
           <linkerLibItems>
             <linkerLibLibItem>glfw</linkerLibLibItem>
@@ -116,6 +121,18 @@
             <linkerLibLibItem>pthread</linkerLibLibItem>
             <linkerLibLibItem>Xrandr</linkerLibLibItem>
             <linkerLibFileItem>lib/libz.a</linkerLibFileItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../BspPlugin"
+                            CT="3"
+                            CN="Debug"
+                            AC="true"
+                            BL="true"
+                            WD="../BspPlugin"
+                            BC="${MAKE}  -f Makefile CONF=Debug"
+                            CC="${MAKE}  -f Makefile CONF=Debug clean"
+                            OP="dist/Debug/GNU-Linux-x86/libbspplugin.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
@@ -138,6 +155,9 @@
         <ccTool>
           <developmentMode>5</developmentMode>
           <architecture>1</architecture>
+          <incDir>
+            <pElem>../BspPlugin</pElem>
+          </incDir>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -149,6 +169,18 @@
             <linkerLibLibItem>pthread</linkerLibLibItem>
             <linkerLibLibItem>Xrandr</linkerLibLibItem>
             <linkerLibFileItem>lib/libz.a</linkerLibFileItem>
+            <linkerLibProjectItem>
+              <makeArtifact PL="../BspPlugin"
+                            CT="3"
+                            CN="Release"
+                            AC="false"
+                            BL="true"
+                            WD="../BspPlugin"
+                            BC="${MAKE}  -f Makefile CONF=Release"
+                            CC="${MAKE}  -f Makefile CONF=Release clean"
+                            OP="dist/Release/GNU-Linux-x86/libbspplugin.a">
+              </makeArtifact>
+            </linkerLibProjectItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

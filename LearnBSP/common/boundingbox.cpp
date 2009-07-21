@@ -136,6 +136,11 @@ const float* BoundingBox::getMaxs() const
     return this->mMaxs;
 }
 
+/*!
+ * \brief
+ * \param plane
+ * \return
+ */
 int BoundingBox::intersect(const Plane& plane) const
 {
     Vector3 diagMin, diagMax;
@@ -184,6 +189,11 @@ int BoundingBox::intersect(const Plane& plane) const
     return 0;
 }
 
+/*!
+ * \brief
+ * \param bb
+ * \return
+ */
 bool BoundingBox::intersect(const BoundingBox& bb) const
 {
     if (mMins[0] > bb.mMaxs[0] || mMaxs[0] < bb.mMins[0]) return false;
@@ -193,6 +203,11 @@ bool BoundingBox::intersect(const BoundingBox& bb) const
     return true;
 }
 
+/*!
+ * \brief
+ * \param bb
+ * \return
+ */
 bool BoundingBox::contains(const BoundingBox& bb) const
 {
     return

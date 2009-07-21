@@ -23,6 +23,7 @@
 #include "common/camera.h"
 #include "opengl.h"
 #include "BspWorld.h"
+#include "PluginManager.h"
 #include "fs/FileSystem.h"
 
 /*!
@@ -61,6 +62,8 @@ private:
     Camera mCamera;
     /*! \brief */
     BspWorld* mWorld;
+    /*! \ brief */
+    PluginManager* mPlugins;
     /*! \brief */
     fs::FileSystem* mFileSystem;
 

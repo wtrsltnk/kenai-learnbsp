@@ -33,6 +33,7 @@ Application::Application(int width, int height)
     Application::sCurrent = this;
     glfwInit();
     this->mFileSystem = new fs::FileSystem("./data");
+    this->mPlugins = new PluginManager("./data/bin");
 }
 
 /*!
