@@ -13,7 +13,7 @@
 class Plugin : public BspPlugin
 {
 public:
-    Plugin();
+    Plugin(BspPluginContext* context);
     virtual ~Plugin();
 
     virtual bool hasInstance(const char* name) const;

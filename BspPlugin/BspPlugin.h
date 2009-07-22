@@ -21,6 +21,7 @@
 #define	_BSPPLUGIN_H
 
 #include "BspObject.h"
+#include "BspPluginContext.h"
 
 /*!
  * \brief
@@ -28,7 +29,7 @@
 class BspPlugin
 {
 public:
-    BspPlugin(const char* name);
+    BspPlugin(const char* name, BspPluginContext* context);
     virtual ~BspPlugin();
 
     /*! \brief */
@@ -41,8 +42,20 @@ public:
 private:
     /*! \brief */
     char* mName;
+    /*! \brief */
+    BspPluginContext* mContext;
 
 };
+
+/*!
+ * \brief
+ */
+typedef BspPlugin* tCreatePlugin(BspPluginContext*);
+
+/*!
+ * \brief
+ */
+typedef void tDestroyPlugin(BspPlugin*);
 
 #endif	/* _BSPPLUGIN_H */
 

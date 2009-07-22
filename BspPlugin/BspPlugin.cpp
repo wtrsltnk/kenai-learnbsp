@@ -24,7 +24,8 @@
  * \brief
  * \param name
  */
-BspPlugin::BspPlugin(const char* name)
+BspPlugin::BspPlugin(const char* name, BspPluginContext* context)
+    : mContext(context)
 {
     this->mName = new char[strlen(name) + 1];
     strcpy(this->mName, name);

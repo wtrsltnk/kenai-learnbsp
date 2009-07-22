@@ -31,6 +31,7 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/BspPluginContext.o \
 	${OBJECTDIR}/BspPlugin.o \
 	${OBJECTDIR}/BspObject.o
 
@@ -59,6 +60,11 @@ dist/Release/GNU-Linux-x86/libbspplugin.a: ${OBJECTFILES}
 	${RM} dist/Release/GNU-Linux-x86/libbspplugin.a
 	${AR} rv ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libbspplugin.a ${OBJECTFILES} 
 	$(RANLIB) dist/Release/GNU-Linux-x86/libbspplugin.a
+
+${OBJECTDIR}/BspPluginContext.o: nbproject/Makefile-${CND_CONF}.mk BspPluginContext.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspPluginContext.o BspPluginContext.cpp
 
 ${OBJECTDIR}/BspPlugin.o: nbproject/Makefile-${CND_CONF}.mk BspPlugin.cpp 
 	${MKDIR} -p ${OBJECTDIR}

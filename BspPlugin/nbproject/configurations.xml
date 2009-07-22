@@ -6,6 +6,7 @@
                    projectFiles="true">
       <itemPath>BspObject.h</itemPath>
       <itemPath>BspPlugin.h</itemPath>
+      <itemPath>BspPluginContext.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -16,6 +17,7 @@
                    projectFiles="true">
       <itemPath>BspObject.cpp</itemPath>
       <itemPath>BspPlugin.cpp</itemPath>
+      <itemPath>BspPluginContext.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

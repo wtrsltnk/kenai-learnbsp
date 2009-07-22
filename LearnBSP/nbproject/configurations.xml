@@ -135,6 +135,28 @@
             </linkerLibProjectItem>
           </linkerLibItems>
         </linkerTool>
+        <requiredProjects>
+          <makeArtifact PL="../BspPlugin"
+                        CT="3"
+                        CN="Debug"
+                        AC="true"
+                        BL="true"
+                        WD="../BspPlugin"
+                        BC="${MAKE}  -f Makefile CONF=Debug"
+                        CC="${MAKE}  -f Makefile CONF=Debug clean"
+                        OP="dist/Debug/GNU-Linux-x86/libbspplugin.a">
+          </makeArtifact>
+          <makeArtifact PL="../BspPlugin"
+                        CT="3"
+                        CN="Debug"
+                        AC="true"
+                        BL="true"
+                        WD="../BspPlugin"
+                        BC="${MAKE}  -f Makefile CONF=Debug"
+                        CC="${MAKE}  -f Makefile CONF=Debug clean"
+                        OP="dist/Debug/GNU-Linux-x86/libbspplugin.a">
+          </makeArtifact>
+        </requiredProjects>
       </compileType>
       <item path="GLee/GLee.c" ex="true" tool="0">
       </item>
@@ -183,6 +205,28 @@
             </linkerLibProjectItem>
           </linkerLibItems>
         </linkerTool>
+        <requiredProjects>
+          <makeArtifact PL="../BspPlugin"
+                        CT="3"
+                        CN="Release"
+                        AC="false"
+                        BL="true"
+                        WD="../BspPlugin"
+                        BC="${MAKE}  -f Makefile CONF=Release"
+                        CC="${MAKE}  -f Makefile CONF=Release clean"
+                        OP="dist/Release/GNU-Linux-x86/libbspplugin.a">
+          </makeArtifact>
+          <makeArtifact PL="../Basics"
+                        CT="2"
+                        CN="Release"
+                        AC="true"
+                        BL="true"
+                        WD="../Basics"
+                        BC="${MAKE}  -f Makefile CONF=Release"
+                        CC="${MAKE}  -f Makefile CONF=Release clean"
+                        OP="dist/Release/GNU-Linux-x86/libBasics.so">
+          </makeArtifact>
+        </requiredProjects>
       </compileType>
       <item path="GLee/GLee.c" ex="true" tool="0">
       </item>

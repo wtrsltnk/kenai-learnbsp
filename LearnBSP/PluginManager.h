@@ -26,16 +26,6 @@
 /*!
  * \brief
  */
-typedef BspPlugin* tCreatePlugin();
-
-/*!
- * \brief
- */
-typedef void tDestroyPlugin(BspPlugin*);
-
-/*!
- * \brief
- */
 typedef struct sLoadedPlugin
 {
     void* handle;
@@ -59,6 +49,8 @@ public:
 private:
     /*! \brief */
     std::vector<tLoadedPlugin> mPlugins;
+    /*! \brief */
+    BspPluginContext* mContext;
 
 };
 

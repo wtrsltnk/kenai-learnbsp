@@ -29,6 +29,7 @@
  * \param binroot
  */
 PluginManager::PluginManager(const char* binroot)
+    : mContext(new BspPluginContext())
 {
     DIR* dir = opendir(binroot);
 
@@ -97,7 +98,7 @@ bool PluginManager::addPlugin(const char* filename)
     if (plugin.create == NULL || plugin.destroy == NULL)
         return false;
 
-    plugin.plugin = (*plugin.create)();
+    plugin.plugin = (*plugin.create)(this->mContext);
     this->mPlugins.push_back(plugin);
     
     return true;

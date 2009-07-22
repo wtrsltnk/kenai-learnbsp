@@ -8,8 +8,8 @@
 #include "Plugin.h"
 #include <stdlib.h>
 
-Plugin::Plugin()
-    : BspPlugin("Basics")
+Plugin::Plugin(BspPluginContext* context)
+    : BspPlugin("Basics", context)
 {
 }
 
@@ -27,9 +27,9 @@ BspObject* Plugin::getInstance(const char* name) const
     return NULL;
 }
 
-extern "C" BspPlugin* createPlugin()
+extern "C" BspPlugin* createPlugin(BspPluginContext* context)
 {
-    return new Plugin();
+    return new Plugin(context);
 }
 
 extern "C" void destroyPlugin(BspPlugin* plugin)
