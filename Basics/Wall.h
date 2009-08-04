@@ -17,31 +17,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PLUGIN_H
-#define	_PLUGIN_H
+#ifndef _WALL_H
+#define	_WALL_H
 
-#include <BspPlugin.h>
-#include <vector>
+#include <BspObject.h>
 
-/*!
- * \brief
- */
-class Plugin : public BspPlugin
+#define FUNC_WALL 1
+
+class Wall : public BspObject
 {
 public:
-    Plugin(BspPluginContext* context);
-    virtual ~Plugin();
-
-    virtual bool hasInstance(const char* name) const;
-    virtual BspObject* getInstance(const char* name, const std::map<std::string, std::string>& entityKeys);
+    Wall(const char* name);
+    Wall(const Wall& orig);
+    virtual ~Wall();
+    
+    virtual void render(double time);
+    virtual BspObject* createInstance(const std::map<std::string, std::string>& entityKeys, BspPluginContext& context);
+    virtual const BspMesh* getMesh() const;
 
 private:
-    /*! \brief */
-    std::vector<BspObject*> mObjects;
-    /*! \brief */
-    std::vector<BspObject*> mInstances;
+    BspMesh* mMesh;
 
 };
 
-#endif	/* _PLUGIN_H */
+#endif	/* _WALL_H */
 
