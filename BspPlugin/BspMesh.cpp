@@ -188,13 +188,18 @@ float BspMesh::getFxAmount() const
  * \brief
  * \return
  */
-void BspMesh::getBoundingBox(float mins[3], float maxs[3]) const
+const float* BspMesh::getMins() const
 {
-    for (int i = 0; i < 3; i++)
-    {
-        mins[i] = this->mMins[i];
-        maxs[i] = this->mMaxs[i];
-    }
+    return this->mMins;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const float* BspMesh::getMaxs() const
+{
+    return this->mMaxs;
 }
 
 /*!

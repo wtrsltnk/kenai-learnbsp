@@ -52,8 +52,9 @@ public:
 
     void setFxAmount(float amount);
     float getFxAmount() const;
-    
-    void getBoundingBox(float mins[3], float maxs[3]) const;
+
+    const float* getMins() const;
+    const float* getMaxs() const;
 
     void setEntity(const std::map<std::string, std::string>& entityKeys);
 
