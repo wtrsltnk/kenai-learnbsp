@@ -244,6 +244,30 @@ const Vector3& Vector3::operator += (const Vector3& v)
 
 /*!
  * \brief
+ * \param v
+ * \return
+ */
+Vector3 Vector3::operator - (const Vector3& v)
+{
+    return Vector3(this->mVector[0] - v.mVector[0], this->mVector[1] - v.mVector[1], this->mVector[2] - v.mVector[2]);
+}
+
+/*!
+ * \brief
+ * \param v
+ * \return
+ */
+const Vector3& Vector3::operator -= (const Vector3& v)
+{
+    this->mVector[0] -= v.mVector[0];
+    this->mVector[1] -= v.mVector[1];
+    this->mVector[2] -= v.mVector[2];
+
+    return (*this);
+}
+
+/*!
+ * \brief
  * \param s
  * \return
  */

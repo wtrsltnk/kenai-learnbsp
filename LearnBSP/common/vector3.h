@@ -27,8 +27,8 @@ class Vector3
 {
 public:
     Vector3();
-    Vector3(float x, float y, float z);
     Vector3(const Vector3& v);
+    Vector3(float x, float y, float z);
     Vector3(const float v[3]);
     virtual ~Vector3();
 
@@ -79,6 +79,12 @@ public:
 
     /// The operator for adding another vector to this vector
     const Vector3& operator += (const Vector3& v);
+
+    /// The operator for getting the result of subtracting another vector to this vector
+    Vector3 operator - (const Vector3& v);
+
+    /// The operator for subtracting another vector to this vector
+    const Vector3& operator -= (const Vector3& v);
 
     /// The operator for getting the result of multiplying this vector with a scalar
     Vector3 operator * (float s);

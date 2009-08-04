@@ -33,7 +33,8 @@ Application::Application(int width, int height)
     Application::sCurrent = this;
     glfwInit();
     this->mFileSystem = new fs::FileSystem("./data");
-    this->mPlugins = new PluginManager("./data/bin");
+    this->mContext = new PluginContext();
+    PluginManager::createInstance("./data/bin", this->mContext);
 }
 
 /*!
@@ -41,6 +42,8 @@ Application::Application(int width, int height)
  */
 Application::~Application()
 {
+    PluginManager::destroyInstance();
+    delete this->mContext;
     delete this->mFileSystem;
     glfwTerminate();
 }

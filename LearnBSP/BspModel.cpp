@@ -29,15 +29,33 @@
  * \brief
  */
 BspModel::BspModel()
-    : mHeadNode(NULL), mFxAmount(1.0f), mFxMode(4)
+    : mHeadNode(NULL)
 {
-    this->mFxColor[0] = this->mFxColor[1] = this->mFxColor[2] = 1.0f;
 }
 
 /*!
  * \brief
  */
 BspModel::~BspModel()
+{
+}
+
+/*!
+ * \brief
+ * \param start
+ * \param end
+ * \return
+ */
+bool BspModel::collides(float start[3], float end[3]) const
+{
+    return false;
+}
+
+/*!
+ * \brief
+ * \param time
+ */
+void BspModel::update(double time)
 {
 }
 
@@ -56,95 +74,6 @@ void BspModel::render() const
     }
     glPopMatrix();
     glPopAttrib();
-}
-
-/*!
- * \brief
- * \param position
- */
-void BspModel::render(const float position[3]) const
-{
-    glPushAttrib(GL_COLOR_BUFFER_BIT);
-    setupShader();
-    glPushMatrix();
-    glTranslatef(this->mOrigin.x(), this->mOrigin.y(), this->mOrigin.z());
-    this->mHeadNode->render(position);
-    glPopMatrix();
-    glPopAttrib();
-}
-
-/*!
- * \brief
- */
-void BspModel::setupShader() const
-{
-    switch (mFxMode)
-    {
-        case 1:	// Color blending
-        {
-            glDisable(GL_TEXTURE_2D);
-            glDisable(GL_ALPHA_TEST);
-            glDisable(GL_BLEND);
-            glColor3f(mFxColor[0], mFxColor[1], mFxColor[2]);
-            break;
-        }
-        case 3:	// Glow blending
-        case 5:	// Additive blending
-        {
-            glEnable(GL_TEXTURE_2D);
-            glDisable(GL_ALPHA_TEST);
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-            glColor4f(1.0f, 1.0f, 1.0f, mFxAmount);
-            break;
-        }
-        case 4:	// Solid blending
-        {
-            glEnable(GL_TEXTURE_2D);
-
-            // Enable alpha testing to make sure transparent textures are drawn correct
-            glEnable(GL_ALPHA_TEST);
-            glAlphaFunc(GL_GEQUAL, 0.8f);
-
-            // Default blending acoording to the alpha value of texture
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glColor4f(1.0f, 1.0f, 1.0f, mFxAmount);
-            break;
-        }
-        case 0:	// Normal blending
-        {
-            glEnable(GL_TEXTURE_2D);
-            glDisable(GL_ALPHA_TEST);
-            glDisable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-            glColor4f(1.0f, 1.0f, 1.0f, mFxAmount);
-            break;
-        }
-        case 2:	// Texture blending
-        {
-            glEnable(GL_TEXTURE_2D);
-            
-            // Enable alpha testing to make sure transparent textures are drawn correct
-            glDisable(GL_ALPHA_TEST);
-            glAlphaFunc(GL_GEQUAL, 0.8f);
-
-            // Default blending acoording to the alpha value of texture
-            glEnable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-            glColor4f(1.0f, 1.0f, 1.0f, mFxAmount);
-            break;
-        }
-        default:
-        {
-            glEnable(GL_TEXTURE_2D);
-            glDisable(GL_ALPHA_TEST);
-            glDisable(GL_BLEND);
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-            break;
-        }
-    }
 }
 
 /*!
@@ -184,72 +113,11 @@ const BspNode* BspModel::getHeadNode() const
 
 /*!
  * \brief
- * \param entity
- */
-void BspModel::setEntity(BspEntity* entity)
-{
-    this->mEntity = entity;
-
-    for (int k = 0; k < this->mEntity->getKeyCount(); k++)
-    {
-        const char* key = this->mEntity->getKey(k);
-        const char* value = this->mEntity->getValue(k);
-
-        if (strcasecmp(key, "renderamt") == 0)
-        {
-            int renderamt;
-            sscanf(value, "%d", &renderamt);
-            this->mFxAmount = (float)renderamt / 255.0f;
-        }
-        else if (strcasecmp(key, "rendermode") == 0)
-        {
-            sscanf(value, "%d", &this->mFxMode);
-        }
-        else if (strcasecmp(key, "rendercolor") == 0)
-        {
-            int r, g, b;
-            sscanf(value, "%d %d %d", &r, &g, &b);
-            if (r || g || b)
-            {
-                this->mFxColor[0] = (float)r / 255.0f;
-                this->mFxColor[1] = (float)g / 255.0f;
-                this->mFxColor[2] = (float)b / 255.0f;
-            }
-        }
-        else if (strcasecmp(key, "origin") == 0)
-        {
-            int x, y, z;
-            sscanf(value, "%d %d %d", &x, &y, &z);
-            this->mOrigin = Vector3(x, y, z);
-        }
-    }
-}
-
-/*!
- * \brief
- * \return
- */
-const BspEntity* BspModel::getEntity() const
-{
-    return this->mEntity;
-}
-
-/*!
- * \brief
  * \param face
  */
 void BspModel::addFace(BspFace* face)
 {
     this->mFaces.push_back(face);
-}
-
-/*!
- * \brief
- * \param model
- */
-void BspModel::addModel(BspModel* model)
-{
-    this->mHeadNode->addModel(model);
 }
 
 /*!

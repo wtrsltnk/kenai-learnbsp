@@ -26,10 +26,49 @@
 
 /*!
  * \brief
+ */
+PluginManager* PluginManager::sInstance = NULL;
+
+/*!
+ * \brief
+ * \param binroot
+ * \return
+ */
+PluginManager* PluginManager::createInstance(const char* binroot, BspPluginContext* context)
+{
+    if (PluginManager::sInstance == NULL)
+        PluginManager::sInstance = new PluginManager(binroot, context);
+
+    return PluginManager::sInstance;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+PluginManager* PluginManager::Instance()
+{
+    if (PluginManager::sInstance == NULL)
+        throw "No instance initialized";
+    
+    return PluginManager::sInstance;
+}
+
+/*!
+ * \brief
+ */
+void PluginManager::destroyInstance()
+{
+    if (PluginManager::sInstance != NULL)
+        delete PluginManager::sInstance;
+}
+
+/*!
+ * \brief
  * \param binroot
  */
-PluginManager::PluginManager(const char* binroot)
-    : mContext(new BspPluginContext())
+PluginManager::PluginManager(const char* binroot, BspPluginContext* context)
+    : mContext(context)
 {
     DIR* dir = opendir(binroot);
 
@@ -102,4 +141,34 @@ bool PluginManager::addPlugin(const char* filename)
     this->mPlugins.push_back(plugin);
     
     return true;
+}
+
+/*!
+ * \brief
+ * \param name
+ * \return
+ */
+BspObject* PluginManager::getEntityInstance(const char* name, const std::map<std::string, std::string>& entityKeys)
+{
+    for (std::vector<tLoadedPlugin>::iterator itr = this->mPlugins.begin(); itr != this->mPlugins.end(); ++itr)
+    {
+        tLoadedPlugin plugin = *itr;
+        if (plugin.plugin != NULL)
+        {
+            if (plugin.plugin->hasInstance(name))
+            {
+                return plugin.plugin->getInstance(name, entityKeys);
+            }
+        }
+    }
+    return NULL;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+BspPluginContext* PluginManager::getContext()
+{
+    return this->mContext;
 }

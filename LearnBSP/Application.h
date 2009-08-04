@@ -24,6 +24,7 @@
 #include "opengl.h"
 #include "BspWorld.h"
 #include "PluginManager.h"
+#include "PluginContext.h"
 #include "fs/FileSystem.h"
 
 /*!
@@ -64,6 +65,8 @@ private:
     BspWorld* mWorld;
     /*! \ brief */
     PluginManager* mPlugins;
+    /*! \ brief */
+    PluginContext* mContext;
     /*! \brief */
     fs::FileSystem* mFileSystem;
 

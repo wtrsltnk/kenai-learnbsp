@@ -21,6 +21,7 @@
 #define	_BSPMODEL_H
 
 #include "common/boundingbox.h"
+#include <BspMesh.h>
 #include <vector>
 
 class BspFace;
@@ -31,25 +32,22 @@ class BspEntity;
 /*!
  * \brief
  */
-class BspModel
+class BspModel : public BspMesh
 {
 public:
     BspModel();
     virtual ~BspModel();
 
-    void render() const;
-    void render(const float position[3]) const;
+    virtual bool collides(float start[3], float end[3]) const;
+    virtual void update(double time);
+    virtual void render() const;
 
     const BspLeaf* getLeaf(const float position[3]) const;
 
     void setHeadNode(BspNode* node);
     const BspNode* getHeadNode() const;
 
-    void setEntity(BspEntity* entity);
-    const BspEntity* getEntity() const;
-
     void addFace(BspFace* face);
-    void addModel(BspModel* model);
 
     void setOrigin(Vector3 origin);
     const Vector3& getOrigin() const;
@@ -61,21 +59,11 @@ private:
     /*! \brief */
     BspNode* mHeadNode;
     /*! \brief */
-    BspEntity* mEntity;
-    /*! \brief */
     std::vector<BspFace*> mFaces;
     /*! \brief */
     Vector3 mOrigin;
     /*! \brief */
     BoundingBox mBB;
-    /*! \brief */
-    int mFxMode;
-    /*! \brief */
-    float mFxColor[3];
-    /*! \brief */
-    float mFxAmount;
-
-    void setupShader() const;
 
 };
 

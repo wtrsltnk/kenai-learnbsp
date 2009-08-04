@@ -17,46 +17,57 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPLEAF_H
-#define	_BSPLEAF_H
-
-#include "common/boundingbox.h"
-#include <set>
-
-class BspFace;
-class Collision;
+#include "PluginContext.h"
+#include <stdlib.h>
 
 /*!
  * \brief
  */
-class BspLeaf
+PluginContext::PluginContext()
+    : mModelCount(0), mModels(NULL)
 {
-public:
-    BspLeaf();
-    virtual ~BspLeaf();
+}
 
-    void render(bool renderPvs = true) const;
+/*!
+ * \brief
+ */
+PluginContext::~PluginContext()
+{
+}
 
-    Collision getCollision(const Vector3& start, const Vector3& end);
+/*!
+ * \brief
+ * \param modelCount
+ * \param models
+ */
+void PluginContext::setModels(int modelCount, BspModel* models)
+{
+    this->mModelCount = modelCount;
+    this->mModels = models;
+}
 
-    void addFace(BspFace* face);
-    int getFaceCount() const;
+/*!
+ * \brief
+ * \param meshname
+ * \return
+ */
+BspMesh* PluginContext::getMesh(const char* meshname)
+{
+    return NULL;
+}
 
-    void addVisibleLeaf(BspLeaf* leaf);
-
-    void setBoundingBox(const BoundingBox& bb);
-    const BoundingBox& getBoundingBox() const;
-
-    int index;
-private:
-    /*! \brief  */
-    std::set<BspFace*> mFaces;
-    /*! \brief  */
-    std::set<BspLeaf*> mVisibleLeafs;
-    /*! \brief */
-    BoundingBox mBB;
-
-};
-
-#endif	/* _BSPLEAF_H */
+/*!
+ * \brief
+ * \param model
+ * \return
+ */
+BspMesh* PluginContext::getModel(int model, const std::map<std::string, std::string>& entityKeys)
+{
+    if (model >= 0 && model < this->mModelCount)
+    {
+        this->mModels[model].setEntity(entityKeys);
+        return &this->mModels[model];
+    }
+    return NULL;
+}
 

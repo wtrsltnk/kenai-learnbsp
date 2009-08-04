@@ -18,8 +18,8 @@
  */
 
 #include "BspLeaf.h"
-#include "BspModel.h"
 #include "BspFace.h"
+#include "Collision.h"
 #include "common/renderoperations.h"
 #include <iostream>
 
@@ -60,27 +60,30 @@ void BspLeaf::render(bool renderPvs) const
 
 /*!
  * \brief
- * \param set
+ * \param start
+ * \param end
+ * \return
  */
-void BspLeaf::gatherVisibleModels(std::set<BspModel*>& set, bool gatherPVS) const
+Collision BspLeaf::getCollision(const Vector3& start, const Vector3& end)
 {
-    for (std::set<BspModel*>::const_iterator model = this->mModels.begin(); model != this->mModels.end(); ++model)
+    for (std::set<BspFace*>::iterator itr = this->mFaces.begin(); itr != this->mFaces.end(); ++itr)
     {
-        set.insert(*model);
-    }
-    if (gatherPVS)
-    {
-        for (std::set<BspLeaf*>::const_iterator itr = this->mVisibleLeafs.begin(); itr != this->mVisibleLeafs.end(); ++itr)
+        BspFace* face = (*itr);
+        const Plane& plane = face->getPlane();
+        ePointClassification classStart = Collision::classifyPoint(plane, start);
+        ePointClassification classEnd = Collision::classifyPoint(plane, end);
+
+        if (classStart != classEnd)
         {
-            (*itr)->gatherVisibleModels(set, false);
+            return Collision(this, face, Collision::getIntersection(plane, start, end));
         }
     }
+    return Collision();
 }
 
 /*!
  * \brief Set the face in the given index
  * \param face Pointer to the face to set
- * \param index The index in the array for this face
  */
 void BspLeaf::addFace(BspFace* face)
 {
@@ -103,15 +106,6 @@ int BspLeaf::getFaceCount() const
 void BspLeaf::addVisibleLeaf(BspLeaf* leaf)
 {
     this->mVisibleLeafs.insert(leaf);
-}
-
-/*!
- * \brief
- * \param model
- */
-void BspLeaf::addModel(BspModel* model)
-{
-    this->mModels.insert(model);
 }
 
 /*!

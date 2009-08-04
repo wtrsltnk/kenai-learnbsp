@@ -17,53 +17,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPFACE_H
-#define	_BSPFACE_H
+#ifndef _PLUGINCONTEXT_H
+#define	_PLUGINCONTEXT_H
 
-#include "common/plane.h"
-#include "common/texture.h"
-#include "opengl.h"
-#include "types.h"
-/*!
- * \brief
- */
-class BspFace
+#include <BspPluginContext.h>
+#include "BspModel.h"
+
+class PluginContext : public BspPluginContext
 {
 public:
-    BspFace();
-    virtual ~BspFace();
+    PluginContext();
+    virtual ~PluginContext();
 
-    void render();
+    void setModels(int modelCount, BspModel* models);
     
-    void setPlane(float normal[3], float distance);
-    const Plane& getPlane() const;
-
-    void setVertices(int first, int count);
-
-    void setFlags(int flags);
-
-    void setTexture(Texture* texture);
-    const Texture* getTexture() const;
-
-    const Texture* setLightmap(const tBSPFace& bspFace, float min[2], float max[2], const unsigned char* lightData, float brightness = 0.5f);
+    virtual BspMesh* getMesh(const char* meshname);
+    virtual BspMesh* getModel(int model, const std::map<std::string, std::string>& entityKeys);
     
 private:
     /*! \brief */
-    Plane mPlane;
+    int mModelCount;
     /*! \brief */
-    int mFirstVertex;
-    /*! \brief */
-    int mVertexCount;
-    /*! \brief */
-    GLuint mFaceType;
-    /*! \brief */
-    int mFaceFlags;
-    /*! \brief */
-    Texture* mTexture;
-    /*! \brief */
-    Texture* mLightmap;
+    BspModel* mModels;
 
 };
 
-#endif	/* _BSPFACE_H */
+#endif	/* _PLUGINCONTEXT_H */
 

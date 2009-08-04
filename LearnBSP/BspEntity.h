@@ -43,6 +43,7 @@ public:
     virtual const char* getKey(int index) const;
     virtual const char* getValue(int index) const;
     virtual const char* getValue(const char* key) const;
+    const Map& getValues() const;
 
     bool parseFromTokenizer(Tokenizer& tok);
     

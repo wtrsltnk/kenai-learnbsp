@@ -17,9 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "common/vector3.h"
+
+
 #include "BspNode.h"
 #include "BspLeaf.h"
 #include "BspModel.h"
+#include "Collision.h"
+#include "common/plane.h"
+#include <BspObject.h>
 #include <iostream>
 
 /*!
@@ -85,23 +91,38 @@ void BspNode::render(const float point[3]) const
 
 /*!
  * \brief
- * \param point
- * \param set
+ * \param start
+ * \param end
+ * \return
  */
-void BspNode::gatherVisibleModels(const float point[3], std::set<BspModel*>& set) const
+Collision BspNode::getCollision(const Vector3& start, const Vector3& end)
 {
     if (this->mLeaf != NULL)
     {
-        this->mLeaf->gatherVisibleModels(set, true);
+        return this->mLeaf->getCollision(start, end);
     }
     else
     {
-        float distance = this->mSplit.distance(Vector3(point));
+        float dStart = this->mSplit.distance(start);
+        float dEnd = this->mSplit.distance(end);
 
-        if (distance >= 0)
-            this->mFront->gatherVisibleModels(point, set);
+        if ((dStart > 0) && (dEnd > 0))
+        {
+            return this->mFront->getCollision(start, end);
+        }
+        else if ((dStart < 0) && (dEnd < 0))
+        {
+            return this->mBack->getCollision(start, end);
+        }
         else
-            this->mBack->gatherVisibleModels(point, set);
+        {
+            Vector3 intersection = Collision::getIntersection(this->mSplit, start, end);
+
+            if (dStart > 0)
+                return this->mFront->getCollision(start, intersection);
+            
+            return this->mBack->getCollision(start, intersection);
+        }
     }
 }
 
@@ -188,6 +209,21 @@ const BspNode* BspNode::getChild(const float point[3]) const
 
 /*!
  * \brief
+ * \param point
+ * \return
+ */
+const BspLeaf* BspNode::getLeaf(const float position[3]) const
+{
+    const BspNode* child = this->getChild(position);
+
+    if (child == NULL)
+        return this->mLeaf;
+
+    return child->getLeaf(position);
+}
+
+/*!
+ * \brief
  * \return
  */
 const BspLeaf* BspNode::getLeaf() const
@@ -215,29 +251,29 @@ const BoundingBox& BspNode::getBoundingBox() const
 
 /*!
  * \brief
- * \param model
+ * \param object
  */
-void BspNode::addModel(BspModel* model)
+void BspNode::addObject(BspObject* object, const BoundingBox& bb)
 {
     bool foundChild = false;
     if (this->mFront)
     {
-        if (this->mFront->getBoundingBox().contains(model->getBoundingBox()))
+        if (this->mFront->getBoundingBox().contains(bb))
         {
             foundChild = true;
-            this->mFront->addModel(model);
+            this->mFront->addObject(object, bb);
         }
     }
     if (this->mBack)
     {
-        if (this->mBack->getBoundingBox().contains(model->getBoundingBox()))
+        if (this->mBack->getBoundingBox().contains(bb))
         {
             foundChild = true;
-            this->mBack->addModel(model);
+            this->mBack->addObject(object, bb);
         }
     }
     if (foundChild == false)
     {
-        this->mModels.push_back(model);
+        this->mObjects.push_back(object);
     }
 }

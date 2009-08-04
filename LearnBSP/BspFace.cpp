@@ -71,6 +71,15 @@ void BspFace::setPlane(float normal[3], float distance)
 
 /*!
  * \brief
+ * \return
+ */
+const Plane& BspFace::getPlane() const
+{
+    return this->mPlane;
+}
+
+/*!
+ * \brief
  * \param first
  * \param count
  */

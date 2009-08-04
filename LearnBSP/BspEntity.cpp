@@ -122,3 +122,12 @@ bool BspEntity::parseFromTokenizer(Tokenizer& tok)
     }
     return true;
 }
+
+/*!
+ * \brief
+ * \return
+ */
+const Map& BspEntity::getValues() const
+{
+    return this->mValues;
+}

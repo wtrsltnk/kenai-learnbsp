@@ -40,12 +40,22 @@ typedef struct sLoadedPlugin
  */
 class PluginManager
 {
+private:
+    PluginManager(const char* binroot, BspPluginContext* context);
+    static PluginManager* sInstance;
+    
 public:
-    PluginManager(const char* binroot);
+    static PluginManager* createInstance(const char* binroot, BspPluginContext* context);
+    static PluginManager* Instance();
+    static void destroyInstance();
+    
     virtual ~PluginManager();
 
     bool addPlugin(const char* filename);
-    
+    BspObject* getEntityInstance(const char* name, const std::map<std::string, std::string>& entityKeys);
+
+    BspPluginContext* getContext();
+
 private:
     /*! \brief */
     std::vector<tLoadedPlugin> mPlugins;

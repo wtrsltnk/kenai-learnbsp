@@ -17,53 +17,52 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPFACE_H
-#define	_BSPFACE_H
+#ifndef _COLLISION_H
+#define	_COLLISION_H
 
-#include "common/plane.h"
-#include "common/texture.h"
-#include "opengl.h"
-#include "types.h"
+#include "common/math3d.h"
+
+class BspLeaf;
+class BspFace;
+
+enum ePointClassification
+{
+    ClassBack = -1,
+    ClassCoincide,
+    ClassFront,
+};
+
 /*!
  * \brief
  */
-class BspFace
+class Collision
 {
 public:
-    BspFace();
-    virtual ~BspFace();
+    Collision();
+    Collision(BspLeaf* leaf, BspFace* face, const Vector3& point);
+    virtual ~Collision();
 
-    void render();
+    void setCollision(BspLeaf* leaf, BspFace* face, const Vector3& point);
     
-    void setPlane(float normal[3], float distance);
-    const Plane& getPlane() const;
+    BspLeaf* getCollidingLeaf() const;
+    BspFace* getCollidingFace() const;
+    const Vector3& getCollisionPoint() const;
+    bool isColliding() const;
 
-    void setVertices(int first, int count);
+    static Vector3 getIntersection(const Plane& plane, const Vector3& start, const Vector3& end);
+    static ePointClassification classifyPoint(const Plane& plane, const Vector3& point);
 
-    void setFlags(int flags);
-
-    void setTexture(Texture* texture);
-    const Texture* getTexture() const;
-
-    const Texture* setLightmap(const tBSPFace& bspFace, float min[2], float max[2], const unsigned char* lightData, float brightness = 0.5f);
-    
 private:
     /*! \brief */
-    Plane mPlane;
+    BspLeaf* mCollidingLeaf;
     /*! \brief */
-    int mFirstVertex;
+    BspFace* mCollidingFace;
     /*! \brief */
-    int mVertexCount;
+    Vector3 mCollisionPoint;
     /*! \brief */
-    GLuint mFaceType;
-    /*! \brief */
-    int mFaceFlags;
-    /*! \brief */
-    Texture* mTexture;
-    /*! \brief */
-    Texture* mLightmap;
+    bool mIsColliding;
 
 };
 
-#endif	/* _BSPFACE_H */
+#endif	/* _COLLISION_H */
 

@@ -21,6 +21,8 @@
       <itemPath>common/stringfunctions.h</itemPath>
       <itemPath>common/texture.cpp</itemPath>
       <itemPath>common/texture.h</itemPath>
+      <itemPath>common/thread.cpp</itemPath>
+      <itemPath>common/thread.h</itemPath>
       <itemPath>common/tokenizer.cpp</itemPath>
       <itemPath>common/tokenizer.h</itemPath>
       <itemPath>common/vector3.cpp</itemPath>
@@ -73,6 +75,8 @@
       <itemPath>BspModel.h</itemPath>
       <itemPath>BspNode.h</itemPath>
       <itemPath>BspWorld.h</itemPath>
+      <itemPath>Collision.h</itemPath>
+      <itemPath>PluginContext.h</itemPath>
       <itemPath>PluginManager.h</itemPath>
       <itemPath>TextureLoader.h</itemPath>
       <itemPath>opengl.h</itemPath>
@@ -89,6 +93,8 @@
       <itemPath>BspModel.cpp</itemPath>
       <itemPath>BspNode.cpp</itemPath>
       <itemPath>BspWorld.cpp</itemPath>
+      <itemPath>Collision.cpp</itemPath>
+      <itemPath>PluginContext.cpp</itemPath>
       <itemPath>PluginManager.cpp</itemPath>
       <itemPath>TextureLoader.cpp</itemPath>
       <itemPath>main.cpp</itemPath>

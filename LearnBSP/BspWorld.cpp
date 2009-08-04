@@ -19,6 +19,7 @@
 
 #include "BspWorld.h"
 #include "common/tokenizer.h"
+#include "PluginManager.h"
 #include <iostream>
 #include <string.h>
 
@@ -72,7 +73,7 @@ bool BspWorld::open(const Data& data, TextureLoader& textureLoader)
     this->mTextureUV = new IndexArray<2>;
     this->mLightmapUV = new IndexArray<2>;
 
-    if (!parseEntities(bsp, textureLoader))
+    if (!parseEntityData(bsp, textureLoader))
         return false;
 
     if (!parseTextures(bsp, textureLoader))
@@ -88,6 +89,9 @@ bool BspWorld::open(const Data& data, TextureLoader& textureLoader)
         return false;
 
     if (!parseModels(bsp))
+        return false;
+
+    if (!setupEntities())
         return false;
 
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -109,7 +113,7 @@ bool BspWorld::open(const Data& data, TextureLoader& textureLoader)
  * \param bsp
  * \return
  */
-bool BspWorld::parseEntities(BspData& bsp, TextureLoader& textureLoader)
+bool BspWorld::parseEntityData(BspData& bsp, TextureLoader& textureLoader)
 {
     Tokenizer tok(bsp.entityData, bsp.entitySize);
 
@@ -126,18 +130,6 @@ bool BspWorld::parseEntities(BspData& bsp, TextureLoader& textureLoader)
         {
             this->setWorldEntity(entity);
             textureLoader.setWadFiles(entity->getValue("wad"));
-        }
-
-        // Check if this entity is a brush entity
-        const char* strModel = entity->getValue("model");
-        if (strModel != NULL)
-        {
-            int model = 0;
-            sscanf(strModel, "*%d", &model);
-            if (model >= 0 && model < this->mModelCount)
-            {
-                this->mModels[model].setEntity(entity);
-            }
         }
 
         // Add the entity to the entity list
@@ -326,19 +318,33 @@ bool BspWorld::parseModels(BspData& bsp)
         {
             this->mModels[m].addFace(&this->mFaces[model.firstFace + f]);
         }
-        if (m > 0)
+    }
+    this->mHeadNode = &this->mNodes[bsp.models[0].headnode[0]];
+    return true;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+bool BspWorld::setupEntities()
+{
+    for (std::vector<BspEntity*>::const_iterator itr = this->mEntities.begin(); itr != this->mEntities.end(); ++itr)
+    {
+        const BspEntity* entity = *itr;
+        const char* classname = entity->getClassName();
+        BspObject* object = PluginManager::Instance()->getEntityInstance(classname, entity->getValues());
+        if (object != NULL)
         {
-            this->mModels[0].addModel(&this->mModels[m]);
-            for (int l = 0; l < this->mLeafCount; l++)
+            const BspMesh* mesh = object->getMesh();
+            if (mesh != NULL)
             {
-                BoundingBox modelBB = this->mModels[m].getBoundingBox();
-                Vector3 modelOrigin = this->mModels[m].getOrigin();
-                modelBB.offset(-modelOrigin.x(), -modelOrigin.y(), -modelOrigin.z());
-                BoundingBox leafBB = this->mLeafs[l].getBoundingBox();
-                if (leafBB.intersect(modelBB))
-                {
-                    this->mLeafs[l].addModel(&this->mModels[m]);
-                }
+                float mins[3], maxs[3];
+                mesh->getBoundingBox(mins, maxs);
+                BoundingBox bb;
+                bb.addPoint(mins);
+                bb.addPoint(maxs);
+                this->mHeadNode->addObject(object, bb);
             }
         }
     }
@@ -359,24 +365,24 @@ void BspWorld::setCamera(Camera* camera)
  */
 void BspWorld::render()
 {
-    const BspLeaf* leaf = this->mModels[0].getLeaf(mCamera->getPosition());
+    const BspLeaf* leaf = this->mHeadNode->getLeaf(mCamera->getPosition());
     static const BspLeaf* lastLeaf = leaf;
 
     if (lastLeaf != leaf)
     {
         this->mRenderModels.clear();
-        this->mModels[0].getHeadNode()->gatherVisibleModels(mCamera->getPosition(), this->mRenderModels);
+        // ToDo: fix this to support BspObjects instead of BspModels. Then add line here to gather Objects
     }
 
     if (leaf->getFaceCount() > 0)
     {
         glColor3f(1.0f, 1.0f, 1.0f);
-        this->mModels[0].getHeadNode()->render(mCamera->getPosition());
+        this->mHeadNode->render(mCamera->getPosition());
     }
     else
     {
         glColor3f(1.0f, 0.0f, 0.0f);
-        this->mModels[0].getHeadNode()->render();
+        this->mHeadNode->render();
     }
 
     for (std::set<BspModel*>::const_iterator model = this->mRenderModels.begin(); model != this->mRenderModels.end(); ++model)
