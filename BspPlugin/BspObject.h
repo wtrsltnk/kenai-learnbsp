@@ -20,6 +20,10 @@
 #ifndef _BSPOBJECT_H
 #define	_BSPOBJECT_H
 
+#include "BspPluginContext.h"
+#include <map>
+#include <string>
+
 /*!
  * \brief
  */
@@ -29,12 +33,13 @@ public:
     BspObject(const char* name, int type);
     virtual ~BspObject();
 
-    int getID();
-    const char* getName();
-    int getType();
+    int getID() const;
+    const char* getName() const;
+    int getType() const;
 
     virtual void render(double time) = 0;
-    virtual BspObject* clone() const = 0;
+    virtual BspObject* createInstance(const std::map<std::string, std::string>& entityKeys, BspPluginContext& context) = 0;
+    virtual const BspMesh* getMesh() const = 0;
     
 private:
     /*! \brief */

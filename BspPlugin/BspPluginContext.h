@@ -20,6 +20,10 @@
 #ifndef _BSPPLUGINCONTEXT_H
 #define	_BSPPLUGINCONTEXT_H
 
+#include "BspMesh.h"
+#include <map>
+#include <string>
+
 /*!
  * \brief
  */
@@ -28,9 +32,12 @@ class BspPluginContext
 public:
     BspPluginContext();
     virtual ~BspPluginContext();
-    
-private:
 
+    /*! \brief */
+    virtual BspMesh* getMesh(const char* meshname) = 0;
+    /*! \brief */
+    virtual BspMesh* getModel(int model, const std::map<std::string, std::string>& entityKeys) = 0;
+    
 };
 
 #endif	/* _BSPPLUGINCONTEXT_H */

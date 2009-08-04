@@ -17,47 +17,64 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPPLUGIN_H
-#define	_BSPPLUGIN_H
+#ifndef _BSPMESH_H
+#define	_BSPMESH_H
 
-#include "BspObject.h"
-#include "BspPluginContext.h"
 #include <map>
 #include <string>
 
 /*!
  * \brief
  */
-class BspPlugin
+class BspMesh
 {
 public:
-    BspPlugin(const char* name, BspPluginContext* context);
-    virtual ~BspPlugin();
+    BspMesh();
+    virtual ~BspMesh();
 
     /*! \brief */
-    virtual bool hasInstance(const char* name) const = 0;
+    virtual bool collides(float start[3], float end[3]) const = 0;
     /*! \brief */
-    virtual BspObject* getInstance(const char* name, const std::map<std::string, std::string>& entityKeys) = 0;
+    virtual void update(double time) = 0;
+    /*! \brief */
+    virtual void render() const = 0;
+    
+    /*! \brief */
+    void setSolid(bool solid);
+    /*! \brief */
+    bool isSolid() const;
 
-    const char* getName() const;
+    void setFxMode(int mode);
+    int getFxMode() const;
+
+    void setFxColor(float color[3]);
+    const float* getFxColor() const;
+
+    void setFxAmount(float amount);
+    float getFxAmount() const;
+    
+    void getBoundingBox(float mins[3], float maxs[3]) const;
+
+    void setEntity(const std::map<std::string, std::string>& entityKeys);
 
 protected:
-    /*! \brief */
-    char* mName;
-    /*! \brief */
-    BspPluginContext* mContext;
+    void setupShader() const;
 
+    /*! \brief */
+    bool mIsSolid;
+    /*! \brief */
+    int mFxMode;
+    /*! \brief */
+    float mFxColor[3];
+    /*! \brief */
+    float mFxAmount;
+    /*! \brief */
+    float mMins[3];
+    /*! \brief */
+    float mMaxs[3];
+
+    
 };
 
-/*!
- * \brief
- */
-typedef BspPlugin* tCreatePlugin(BspPluginContext*);
-
-/*!
- * \brief
- */
-typedef void tDestroyPlugin(BspPlugin*);
-
-#endif	/* _BSPPLUGIN_H */
+#endif	/* _BSPMESH_H */
 

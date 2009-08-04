@@ -45,7 +45,7 @@ BspObject::~BspObject()
  * \brief
  * \return
  */
-int BspObject::getID()
+int BspObject::getID() const
 {
     return this->mID;
 }
@@ -54,7 +54,7 @@ int BspObject::getID()
  * \brief
  * \return
  */
-const char* BspObject::getName()
+const char* BspObject::getName() const
 {
     return this->mName;
 }
@@ -63,7 +63,7 @@ const char* BspObject::getName()
  * \brief 
  * \return 
  */
-int BspObject::getType()
+int BspObject::getType() const
 {
     return this->mType;
 }

@@ -4,17 +4,15 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>BspMesh.h</itemPath>
       <itemPath>BspObject.h</itemPath>
       <itemPath>BspPlugin.h</itemPath>
       <itemPath>BspPluginContext.h</itemPath>
     </logicalFolder>
-    <logicalFolder name="ResourceFiles"
-                   displayName="Resource Files"
-                   projectFiles="true">
-    </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>BspMesh.cpp</itemPath>
       <itemPath>BspObject.cpp</itemPath>
       <itemPath>BspPlugin.cpp</itemPath>
       <itemPath>BspPluginContext.cpp</itemPath>
