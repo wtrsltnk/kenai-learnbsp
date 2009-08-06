@@ -28,7 +28,7 @@
 Plugin::Plugin(BspPluginContext* context)
     : BspPlugin("Basics", context)
 {
-    this->mObjects.push_back(new Wall("func_wall"));
+    this->mObjects.push_back(new Wall(*context, "func_wall"));
 }
 
 /*!

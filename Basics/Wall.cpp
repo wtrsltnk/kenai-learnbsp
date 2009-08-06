@@ -23,8 +23,8 @@
  * \brief
  * \param name
  */
-Wall::Wall(const char* name)
-    : BspObject(name, FUNC_WALL)
+Wall::Wall(BspPluginContext& context, const char* name)
+    : ShadedObject(context, name, FUNC_WALL)
 {
 }
 
@@ -33,7 +33,7 @@ Wall::Wall(const char* name)
  * \param orig
  */
 Wall::Wall(const Wall& orig)
-    : BspObject(orig.getName(), FUNC_WALL), mMesh(NULL)
+    : ShadedObject(orig.mContext, orig.getName(), FUNC_WALL), mMesh(NULL)
 {
 }
 
@@ -65,11 +65,17 @@ BspObject* Wall::createInstance(const std::map<std::string, std::string>& entity
 {
     Wall* wall = new Wall(*this);
 
+    setShading(entityKeys);
     std::string strModel = entityKeys.at(std::string("model"));
     int model;
     sscanf(strModel.c_str(), "*%d", &model);
-    wall->mMesh = context.getModel(model, entityKeys);
+    wall->mMesh = context.getModel(model);
 
+    if (entityKeys.find(std::string("origin")) != entityKeys.end())
+    {
+        std::string origin = entityKeys.at(std::string("origin"));
+        sscanf(origin.c_str(), "%f %f %f", &this->mOrigin[0], &this->mOrigin[1], &this->mOrigin[2]);
+    }
     return wall;
 }
 

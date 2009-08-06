@@ -20,14 +20,14 @@
 #ifndef _WALL_H
 #define	_WALL_H
 
-#include <BspObject.h>
+#include "ShadedObject.h"
 
 #define FUNC_WALL 1
 
-class Wall : public BspObject
+class Wall : public ShadedObject
 {
 public:
-    Wall(const char* name);
+    Wall(BspPluginContext& context, const char* name);
     Wall(const Wall& orig);
     virtual ~Wall();
     
