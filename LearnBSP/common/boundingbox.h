@@ -29,8 +29,8 @@ class BoundingBox
 {
 public:
     BoundingBox();
-    BoundingBox(float mins[3], float maxs[3]);
-    BoundingBox(short mins[3], short maxs[3]);
+    BoundingBox(const float mins[3], const float maxs[3]);
+    BoundingBox(const short mins[3], const short maxs[3]);
     BoundingBox(const BoundingBox& orig);
     virtual ~BoundingBox();
 

@@ -34,7 +34,7 @@ BoundingBox::BoundingBox()
  * \param mins
  * \param maxs
  */
-BoundingBox::BoundingBox(float mins[3], float maxs[3])
+BoundingBox::BoundingBox(const float mins[3], const float maxs[3])
 {
     for (int i = 0; i < 3; i++)
     {
@@ -48,7 +48,7 @@ BoundingBox::BoundingBox(float mins[3], float maxs[3])
  * \param mins
  * \param maxs
  */
-BoundingBox::BoundingBox(short mins[3], short maxs[3])
+BoundingBox::BoundingBox(const short mins[3], const short maxs[3])
 {
     for (int i = 0; i < 3; i++)
     {

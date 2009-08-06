@@ -253,27 +253,6 @@ const BoundingBox& BspNode::getBoundingBox() const
  * \brief
  * \param object
  */
-void BspNode::addObject(BspObject* object, const BoundingBox& bb)
+void BspNode::addObject(BspObject* object)
 {
-    bool foundChild = false;
-    if (this->mFront)
-    {
-        if (this->mFront->getBoundingBox().contains(bb))
-        {
-            foundChild = true;
-            this->mFront->addObject(object, bb);
-        }
-    }
-    if (this->mBack)
-    {
-        if (this->mBack->getBoundingBox().contains(bb))
-        {
-            foundChild = true;
-            this->mBack->addObject(object, bb);
-        }
-    }
-    if (foundChild == false)
-    {
-        this->mObjects.push_back(object);
-    }
 }

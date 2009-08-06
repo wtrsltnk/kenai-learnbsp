@@ -58,7 +58,7 @@ public:
     void setBoundingBox(const BoundingBox& bb);
     const BoundingBox& getBoundingBox() const;
 
-    void addObject(BspObject* object, const BoundingBox& bb);
+    void addObject(BspObject* object);
 
     int index;
 private:

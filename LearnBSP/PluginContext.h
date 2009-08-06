@@ -32,7 +32,7 @@ public:
     void setModels(int modelCount, BspModel* models);
     
     virtual BspMesh* getMesh(const char* meshname);
-    virtual BspMesh* getModel(int model, const std::map<std::string, std::string>& entityKeys);
+    virtual BspMesh* getModel(int model);
     
 private:
     /*! \brief */

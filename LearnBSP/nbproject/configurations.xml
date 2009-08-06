@@ -79,7 +79,6 @@
       <itemPath>PluginContext.h</itemPath>
       <itemPath>PluginManager.h</itemPath>
       <itemPath>TextureLoader.h</itemPath>
-      <itemPath>opengl.h</itemPath>
       <itemPath>types.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"

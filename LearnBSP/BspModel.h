@@ -49,9 +49,6 @@ public:
 
     void addFace(BspFace* face);
 
-    void setOrigin(Vector3 origin);
-    const Vector3& getOrigin() const;
-
     void setBoundingBox(const BoundingBox& bb);
     const BoundingBox& getBoundingBox() const;
 
@@ -60,8 +57,6 @@ private:
     BspNode* mHeadNode;
     /*! \brief */
     std::vector<BspFace*> mFaces;
-    /*! \brief */
-    Vector3 mOrigin;
     /*! \brief */
     BoundingBox mBB;
 

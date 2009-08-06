@@ -336,16 +336,7 @@ bool BspWorld::setupEntities()
         BspObject* object = PluginManager::Instance()->getEntityInstance(classname, entity->getValues());
         if (object != NULL)
         {
-            const BspMesh* mesh = object->getMesh();
-            if (mesh != NULL)
-            {
-                float mins[3], maxs[3];
-                mesh->getBoundingBox(mins, maxs);
-                BoundingBox bb;
-                bb.addPoint(mins);
-                bb.addPoint(maxs);
-                this->mHeadNode->addObject(object, bb);
-            }
+            this->mHeadNode->addObject(object);
         }
     }
     return true;

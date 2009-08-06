@@ -18,7 +18,7 @@
  */
 
 #include "camera.h"
-#include "../opengl.h"
+#include <opengl.h>
 #include "math3d.h"
 
 /*!

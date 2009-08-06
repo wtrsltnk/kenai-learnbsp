@@ -64,16 +64,10 @@ void BspModel::update(double time)
  */
 void BspModel::render() const
 {
-    glPushAttrib(GL_ENABLE_BIT);
-    setupShader();
-    glPushMatrix();
-    glTranslatef(this->mOrigin.x(), this->mOrigin.y(), this->mOrigin.z());
     for (std::vector<BspFace*>::const_iterator face = this->mFaces.begin(); face != this->mFaces.end(); ++face)
     {
         (*face)->render();
     }
-    glPopMatrix();
-    glPopAttrib();
 }
 
 /*!
@@ -118,24 +112,6 @@ const BspNode* BspModel::getHeadNode() const
 void BspModel::addFace(BspFace* face)
 {
     this->mFaces.push_back(face);
-}
-
-/*!
- * \brief
- * \param origin
- */
-void BspModel::setOrigin(Vector3 origin)
-{
-    this->mOrigin = origin;
-}
-
-/*!
- * \brief
- * \return
- */
-const Vector3& BspModel::getOrigin() const
-{
-    return this->mOrigin;
 }
 
 /*!

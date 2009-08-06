@@ -61,11 +61,10 @@ BspMesh* PluginContext::getMesh(const char* meshname)
  * \param model
  * \return
  */
-BspMesh* PluginContext::getModel(int model, const std::map<std::string, std::string>& entityKeys)
+BspMesh* PluginContext::getModel(int model)
 {
     if (model >= 0 && model < this->mModelCount)
     {
-        this->mModels[model].setEntity(entityKeys);
         return &this->mModels[model];
     }
     return NULL;
