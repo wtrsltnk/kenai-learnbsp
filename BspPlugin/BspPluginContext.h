@@ -21,8 +21,6 @@
 #define	_BSPPLUGINCONTEXT_H
 
 #include "BspMesh.h"
-#include <map>
-#include <string>
 
 /*!
  * \brief
@@ -36,7 +34,7 @@ public:
     /*! \brief */
     virtual BspMesh* getMesh(const char* meshname) = 0;
     /*! \brief */
-    virtual BspMesh* getModel(int model, const std::map<std::string, std::string>& entityKeys) = 0;
+    virtual BspMesh* getModel(int model) = 0;
     
 };
 

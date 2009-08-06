@@ -26,8 +26,8 @@ int BspObject::sIDCount = 0;
 /*!
  * \brief
  */
-BspObject::BspObject(const char* name, int type)
-        : mID(BspObject::sIDCount++), mType(type)
+BspObject::BspObject(BspPluginContext& context, const char* name, int type)
+        : mID(BspObject::sIDCount++), mType(type), mContext(context)
 {
     this->mName = new char[strlen(name) + 1];
     strcpy(this->mName, name);
@@ -66,4 +66,13 @@ const char* BspObject::getName() const
 int BspObject::getType() const
 {
     return this->mType;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const float* BspObject::getOrigin() const
+{
+    return this->mOrigin;
 }

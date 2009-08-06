@@ -20,9 +20,6 @@
 #ifndef _BSPMESH_H
 #define	_BSPMESH_H
 
-#include <map>
-#include <string>
-
 /*!
  * \brief
  */
@@ -44,31 +41,12 @@ public:
     /*! \brief */
     bool isSolid() const;
 
-    void setFxMode(int mode);
-    int getFxMode() const;
-
-    void setFxColor(float color[3]);
-    const float* getFxColor() const;
-
-    void setFxAmount(float amount);
-    float getFxAmount() const;
-
     const float* getMins() const;
     const float* getMaxs() const;
 
-    void setEntity(const std::map<std::string, std::string>& entityKeys);
-
 protected:
-    void setupShader() const;
-
     /*! \brief */
     bool mIsSolid;
-    /*! \brief */
-    int mFxMode;
-    /*! \brief */
-    float mFxColor[3];
-    /*! \brief */
-    float mFxAmount;
     /*! \brief */
     float mMins[3];
     /*! \brief */

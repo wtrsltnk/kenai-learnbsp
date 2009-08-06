@@ -8,6 +8,7 @@
       <itemPath>BspObject.h</itemPath>
       <itemPath>BspPlugin.h</itemPath>
       <itemPath>BspPluginContext.h</itemPath>
+      <itemPath>opengl.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"

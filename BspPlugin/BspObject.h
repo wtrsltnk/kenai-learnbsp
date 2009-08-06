@@ -30,16 +30,23 @@
 class BspObject
 {
 public:
-    BspObject(const char* name, int type);
+    BspObject(BspPluginContext& context, const char* name, int type);
     virtual ~BspObject();
 
     int getID() const;
     const char* getName() const;
     int getType() const;
+    const float* getOrigin() const;
 
     virtual void render(double time) = 0;
     virtual BspObject* createInstance(const std::map<std::string, std::string>& entityKeys, BspPluginContext& context) = 0;
     virtual const BspMesh* getMesh() const = 0;
+
+protected:
+    /*! \brief */
+    float mOrigin[3];
+    /*! \brief */
+    BspPluginContext& mContext;
     
 private:
     /*! \brief */
