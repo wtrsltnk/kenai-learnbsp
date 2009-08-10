@@ -32,6 +32,7 @@
 #include "BspData.h"
 #include "BspEntity.h"
 #include "types.h"
+#include <BspObject.h>
 #include <vector>
 #include <set>
 
@@ -82,6 +83,8 @@ private:
     Texture* mTextures;
     /*! \brief */
     std::vector<BspEntity*> mEntities;
+    /*! \brief */
+    std::vector<BspObject*> mObjects;
 
     /*! \brief */
     BspNode* mHeadNode;

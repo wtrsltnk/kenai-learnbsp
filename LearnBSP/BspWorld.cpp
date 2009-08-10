@@ -336,6 +336,7 @@ bool BspWorld::setupEntities()
         BspObject* object = PluginManager::Instance()->getEntityInstance(classname, entity->getValues());
         if (object != NULL)
         {
+            this->mObjects.push_back(object);
             this->mHeadNode->addObject(object);
         }
     }
@@ -375,12 +376,6 @@ void BspWorld::render()
         glColor3f(1.0f, 0.0f, 0.0f);
         this->mHeadNode->render();
     }
-
-    for (std::set<BspModel*>::const_iterator model = this->mRenderModels.begin(); model != this->mRenderModels.end(); ++model)
-    {
-        (*model)->render();
-    }
-
 }
 
 /*!
