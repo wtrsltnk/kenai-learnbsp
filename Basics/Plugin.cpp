@@ -19,6 +19,8 @@
 
 #include "Plugin.h"
 #include "Wall.h"
+#include "Illusionary.h"
+#include "Breakable.h"
 #include <string.h>
 
 /*!
@@ -29,6 +31,8 @@ Plugin::Plugin(BspPluginContext* context)
     : BspPlugin("Basics", context)
 {
     this->mObjects.push_back(new Wall(*context, "func_wall"));
+    this->mObjects.push_back(new Illusionary(*context, "func_illusionary"));
+    this->mObjects.push_back(new Breakable(*context, "func_breakable"));
 }
 
 /*!
