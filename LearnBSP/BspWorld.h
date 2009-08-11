@@ -32,6 +32,7 @@
 #include "BspData.h"
 #include "BspEntity.h"
 #include "types.h"
+#include "PluginContext.h"
 #include <BspObject.h>
 #include <vector>
 #include <set>
@@ -59,7 +60,11 @@ public:
     int getWaveHeight() const;
     int getMaxRange() const;
 
+    void setupContext(PluginContext& context);
+    bool setupEntities();
+    
 private:
+    /*! \brief */
     Camera* mCamera;
     /*! \brief */
     int mNodeCount;
@@ -117,7 +122,6 @@ private:
     bool parseLeafs(BspData& bsp);
     bool parseFaces(BspData& bsp);
     bool parseModels(BspData& bsp);
-    bool setupEntities();
     
     void setWorldEntity(BspEntity* world);
     void getFaceBounds(const tBSPFace& bspFace, const tBSPTexInfo& texinfo, BspData& bsp, float min[2], float max[2]);

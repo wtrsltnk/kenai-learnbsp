@@ -19,6 +19,7 @@
 
 #include "BspWorld.h"
 #include "common/tokenizer.h"
+#include "PluginContext.h"
 #include "PluginManager.h"
 #include <iostream>
 #include <string.h>
@@ -90,10 +91,7 @@ bool BspWorld::open(const Data& data, TextureLoader& textureLoader)
 
     if (!parseModels(bsp))
         return false;
-
-    if (!setupEntities())
-        return false;
-
+    
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, *this->mVertexIndices);
 
@@ -342,6 +340,14 @@ bool BspWorld::setupEntities()
     }
     return true;
 }
+/*!
+ * \brief
+ * \param contex
+ */
+void BspWorld::setupContext(PluginContext& context)
+{
+    context.setModels(this->mModelCount, this->mModels);
+}
 
 /*!
  * \brief
@@ -375,6 +381,10 @@ void BspWorld::render()
     {
         glColor3f(1.0f, 0.0f, 0.0f);
         this->mHeadNode->render();
+    }
+    for (std::vector<BspObject*>::iterator itr = this->mObjects.begin(); itr != this->mObjects.end(); ++itr)
+    {
+        (*itr)->render(1.0f);
     }
 }
 
