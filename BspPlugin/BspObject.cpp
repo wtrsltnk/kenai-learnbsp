@@ -76,3 +76,12 @@ const float* BspObject::getOrigin() const
 {
     return this->mOrigin;
 }
+
+/*!
+ * \brief
+ * \param time
+ */
+void BspObject::setNextThink(double time)
+{
+}
+

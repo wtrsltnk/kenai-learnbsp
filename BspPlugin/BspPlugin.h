@@ -24,6 +24,7 @@
 #include "BspPluginContext.h"
 #include <map>
 #include <string>
+#include <vector>
 
 /*!
  * \brief
@@ -34,10 +35,8 @@ public:
     BspPlugin(const char* name, BspPluginContext* context);
     virtual ~BspPlugin();
 
-    /*! \brief */
-    virtual bool hasInstance(const char* name) const = 0;
-    /*! \brief */
-    virtual BspObject* getInstance(const char* name, const std::map<std::string, std::string>& entityKeys) = 0;
+    virtual bool hasInstance(const char* name) const;
+    virtual BspObject* getInstance(const char* name, const std::map<std::string, std::string>& entityKeys);
 
     const char* getName() const;
 
@@ -46,6 +45,14 @@ protected:
     char* mName;
     /*! \brief */
     BspPluginContext* mContext;
+
+    void addObjectType(BspObject* object);
+    
+private:
+    /*! \brief */
+    std::vector<BspObject*> mObjectTypes;
+    /*! \brief */
+    std::vector<BspObject*> mInstances;
 
 };
 

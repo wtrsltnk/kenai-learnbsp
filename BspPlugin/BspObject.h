@@ -27,6 +27,24 @@
 /*!
  * \brief
  */
+class ThinkArgs
+{
+public:
+    virtual ~ThinkArgs() {}
+};
+
+/*!
+ * \brief
+ */
+class TouchArgs
+{
+public:
+    virtual ~TouchArgs() {}
+};
+
+/*!
+ * \brief
+ */
 class BspObject
 {
 public:
@@ -41,12 +59,18 @@ public:
     virtual void render(double time) = 0;
     virtual BspObject* createInstance(const std::map<std::string, std::string>& entityKeys, BspPluginContext& context) = 0;
     virtual const BspMesh* getMesh() const = 0;
+    virtual void onThink(ThinkArgs& args) = 0;
+    virtual void onTouch(TouchArgs& args) = 0;
 
+    virtual void preCache() { }
+    
 protected:
     /*! \brief */
     float mOrigin[3];
     /*! \brief */
     BspPluginContext& mContext;
+
+    void setNextThink(double time);
     
 private:
     /*! \brief */

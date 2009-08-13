@@ -37,6 +37,18 @@ BspPlugin::BspPlugin(const char* name, BspPluginContext* context)
 BspPlugin::~BspPlugin()
 {
     delete []this->mName;
+    while (!this->mObjectTypes.empty())
+    {
+        BspObject* obj = this->mObjectTypes.back();
+        delete obj;
+        this->mObjectTypes.pop_back();
+    }
+    while (!this->mInstances.empty())
+    {
+        BspObject* obj = this->mInstances.back();
+        delete obj;
+        this->mInstances.pop_back();
+    }
 }
 
 /*!
@@ -47,3 +59,50 @@ const char* BspPlugin::getName() const
 {
     return this->mName;
 }
+
+/*!
+ * \brief
+ * \param object
+ */
+void BspPlugin::addObjectType(BspObject* object)
+{
+    this->mObjectTypes.push_back(object);
+}
+
+/*!
+ * \brief
+ * \param name
+ * \return
+ */
+bool BspPlugin::hasInstance(const char* name) const
+{
+    for (std::vector<BspObject*>::const_iterator itr = this->mObjectTypes.begin(); itr != this->mObjectTypes.end(); ++itr)
+    {
+        BspObject* object = *itr;
+        if (strcasecmp(object->getName(), name) == 0)
+            return true;
+    }
+    return false;
+}
+
+/*!
+ * \brief
+ * \param name
+ * \return
+ */
+BspObject* BspPlugin::getInstance(const char* name, const std::map<std::string, std::string>& entityKeys)
+{
+    for (std::vector<BspObject*>::const_iterator itr = this->mObjectTypes.begin(); itr != this->mObjectTypes.end(); ++itr)
+    {
+        BspObject* object = *itr;
+        if (strcasecmp(object->getName(), name) == 0)
+        {
+            BspObject* instance = object->createInstance(entityKeys, *this->mContext);
+            this->mInstances.push_back(instance);
+            return instance;
+        }
+    }
+    return NULL;
+}
+
+
