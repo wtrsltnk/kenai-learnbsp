@@ -19,6 +19,7 @@
 
 #include "BspLeaf.h"
 #include "BspFace.h"
+#include <BspObject.h>
 #include "Collision.h"
 #include "common/renderoperations.h"
 #include <iostream>
@@ -54,6 +55,28 @@ void BspLeaf::render(bool renderPvs) const
         {
             const BspLeaf* leaf = *itr;
             leaf->render(false);
+        }
+    }
+}
+
+/*!
+ * \brief
+ * \param objects
+ * \param pvs
+ */
+void BspLeaf::gatherVisibleObjects(std::set<BspObject*>& objects, bool pvs) const
+{
+    for (std::set<BspObject*>::const_iterator object = this->mObjects.begin(); object != this->mObjects.end(); ++object)
+    {
+        objects.insert(*object);
+    }
+
+    if (pvs)
+    {
+        for (std::set<BspLeaf*>::const_iterator itr = this->mVisibleLeafs.begin(); itr != this->mVisibleLeafs.end(); ++itr)
+        {
+            const BspLeaf* leaf = *itr;
+            leaf->gatherVisibleObjects(objects, false);
         }
     }
 }
@@ -106,6 +129,14 @@ int BspLeaf::getFaceCount() const
 void BspLeaf::addVisibleLeaf(BspLeaf* leaf)
 {
     this->mVisibleLeafs.insert(leaf);
+}
+/*!
+ * \ brief
+ * \param object
+ */
+void BspLeaf::addObject(BspObject* object)
+{
+    this->mObjects.insert(object);
 }
 
 /*!

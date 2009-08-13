@@ -161,6 +161,16 @@
                         CC="${MAKE}  -f Makefile CONF=Debug clean"
                         OP="dist/Debug/GNU-Linux-x86/libbspplugin.a">
           </makeArtifact>
+          <makeArtifact PL="../BasicGame"
+                        CT="2"
+                        CN="Debug"
+                        AC="true"
+                        BL="true"
+                        WD="../BasicGame"
+                        BC="${MAKE}  -f Makefile CONF=Debug"
+                        CC="${MAKE}  -f Makefile CONF=Debug clean"
+                        OP="dist/Debug/GNU-Linux-x86/libBasicGame.so">
+          </makeArtifact>
         </requiredProjects>
       </compileType>
       <item path="GLee/GLee.c" ex="true" tool="0">
@@ -230,6 +240,16 @@
                         BC="${MAKE}  -f Makefile CONF=Release"
                         CC="${MAKE}  -f Makefile CONF=Release clean"
                         OP="dist/Release/GNU-Linux-x86/libBasics.so">
+          </makeArtifact>
+          <makeArtifact PL="../BasicGame"
+                        CT="2"
+                        CN="Release"
+                        AC="false"
+                        BL="true"
+                        WD="../BasicGame"
+                        BC="${MAKE}  -f Makefile CONF=Release"
+                        CC="${MAKE}  -f Makefile CONF=Release clean"
+                        OP="dist/Release/GNU-Linux-x86/libBasicGame.so">
           </makeArtifact>
         </requiredProjects>
       </compileType>

@@ -335,7 +335,7 @@ bool BspWorld::setupEntities()
         if (object != NULL)
         {
             this->mObjects.push_back(object);
-            this->mHeadNode->addObject(object);
+            this->mHeadNode->addObject(object, false);
         }
     }
     return true;
@@ -382,10 +382,18 @@ void BspWorld::render()
         glColor3f(1.0f, 0.0f, 0.0f);
         this->mHeadNode->render();
     }
-    for (std::vector<BspObject*>::iterator itr = this->mObjects.begin(); itr != this->mObjects.end(); ++itr)
+
+    std::set<BspObject*> objects;
+    this->mHeadNode->gatherVisibleObjects(objects, this->mCamera->getPosition());
+
+    for (std::set<BspObject*>::iterator itr = objects.begin(); itr != objects.end(); ++itr)
     {
         (*itr)->render(1.0f);
     }
+//    for (std::vector<BspObject*>::iterator itr = this->mObjects.begin(); itr != this->mObjects.end(); ++itr)
+//    {
+//        (*itr)->render(1.0f);
+//    }
 }
 
 /*!

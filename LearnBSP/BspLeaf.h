@@ -24,6 +24,7 @@
 #include <set>
 
 class BspFace;
+class BspObject;
 class Collision;
 
 /*!
@@ -36,6 +37,7 @@ public:
     virtual ~BspLeaf();
 
     void render(bool renderPvs = true) const;
+    void gatherVisibleObjects(std::set<BspObject*>& objects, bool pvs = true) const;
 
     Collision getCollision(const Vector3& start, const Vector3& end);
 
@@ -43,6 +45,7 @@ public:
     int getFaceCount() const;
 
     void addVisibleLeaf(BspLeaf* leaf);
+    void addObject(BspObject* object);
 
     void setBoundingBox(const BoundingBox& bb);
     const BoundingBox& getBoundingBox() const;
@@ -53,6 +56,8 @@ private:
     std::set<BspFace*> mFaces;
     /*! \brief  */
     std::set<BspLeaf*> mVisibleLeafs;
+    /*! \brief  */
+    std::set<BspObject*> mObjects;
     /*! \brief */
     BoundingBox mBB;
 

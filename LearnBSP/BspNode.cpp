@@ -91,6 +91,28 @@ void BspNode::render(const float point[3]) const
 
 /*!
  * \brief
+ * \param objects
+ * \param position
+ */
+void BspNode::gatherVisibleObjects(std::set<BspObject*>& objects, const float point[3]) const
+{
+    if (this->mLeaf != NULL)
+    {
+        this->mLeaf->gatherVisibleObjects(objects, true);
+    }
+    else
+    {
+        float distance = this->mSplit.distance(Vector3(point));
+
+        if (distance >= 0)
+            this->mFront->gatherVisibleObjects(objects, point);
+        else
+            this->mBack->gatherVisibleObjects(objects, point);
+    }
+}
+
+/*!
+ * \brief
  * \param start
  * \param end
  * \return
@@ -253,6 +275,37 @@ const BoundingBox& BspNode::getBoundingBox() const
  * \brief
  * \param object
  */
-void BspNode::addObject(BspObject* object)
+void BspNode::addObject(BspObject* object, bool addToLeaf)
 {
+    if (this->mLeaf != NULL)
+    {
+        this->mObjects.push_back(object);
+    }
+    else
+    {
+        if (addToLeaf)
+        {
+            this->mFront->addObject(object, true);
+            this->mBack->addObject(object, true);
+        }
+        else
+        {
+            BoundingBox bb(object->getMesh()->getMins(), object->getMesh()->getMaxs());
+
+            int intersect = bb.intersect(this->mSplit);
+
+            if (intersect < 0)
+                this->mBack->addObject(object);
+
+            if (intersect > 0)
+                this->mFront->addObject(object);
+
+            if (intersect == 0)
+            {
+                this->mObjects.push_back(object);
+                this->mBack->addObject(object, true);
+                this->mFront->addObject(object, true);
+            }
+        }
+    }
 }
