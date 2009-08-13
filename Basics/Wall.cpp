@@ -50,6 +50,7 @@ Wall::~Wall()
  */
 void Wall::render(double time)
 {
+    this->setupShader();
     if (this->mMesh != NULL)
     {
         this->mMesh->render();
@@ -65,7 +66,7 @@ BspObject* Wall::createInstance(const std::map<std::string, std::string>& entity
 {
     Wall* wall = new Wall(*this);
 
-    setShading(entityKeys);
+    wall->setShading(entityKeys);
     std::string strModel = entityKeys.at(std::string("model"));
     int model;
     sscanf(strModel.c_str(), "*%d", &model);
@@ -74,7 +75,7 @@ BspObject* Wall::createInstance(const std::map<std::string, std::string>& entity
     if (entityKeys.find(std::string("origin")) != entityKeys.end())
     {
         std::string origin = entityKeys.at(std::string("origin"));
-        sscanf(origin.c_str(), "%f %f %f", &this->mOrigin[0], &this->mOrigin[1], &this->mOrigin[2]);
+        sscanf(origin.c_str(), "%f %f %f", &wall->mOrigin[0], &wall->mOrigin[1], &wall->mOrigin[2]);
     }
     return wall;
 }

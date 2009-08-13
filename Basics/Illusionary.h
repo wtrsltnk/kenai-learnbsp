@@ -22,8 +22,11 @@
 
 #include "ShadedObject.h"
 
-#define FUNC_ILLUSIONARY 1
+#define FUNC_ILLUSIONARY 2
 
+/*!
+ * \brief
+ */
 class Illusionary : public ShadedObject
 {
 public:
@@ -34,8 +37,11 @@ public:
     virtual void render(double time);
     virtual BspObject* createInstance(const std::map<std::string, std::string>& entityKeys, BspPluginContext& context);
     virtual const BspMesh* getMesh() const;
+    virtual void onThink(ThinkArgs& args) {}
+    virtual void onTouch(TouchArgs& args) {}
 
 private:
+    /*! \brief */
     BspMesh* mMesh;
 
 };

@@ -19,20 +19,31 @@
 
 #include "Illusionary.h"
 
+/*!
+ * \brief
+ * \param contex
+ * \param name
+ */
 Illusionary::Illusionary(BspPluginContext& context, const char* name)
     : ShadedObject(context, name, FUNC_ILLUSIONARY)
 {
 }
 
+/*!
+ * \brief
+ * \param orig
+ */
 Illusionary::Illusionary(const Illusionary& orig)
     : ShadedObject(orig.mContext, orig.getName(), FUNC_ILLUSIONARY), mMesh(NULL)
 {
 }
 
+/*!
+ * \brief
+ */
 Illusionary::~Illusionary()
 {
 }
-
 
 /*!
  * \brief
@@ -40,6 +51,7 @@ Illusionary::~Illusionary()
  */
 void Illusionary::render(double time)
 {
+    this->setupShader();
     if (this->mMesh != NULL)
     {
         this->mMesh->render();
@@ -55,7 +67,7 @@ BspObject* Illusionary::createInstance(const std::map<std::string, std::string>&
 {
     Illusionary* illusionary = new Illusionary(*this);
 
-    setShading(entityKeys);
+    illusionary->setShading(entityKeys);
     std::string strModel = entityKeys.at(std::string("model"));
     int model;
     sscanf(strModel.c_str(), "*%d", &model);
@@ -64,7 +76,7 @@ BspObject* Illusionary::createInstance(const std::map<std::string, std::string>&
     if (entityKeys.find(std::string("origin")) != entityKeys.end())
     {
         std::string origin = entityKeys.at(std::string("origin"));
-        sscanf(origin.c_str(), "%f %f %f", &this->mOrigin[0], &this->mOrigin[1], &this->mOrigin[2]);
+        sscanf(origin.c_str(), "%f %f %f", &illusionary->mOrigin[0], &illusionary->mOrigin[1], &illusionary->mOrigin[2]);
     }
     return illusionary;
 }

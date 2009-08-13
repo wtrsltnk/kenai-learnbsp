@@ -52,6 +52,7 @@ Breakable::~Breakable()
  */
 void Breakable::render(double time)
 {
+    this->setupShader();
     if (this->mMesh != NULL)
     {
         this->mMesh->render();
@@ -67,7 +68,7 @@ BspObject* Breakable::createInstance(const std::map<std::string, std::string>& e
 {
     Breakable* breakable = new Breakable(*this);
 
-    setShading(entityKeys);
+    breakable->setShading(entityKeys);
     std::string strModel = entityKeys.at(std::string("model"));
     int model;
     sscanf(strModel.c_str(), "*%d", &model);
@@ -76,7 +77,7 @@ BspObject* Breakable::createInstance(const std::map<std::string, std::string>& e
     if (entityKeys.find(std::string("origin")) != entityKeys.end())
     {
         std::string origin = entityKeys.at(std::string("origin"));
-        sscanf(origin.c_str(), "%f %f %f", &this->mOrigin[0], &this->mOrigin[1], &this->mOrigin[2]);
+        sscanf(origin.c_str(), "%f %f %f", &breakable->mOrigin[0], &breakable->mOrigin[1], &breakable->mOrigin[2]);
     }
     return breakable;
 }

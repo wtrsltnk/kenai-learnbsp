@@ -17,21 +17,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PLUGIN_H
-#define	_PLUGIN_H
+#ifndef _WORLDSPAWN_H
+#define	_WORLDSPAWN_H
 
-#include <BspPlugin.h>
+#include <BspObject.h>
+
+#define WORLDSPAWN 1000
 
 /*!
  * \brief
  */
-class Plugin : public BspPlugin
+class WorldSpawn : public BspObject
 {
 public:
-    Plugin(BspPluginContext* context);
-    virtual ~Plugin();
+    WorldSpawn(BspPluginContext& context, const char* name);
+    WorldSpawn(const WorldSpawn& orig);
+    virtual ~WorldSpawn();
+
+    virtual void render(double time);
+    virtual BspObject* createInstance(const std::map<std::string, std::string>& entityKeys, BspPluginContext& context);
+    virtual const BspMesh* getMesh() const;
+    virtual void onThink(ThinkArgs& args) {}
+    virtual void onTouch(TouchArgs& args) {}
+
+private:
+    BspMesh* mMesh;
 
 };
 
-#endif	/* _PLUGIN_H */
+#endif	/* _WORLDSPAWN_H */
 

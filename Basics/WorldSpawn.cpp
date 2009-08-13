@@ -17,49 +17,62 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Plugin.h"
-#include "Wall.h"
-#include "Illusionary.h"
-#include "Breakable.h"
 #include "WorldSpawn.h"
-#include <string.h>
-
-/*!
- * \brief
- * \param contex
- */
-Plugin::Plugin(BspPluginContext* context)
-    : BspPlugin("Basics", context)
-{
-    this->addObjectType(new WorldSpawn(*context, "worldspawn"));
-    this->addObjectType(new Wall(*context, "func_wall"));
-    this->addObjectType(new Illusionary(*context, "func_illusionary"));
-    this->addObjectType(new Breakable(*context, "func_breakable"));
-}
-
-/*!
- * \brief
- */
-Plugin::~Plugin()
-{
-}
 
 /*!
  * \brief
  * \param context
- * \return
+ * \param name
  */
-extern "C" BspPlugin* createPlugin(BspPluginContext* context)
+WorldSpawn::WorldSpawn(BspPluginContext& context, const char* name)
+    : BspObject(context, name, WORLDSPAWN)
 {
-    return new Plugin(context);
 }
 
 /*!
  * \brief
- * \param plugin
+ * \param orig
  */
-extern "C" void destroyPlugin(BspPlugin* plugin)
+WorldSpawn::WorldSpawn(const WorldSpawn& orig)
+    : BspObject(orig.mContext, orig.getName(), WORLDSPAWN)
 {
-    if (plugin != NULL)
-        delete plugin;
 }
+
+/*!
+ * \brief
+ */
+WorldSpawn::~WorldSpawn()
+{
+}
+
+/*!
+ * \brief
+ * \param time
+ */
+void WorldSpawn::render(double time)
+{
+}
+
+/*!
+ * \brief
+ * \param entityKeys
+ * \return
+ */
+BspObject* WorldSpawn::createInstance(const std::map<std::string, std::string>& entityKeys, BspPluginContext& context)
+{
+    WorldSpawn* worldspawn = new WorldSpawn(this->mContext, this->getName());
+
+    worldspawn->mMesh = context.getModel(0);
+
+    return worldspawn;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const BspMesh* WorldSpawn::getMesh() const
+{
+    return NULL;
+}
+
