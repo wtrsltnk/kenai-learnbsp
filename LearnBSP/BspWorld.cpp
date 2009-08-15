@@ -28,8 +28,8 @@
  * \brief
  */
 BspWorld::BspWorld()
-    : mLeafCount(0), mLeafs(NULL), mNodeCount(0), mNodes(NULL), mFaceCount(0), mFaces(NULL),
-        mModelCount(0), mModels(NULL), mTextureCount(0), mTextures(NULL), mWorldEntity(NULL),
+    : mLeafCount(0), mLeafs(NULL), mFaceCount(0), mFaces(NULL), mModelCount(0), mModels(NULL),
+        mTextureCount(0), mTextures(NULL), mWorldEntity(NULL),
         mVertexIndices(NULL), mTextureUV(NULL), mLightmapUV(NULL),
         mTitle(NULL), mSkyName(NULL), mWad(NULL), mWaveHeight(5), mMaxRange(4096)
 {
@@ -56,14 +56,12 @@ bool BspWorld::open(const Data& data, TextureLoader& textureLoader)
     BspData bsp(data);
 
     // Load the data structtures from the BSP file
-    this->mNodeCount = bsp.nodeCount;
     this->mLeafCount = bsp.leafCount;
     this->mFaceCount = bsp.faceCount;
     this->mModelCount = bsp.modelCount;
     this->mTextureCount = ((int*)bsp.textureData)[0];
 
     // Create the Object instances fro nodes, leafs and faces
-    this->mNodes = new BspNode[this->mNodeCount];
     this->mLeafs = new BspLeaf[this->mLeafCount];
     this->mFaces = new BspFace[this->mFaceCount];
     this->mModels = new BspModel[this->mModelCount];
@@ -78,9 +76,6 @@ bool BspWorld::open(const Data& data, TextureLoader& textureLoader)
         return false;
 
     if (!parseTextures(bsp, textureLoader))
-        return false;
-
-    if (!parseNodes(bsp))
         return false;
 
     if (!parseLeafs(bsp))
@@ -154,41 +149,6 @@ bool BspWorld::parseTextures(BspData& bsp, TextureLoader& textureLoader)
         this->mTextures[t].upload();
     }
 
-    return true;
-}
-
-/*!
- * \brief
- * \param bsp
- * \return
- */
-bool BspWorld::parseNodes(BspData& bsp)
-{
-    for (int n = 0; n < this->mNodeCount; n++)
-    {
-        tBSPNode& node = bsp.nodes[n];
-        tBSPPlane& plane = bsp.planes[node.planeIndex];
-        this->mNodes[n].index = n;
-        this->mNodes[n].setPlane(plane.normal, plane.distance);
-        this->mNodes[n].setBoundingBox(BoundingBox(node.mins, node.maxs));
-        BspNode* front = NULL;
-        BspNode* back = NULL;
-        if (node.children[0] >= 0)
-            front = &this->mNodes[node.children[0]];
-        else
-        {
-            BspLeaf* leaf = &this->mLeafs[-(node.children[0] + 1)];
-            front = new BspNode(leaf);
-        }
-        if (node.children[1] >= 0)
-            back = &this->mNodes[node.children[1]];
-        else
-        {
-            BspLeaf* leaf = &this->mLeafs[-(node.children[1] + 1)];
-            back = new BspNode(leaf);
-        }
-        this->mNodes[n].setChildren(front, back);
-    }
     return true;
 }
 
@@ -310,15 +270,49 @@ bool BspWorld::parseModels(BspData& bsp)
     for (int m = 0; m < bsp.modelCount; m++)
     {
         tBSPModel& model = bsp.models[m];
-        this->mModels[m].setHeadNode(&this->mNodes[model.headnode[0]]);
+        this->mModels[m].setHeadNode(createNode(bsp.nodes[model.headnode[0]], bsp));
         this->mModels[m].setBoundingBox(BoundingBox(model.mins, model.maxs));
         for (int f = 0; f < model.faceCount; f++)
         {
             this->mModels[m].addFace(&this->mFaces[model.firstFace + f]);
         }
     }
-    this->mHeadNode = &this->mNodes[bsp.models[0].headnode[0]];
+    this->mHeadNode = this->mModels[0].getHeadNode();
     return true;
+}
+
+/*!
+ * \brief
+ * \param node
+ * \param bsp
+ * \return
+ */
+BspNode* BspWorld::createNode(const tBSPNode& node, BspData& bsp)
+{
+    BspNode* result = new BspNode();
+
+    // Setup front and back node
+    BspNode* front = NULL;
+    BspNode* back = NULL;
+    if (node.children[0] > 0)
+        front = createNode(bsp.nodes[node.children[0]], bsp);
+    else
+        front = new BspNode(&this->mLeafs[-(node.children[0] + 1)]);
+    if (node.children[1] > 0)
+        back = createNode(bsp.nodes[node.children[1]], bsp);
+    else
+        back = new BspNode(&this->mLeafs[-(node.children[1] + 1)]);
+    result->setChildren(front, back);
+
+    // Setup splitting plane
+    const tBSPPlane& plane = bsp.planes[node.planeIndex];
+    result->setPlane(plane.normal, plane.distance);
+
+    // Setup bounding box
+    BoundingBox bb = BoundingBox(node.mins, node.maxs);
+    result->setBoundingBox(bb);
+    
+    return result;
 }
 
 /*!
@@ -413,11 +407,6 @@ void BspWorld::renderAllFaces() const
  */
 void BspWorld::close()
 {
-    if (this->mNodes != NULL)
-        delete []this->mNodes;
-    this->mNodes = NULL;
-    this->mNodeCount = 0;
-
     if (this->mLeafs != NULL)
         delete []this->mLeafs;
     this->mLeafs = NULL;

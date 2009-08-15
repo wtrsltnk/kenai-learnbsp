@@ -66,10 +66,7 @@ public:
 private:
     /*! \brief */
     Camera* mCamera;
-    /*! \brief */
-    int mNodeCount;
-    /*! \brief */
-    BspNode* mNodes;
+    
     /*! \brief */
     int mLeafCount;
     /*! \brief */
@@ -118,10 +115,10 @@ private:
 
     bool parseEntityData(BspData& bsp, TextureLoader& textureLoader);
     bool parseTextures(BspData& bsp, TextureLoader& textureLoader);
-    bool parseNodes(BspData& bsp);
     bool parseLeafs(BspData& bsp);
     bool parseFaces(BspData& bsp);
     bool parseModels(BspData& bsp);
+    BspNode* createNode(const tBSPNode& node, BspData& bsp);
     
     void setWorldEntity(BspEntity* world);
     void getFaceBounds(const tBSPFace& bspFace, const tBSPTexInfo& texinfo, BspData& bsp, float min[2], float max[2]);

@@ -38,6 +38,8 @@ BspModel::BspModel()
  */
 BspModel::~BspModel()
 {
+    if (this->mHeadNode != NULL)
+        delete this->mHeadNode;
 }
 
 /*!
@@ -76,7 +78,7 @@ void BspModel::render() const
  */
 const BspLeaf* BspModel::getLeaf(const float position[3]) const
 {
-    const BspNode* node = this->getHeadNode();
+    const BspNode* node = this->mHeadNode;
     const BspNode* child = node->getChild(position);
 
     while (child != NULL)
@@ -100,7 +102,7 @@ void BspModel::setHeadNode(BspNode* node)
  * \brief
  * \return
  */
-const BspNode* BspModel::getHeadNode() const
+BspNode* BspModel::getHeadNode()
 {
     return this->mHeadNode;
 }

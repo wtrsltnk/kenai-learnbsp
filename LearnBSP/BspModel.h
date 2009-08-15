@@ -45,7 +45,7 @@ public:
     const BspLeaf* getLeaf(const float position[3]) const;
 
     void setHeadNode(BspNode* node);
-    const BspNode* getHeadNode() const;
+    BspNode* getHeadNode();
 
     void addFace(BspFace* face);
 

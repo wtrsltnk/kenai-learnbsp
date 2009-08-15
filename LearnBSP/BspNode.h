@@ -45,7 +45,7 @@ public:
 
     Collision getCollision(const Vector3& start, const Vector3& end);
 
-    void setPlane(float normal[3], float distance);
+    void setPlane(const float normal[3], float distance);
     const Plane& getPlane() const;
 
     void setChildren(BspNode* front, BspNode* back);

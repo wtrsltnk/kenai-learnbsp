@@ -50,6 +50,11 @@ BspNode::BspNode(BspLeaf* leaf)
  */
 BspNode::~BspNode()
 {
+    if (this->mFront != NULL)
+        delete this->mFront;
+
+    if (this->mBack != NULL)
+        delete this->mBack;
 }
 
 /*!
@@ -153,7 +158,7 @@ Collision BspNode::getCollision(const Vector3& start, const Vector3& end)
  * \param normal
  * \param distance
  */
-void BspNode::setPlane(float normal[3], float distance)
+void BspNode::setPlane(const float normal[3], float distance)
 {
     this->mSplit = Plane(normal, distance);
 }
