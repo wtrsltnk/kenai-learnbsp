@@ -72,12 +72,12 @@
       <itemPath>BspEntity.h</itemPath>
       <itemPath>BspFace.h</itemPath>
       <itemPath>BspLeaf.h</itemPath>
+      <itemPath>BspMesh.h</itemPath>
       <itemPath>BspModel.h</itemPath>
       <itemPath>BspNode.h</itemPath>
+      <itemPath>BspObject.h</itemPath>
       <itemPath>BspWorld.h</itemPath>
       <itemPath>Collision.h</itemPath>
-      <itemPath>PluginContext.h</itemPath>
-      <itemPath>PluginManager.h</itemPath>
       <itemPath>TextureLoader.h</itemPath>
       <itemPath>types.h</itemPath>
     </logicalFolder>
@@ -89,12 +89,12 @@
       <itemPath>BspEntity.cpp</itemPath>
       <itemPath>BspFace.cpp</itemPath>
       <itemPath>BspLeaf.cpp</itemPath>
+      <itemPath>BspMesh.cpp</itemPath>
       <itemPath>BspModel.cpp</itemPath>
       <itemPath>BspNode.cpp</itemPath>
+      <itemPath>BspObject.cpp</itemPath>
       <itemPath>BspWorld.cpp</itemPath>
       <itemPath>Collision.cpp</itemPath>
-      <itemPath>PluginContext.cpp</itemPath>
-      <itemPath>PluginManager.cpp</itemPath>
       <itemPath>TextureLoader.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
@@ -114,11 +114,6 @@
         <dependencyChecking>false</dependencyChecking>
       </toolsSet>
       <compileType>
-        <ccTool>
-          <incDir>
-            <pElem>../BspPlugin</pElem>
-          </incDir>
-        </ccTool>
         <linkerTool>
           <linkerLibItems>
             <linkerLibLibItem>glfw</linkerLibLibItem>
@@ -126,18 +121,6 @@
             <linkerLibLibItem>pthread</linkerLibLibItem>
             <linkerLibLibItem>Xrandr</linkerLibLibItem>
             <linkerLibFileItem>lib/libz.a</linkerLibFileItem>
-            <linkerLibProjectItem>
-              <makeArtifact PL="../BspPlugin"
-                            CT="3"
-                            CN="Debug"
-                            AC="true"
-                            BL="true"
-                            WD="../BspPlugin"
-                            BC="${MAKE}  -f Makefile CONF=Debug"
-                            CC="${MAKE}  -f Makefile CONF=Debug clean"
-                            OP="dist/Debug/GNU-Linux-x86/libbspplugin.a">
-              </makeArtifact>
-            </linkerLibProjectItem>
           </linkerLibItems>
         </linkerTool>
         <requiredProjects>

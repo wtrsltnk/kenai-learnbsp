@@ -18,14 +18,12 @@
  */
 
 #include "common/vector3.h"
-
-
+#include "common/plane.h"
 #include "BspNode.h"
 #include "BspLeaf.h"
 #include "BspModel.h"
+#include "BspObject.h"
 #include "Collision.h"
-#include "common/plane.h"
-#include <BspObject.h>
 #include <iostream>
 
 /*!

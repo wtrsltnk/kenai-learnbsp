@@ -17,56 +17,71 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "PluginContext.h"
-#include <stdlib.h>
+#include "BspObject.h"
+#include <string.h>
+
+/*! \brief */
+int BspObject::sIDCount = 0;
 
 /*!
  * \brief
  */
-PluginContext::PluginContext()
-    : mModelCount(0), mModels(NULL)
+BspObject::BspObject(const char* name, int type)
+        : mID(BspObject::sIDCount++), mType(type)
 {
+    this->mName = new char[strlen(name) + 1];
+    strcpy(this->mName, name);
 }
 
 /*!
  * \brief
  */
-PluginContext::~PluginContext()
+BspObject::~BspObject()
 {
+    delete []this->mName;
 }
 
 /*!
  * \brief
- * \param modelCount
- * \param models
- */
-void PluginContext::setModels(int modelCount, BspModel* models)
-{
-    this->mModelCount = modelCount;
-    this->mModels = models;
-}
-
-/*!
- * \brief
- * \param meshname
  * \return
  */
-BspMesh* PluginContext::getMesh(const char* meshname)
+int BspObject::getID() const
 {
-    return NULL;
+    return this->mID;
 }
 
 /*!
  * \brief
- * \param model
  * \return
  */
-BspMesh* PluginContext::getModel(int model)
+const char* BspObject::getName() const
 {
-    if (model >= 0 && model < this->mModelCount)
-    {
-        return &this->mModels[model];
-    }
-    return NULL;
+    return this->mName;
+}
+
+/*!
+ * \brief 
+ * \return 
+ */
+int BspObject::getType() const
+{
+    return this->mType;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+const float* BspObject::getOrigin() const
+{
+    return this->mOrigin;
+}
+
+/*!
+ * \brief
+ * \param time
+ */
+void BspObject::setNextThink(double time)
+{
 }
 

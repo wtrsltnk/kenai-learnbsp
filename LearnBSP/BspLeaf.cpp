@@ -19,7 +19,7 @@
 
 #include "BspLeaf.h"
 #include "BspFace.h"
-#include <BspObject.h>
+#include "BspObject.h"
 #include "Collision.h"
 #include "common/renderoperations.h"
 #include <iostream>

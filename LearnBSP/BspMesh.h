@@ -17,30 +17,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _PLUGINCONTEXT_H
-#define	_PLUGINCONTEXT_H
+#ifndef _BSPMESH_H
+#define	_BSPMESH_H
 
-#include <BspPluginContext.h>
-#include "BspModel.h"
-
-class PluginContext : public BspPluginContext
+/*!
+ * \brief
+ */
+class BspMesh
 {
 public:
-    PluginContext();
-    virtual ~PluginContext();
+    BspMesh();
+    virtual ~BspMesh();
 
-    void setModels(int modelCount, BspModel* models);
-    
-    virtual BspMesh* getMesh(const char* meshname);
-    virtual BspMesh* getModel(int model);
-    
-private:
     /*! \brief */
-    int mModelCount;
+    virtual bool collides(float start[3], float end[3]) const = 0;
     /*! \brief */
-    BspModel* mModels;
+    virtual void update(double time) = 0;
+    /*! \brief */
+    virtual void render() const = 0;
+    
+    /*! \brief */
+    void setSolid(bool solid);
+    /*! \brief */
+    bool isSolid() const;
 
+    const float* getMins() const;
+    const float* getMaxs() const;
+
+protected:
+    /*! \brief */
+    bool mIsSolid;
+    /*! \brief */
+    float mMins[3];
+    /*! \brief */
+    float mMaxs[3];
+
+    
 };
 
-#endif	/* _PLUGINCONTEXT_H */
+#endif	/* _BSPMESH_H */
 

@@ -18,7 +18,7 @@
  */
 
 #include "font.h"
-#include <opengl.h>
+#include "opengl.h"
 #include <string.h>
 #include <stdarg.h>
 #include <stdio.h>

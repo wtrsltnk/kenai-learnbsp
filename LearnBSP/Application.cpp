@@ -33,8 +33,6 @@ Application::Application(int width, int height)
     Application::sCurrent = this;
     glfwInit();
     this->mFileSystem = new fs::FileSystem("./data");
-    this->mContext = new PluginContext();
-    PluginManager::createInstance("./data/bin", this->mContext);
 }
 
 /*!
@@ -42,8 +40,6 @@ Application::Application(int width, int height)
  */
 Application::~Application()
 {
-    PluginManager::destroyInstance();
-    delete this->mContext;
     delete this->mFileSystem;
     glfwTerminate();
 }
@@ -66,7 +62,6 @@ bool Application::initialize()
         this->mWorld = new BspWorld();
         this->mWorld->open(data, textureLoader);
         this->mWorld->setCamera(&this->mCamera);
-        this->mWorld->setupContext(*this->mContext);
         this->mWorld->setupEntities();
         this->setPerspective(45.0f, 0.1f, this->mWorld->getMaxRange());
     }

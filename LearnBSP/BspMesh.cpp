@@ -17,50 +17,55 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPMODEL_H
-#define	_BSPMODEL_H
-
-#include "common/boundingbox.h"
 #include "BspMesh.h"
-#include <vector>
-
-class BspFace;
-class BspNode;
-class BspLeaf;
-class BspEntity;
 
 /*!
  * \brief
  */
-class BspModel : public BspMesh
+BspMesh::BspMesh()
+    : mIsSolid(false)
 {
-public:
-    BspModel();
-    virtual ~BspModel();
+}
 
-    virtual bool collides(float start[3], float end[3]) const;
-    virtual void update(double time);
-    virtual void render() const;
+/*!
+ * \brief
+ */
+BspMesh::~BspMesh()
+{
+}
 
-    const BspLeaf* getLeaf(const float position[3]) const;
+/*!
+ * \brief
+ * \param solid
+ */
+void BspMesh::setSolid(bool solid)
+{
+    this->mIsSolid = solid;
+}
 
-    void setHeadNode(BspNode* node);
-    BspNode* getHeadNode();
+/*!
+ * \brief
+ * \return
+ */
+bool BspMesh::isSolid() const
+{
+    return this->mIsSolid;
+}
 
-    void addFace(BspFace* face);
+/*!
+ * \brief
+ * \return
+ */
+const float* BspMesh::getMins() const
+{
+    return this->mMins;
+}
 
-    void setBoundingBox(const BoundingBox& bb);
-    const BoundingBox& getBoundingBox() const;
-
-private:
-    /*! \brief */
-    BspNode* mHeadNode;
-    /*! \brief */
-    std::vector<BspFace*> mFaces;
-    /*! \brief */
-    BoundingBox mBB;
-
-};
-
-#endif	/* _BSPMODEL_H */
-
+/*!
+ * \brief
+ * \return
+ */
+const float* BspMesh::getMaxs() const
+{
+    return this->mMaxs;
+}

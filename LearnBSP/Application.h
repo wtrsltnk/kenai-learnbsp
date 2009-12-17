@@ -21,10 +21,8 @@
 #define	_APPLICATION_H
 
 #include "common/camera.h"
-#include "opengl.h"
+#include "common/opengl.h"
 #include "BspWorld.h"
-#include "PluginManager.h"
-#include "PluginContext.h"
 #include "fs/FileSystem.h"
 
 /*!
@@ -63,10 +61,6 @@ private:
     Camera mCamera;
     /*! \brief */
     BspWorld* mWorld;
-    /*! \ brief */
-    PluginManager* mPlugins;
-    /*! \ brief */
-    PluginContext* mContext;
     /*! \brief */
     fs::FileSystem* mFileSystem;
 

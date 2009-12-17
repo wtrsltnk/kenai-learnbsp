@@ -17,53 +17,70 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPFACE_H
-#define	_BSPFACE_H
+#ifndef _BSPOBJECT_H
+#define	_BSPOBJECT_H
 
-#include "common/plane.h"
-#include "common/texture.h"
-#include "common/opengl.h"
-#include "types.h"
+#include <map>
+#include <string>
+#include "BspMesh.h"
+
 /*!
  * \brief
  */
-class BspFace
+class ThinkArgs
 {
 public:
-    BspFace();
-    virtual ~BspFace();
+    virtual ~ThinkArgs() {}
+};
 
-    void render();
+/*!
+ * \brief
+ */
+class TouchArgs
+{
+public:
+    virtual ~TouchArgs() {}
+};
+
+/*!
+ * \brief
+ */
+class BspObject
+{
+public:
+    BspObject(const char* name, int type);
+    virtual ~BspObject();
+
+    int getID() const;
+    const char* getName() const;
+    int getType() const;
+    virtual bool isType(const char* type) const = 0;
+    const float* getOrigin() const;
+
+    virtual void render(double time) = 0;
+    virtual const BspMesh* getMesh() const = 0;
+    virtual void onThink(ThinkArgs& args) = 0;
+    virtual void onTouch(TouchArgs& args) = 0;
+
+    virtual void preCache() { }
     
-    void setPlane(float normal[3], float distance);
-    const Plane& getPlane() const;
+protected:
+    /*! \brief */
+    float mOrigin[3];
 
-    void setVertices(int first, int count);
-
-    void setFlags(int flags);
-
-    void setTexture(Texture* texture);
-    const Texture* getTexture() const;
-
-    const Texture* setLightmap(const tBSPFace& bspFace, float min[2], float max[2], const unsigned char* lightData, float brightness = 0.5f);
+    void setNextThink(double time);
     
 private:
     /*! \brief */
-    Plane mPlane;
+    int mID;
     /*! \brief */
-    int mFirstVertex;
+    char* mName;
     /*! \brief */
-    int mVertexCount;
+    int mType;
     /*! \brief */
-    GLuint mFaceType;
-    /*! \brief */
-    int mFaceFlags;
-    /*! \brief */
-    Texture* mTexture;
-    /*! \brief */
-    Texture* mLightmap;
+    static int sIDCount;
 
 };
 
-#endif	/* _BSPFACE_H */
+#endif	/* _BSPOBJECT_H */
 

@@ -19,8 +19,6 @@
 
 #include "BspWorld.h"
 #include "common/tokenizer.h"
-#include "PluginContext.h"
-#include "PluginManager.h"
 #include <iostream>
 #include <string.h>
 
@@ -325,7 +323,7 @@ bool BspWorld::setupEntities()
     {
         const BspEntity* entity = *itr;
         const char* classname = entity->getClassName();
-        BspObject* object = PluginManager::Instance()->getEntityInstance(classname, entity->getValues());
+        BspObject* object = NULL;//PluginManager::Instance()->getEntityInstance(classname, entity->getValues());
         if (object != NULL)
         {
             this->mObjects.push_back(object);
@@ -333,14 +331,6 @@ bool BspWorld::setupEntities()
         }
     }
     return true;
-}
-/*!
- * \brief
- * \param contex
- */
-void BspWorld::setupContext(PluginContext& context)
-{
-    context.setModels(this->mModelCount, this->mModels);
 }
 
 /*!

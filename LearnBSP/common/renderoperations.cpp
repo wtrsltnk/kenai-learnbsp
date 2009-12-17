@@ -18,7 +18,7 @@
  */
 
 #include "renderoperations.h"
-#include <opengl.h>
+#include "opengl.h"
 
 RenderOperations::RenderOperations()
 {

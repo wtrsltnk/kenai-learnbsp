@@ -32,6 +32,7 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/common/font.o \
+	${OBJECTDIR}/BspMesh.o \
 	${OBJECTDIR}/BspFace.o \
 	${OBJECTDIR}/fs/zip/zip.o \
 	${OBJECTDIR}/common/boundingbox.o \
@@ -43,15 +44,17 @@ OBJECTFILES= \
 	${OBJECTDIR}/fs/image/miptex.o \
 	${OBJECTDIR}/fs/File.o \
 	${OBJECTDIR}/common/vector3.o \
+	${OBJECTDIR}/Collision.o \
+	${OBJECTDIR}/common/thread.o \
 	${OBJECTDIR}/TextureLoader.o \
 	${OBJECTDIR}/Application.o \
 	${OBJECTDIR}/BspLeaf.o \
 	${OBJECTDIR}/BspModel.o \
 	${OBJECTDIR}/common/camera.o \
 	${OBJECTDIR}/fs/image/bitmap.o \
+	${OBJECTDIR}/BspObject.o \
 	${OBJECTDIR}/BspData.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/PluginManager.o \
 	${OBJECTDIR}/common/texture.o \
 	${OBJECTDIR}/fs/zip/ioapi.o \
 	${OBJECTDIR}/fs/WadPackage.o \
@@ -99,6 +102,10 @@ ${OBJECTDIR}/common/font.o: nbproject/Makefile-${CND_CONF}.mk common/font.cpp
 	${MKDIR} -p ${OBJECTDIR}/common
 	$(COMPILE.cc) -O2 -I../BspPlugin -o ${OBJECTDIR}/common/font.o common/font.cpp
 
+${OBJECTDIR}/BspMesh.o: nbproject/Makefile-${CND_CONF}.mk BspMesh.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -O2 -I../BspPlugin -o ${OBJECTDIR}/BspMesh.o BspMesh.cpp
+
 ${OBJECTDIR}/BspFace.o: nbproject/Makefile-${CND_CONF}.mk BspFace.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.cc) -O2 -I../BspPlugin -o ${OBJECTDIR}/BspFace.o BspFace.cpp
@@ -143,6 +150,14 @@ ${OBJECTDIR}/common/vector3.o: nbproject/Makefile-${CND_CONF}.mk common/vector3.
 	${MKDIR} -p ${OBJECTDIR}/common
 	$(COMPILE.cc) -O2 -I../BspPlugin -o ${OBJECTDIR}/common/vector3.o common/vector3.cpp
 
+${OBJECTDIR}/Collision.o: nbproject/Makefile-${CND_CONF}.mk Collision.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -O2 -I../BspPlugin -o ${OBJECTDIR}/Collision.o Collision.cpp
+
+${OBJECTDIR}/common/thread.o: nbproject/Makefile-${CND_CONF}.mk common/thread.cpp 
+	${MKDIR} -p ${OBJECTDIR}/common
+	$(COMPILE.cc) -O2 -I../BspPlugin -o ${OBJECTDIR}/common/thread.o common/thread.cpp
+
 ${OBJECTDIR}/TextureLoader.o: nbproject/Makefile-${CND_CONF}.mk TextureLoader.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.cc) -O2 -I../BspPlugin -o ${OBJECTDIR}/TextureLoader.o TextureLoader.cpp
@@ -167,6 +182,10 @@ ${OBJECTDIR}/fs/image/bitmap.o: nbproject/Makefile-${CND_CONF}.mk fs/image/bitma
 	${MKDIR} -p ${OBJECTDIR}/fs/image
 	$(COMPILE.cc) -O2 -I../BspPlugin -o ${OBJECTDIR}/fs/image/bitmap.o fs/image/bitmap.cpp
 
+${OBJECTDIR}/BspObject.o: nbproject/Makefile-${CND_CONF}.mk BspObject.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -O2 -I../BspPlugin -o ${OBJECTDIR}/BspObject.o BspObject.cpp
+
 ${OBJECTDIR}/BspData.o: nbproject/Makefile-${CND_CONF}.mk BspData.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.cc) -O2 -I../BspPlugin -o ${OBJECTDIR}/BspData.o BspData.cpp
@@ -174,10 +193,6 @@ ${OBJECTDIR}/BspData.o: nbproject/Makefile-${CND_CONF}.mk BspData.cpp
 ${OBJECTDIR}/main.o: nbproject/Makefile-${CND_CONF}.mk main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.cc) -O2 -I../BspPlugin -o ${OBJECTDIR}/main.o main.cpp
-
-${OBJECTDIR}/PluginManager.o: nbproject/Makefile-${CND_CONF}.mk PluginManager.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -O2 -I../BspPlugin -o ${OBJECTDIR}/PluginManager.o PluginManager.cpp
 
 ${OBJECTDIR}/common/texture.o: nbproject/Makefile-${CND_CONF}.mk common/texture.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
@@ -240,6 +255,7 @@ ${OBJECTDIR}/fs/zip/unzip.o: nbproject/Makefile-${CND_CONF}.mk fs/zip/unzip.c
 	cd ../BspPlugin && ${MAKE}  -f Makefile CONF=Release
 	cd ../BspPlugin && ${MAKE}  -f Makefile CONF=Release
 	cd ../Basics && ${MAKE}  -f Makefile CONF=Release
+	cd ../BasicGame && ${MAKE}  -f Makefile CONF=Release
 
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
@@ -251,3 +267,4 @@ ${OBJECTDIR}/fs/zip/unzip.o: nbproject/Makefile-${CND_CONF}.mk fs/zip/unzip.c
 	cd ../BspPlugin && ${MAKE}  -f Makefile CONF=Release clean
 	cd ../BspPlugin && ${MAKE}  -f Makefile CONF=Release clean
 	cd ../Basics && ${MAKE}  -f Makefile CONF=Release clean
+	cd ../BasicGame && ${MAKE}  -f Makefile CONF=Release clean
