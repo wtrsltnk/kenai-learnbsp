@@ -6,8 +6,8 @@ const char* StringFunctions::getFilename(const char* fullname)
     if (fullname == NULL)
         return NULL;
     
-    char* slash = strrchr(fullname, '\\');
-    char* backslash = strrchr(fullname, '/');
+    const char* slash = strrchr(fullname, '\\');
+    const char* backslash = strrchr(fullname, '/');
 
     if (slash != NULL && backslash != NULL)
     {
