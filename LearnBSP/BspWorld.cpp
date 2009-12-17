@@ -374,10 +374,6 @@ void BspWorld::render()
     {
         (*itr)->render(1.0f);
     }
-//    for (std::vector<BspObject*>::iterator itr = this->mObjects.begin(); itr != this->mObjects.end(); ++itr)
-//    {
-//        (*itr)->render(1.0f);
-//    }
 }
 
 /*!

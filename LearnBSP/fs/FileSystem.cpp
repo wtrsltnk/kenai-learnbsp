@@ -186,29 +186,31 @@ bool FileSystem::openTexture(Texture& texture, const Data& data, const char* pac
     if (data.name == NULL)
         return false;
 
-    if (strchr(data.name, '@') != NULL)
+    if (packageName != NULL)
     {
-        const char* ext = strrchr(data.name, '.');
-        
-        if (strcasecmp(ext, ".tga") == 0)
+        const char* ext = strrchr(packageName, '.');
+        if (strcasecmp(ext, ".wad") == 0)
         {
-            result = openTarga(texture, data);
-        }
-        else if (strcasecmp(ext, ".bmp") == 0)
-        {
-            result = openBitmap(texture, data);
+            return openMiptex(texture, data);
         }
     }
-    else
+    const char* ext = strrchr(data.name, '.');
+
+    if (strcasecmp(ext, ".tga") == 0)
     {
-        if (packageName != NULL)
-        {
-            const char* ext = strrchr(packageName, '.');
-            if (strcasecmp(ext, ".wad") == 0)
-            {
-                result = openMiptex(texture, data);
-            }
-        }
+        result = openTarga(texture, data);
+    }
+    else if (strcasecmp(ext, ".bmp") == 0)
+    {
+        result = openBitmap(texture, data);
+    }
+    else if (strcasecmp(ext, ".jpg") == 0)
+    {
+        result = openJpeg(texture, data);
+    }
+    else if (strcasecmp(ext, ".png") == 0)
+    {
+        result = openPng(texture, data);
     }
     return result;
 }
@@ -266,11 +268,17 @@ bool FileSystem::findFileInFolder(const char* folder, const char* file, char* re
         struct dirent *item;
         while ((item = readdir(dir)) != 0)
         {
-            if (strcmp(item->d_name, ".") == 0 || strcmp(item->d_name, "..") == 0)
+            if (strcmp(item->d_name, ".") == 0 || strcmp(item->d_name, "..") == 0 || strcmp(item->d_name, ".svn") == 0)
                 continue;
 
+#ifdef WIN32
+			struct stat stat_base;
+            stat(item->d_name, &stat_base);
+            if (stat_base.st_mode == S_IFDIR)
+#else
             if (item->d_type == 4)	// FOLDER
-            {
+#endif
+			{
                 char newFolder[256] = { 0 };
                 strcpy(newFolder, folder);
                 strcat(newFolder, "/");

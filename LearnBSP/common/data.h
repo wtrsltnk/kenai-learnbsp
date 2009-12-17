@@ -20,6 +20,8 @@
 #ifndef _DATA_H
 #define	_DATA_H
 
+#include <stdio.h>
+
 /*!
  * \brief 
  */
@@ -56,6 +58,7 @@ public:
 
     Data* clone() const;
     void copyFrom(const Data& from);
+    FILE* getAsFile() const;
 
 public:
     /*! \brief */

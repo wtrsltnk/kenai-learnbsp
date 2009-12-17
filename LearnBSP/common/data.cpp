@@ -104,3 +104,17 @@ void Data::copyFrom(const Data& from)
     this->data = new unsigned char[this->dataSize];
     memcpy(this->data, from.data, dataSize);
 }
+
+/*!
+ * \brief
+ * \return
+ */
+FILE* Data::getAsFile() const
+{
+    FILE* file = tmpfile();
+
+    fwrite(this->data, this->dataSize, 1, file);
+	fseek(file, 0, SEEK_SET);
+
+    return file;
+}

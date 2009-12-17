@@ -1,8 +1,7 @@
+#include "image.h"
 #include <stdlib.h>
 #include <png.h>
-#include <texture.h>
-#include <data.h>
-#include <opengl.h>
+#include "../../common/opengl.h"
 
 int GetTextureInfo(int ColourType)
 {
@@ -27,7 +26,7 @@ int GetTextureInfo(int ColourType)
    return ret;
 };
 
-bool openPng(Texture& t, const DataBlock& data)
+bool openPng(Texture& t, const Data& data)
 {
 	png_structp png_ptr = NULL;
 	png_infop info_ptr = NULL;
