@@ -250,9 +250,6 @@ ${OBJECTDIR}/fs/zip/unzip.o: nbproject/Makefile-${CND_CONF}.mk fs/zip/unzip.c
 
 # Subprojects
 .build-subprojects:
-	cd ../BspPlugin && ${MAKE}  -f Makefile CONF=Debug
-	cd ../BspPlugin && ${MAKE}  -f Makefile CONF=Debug
-	cd ../BasicGame && ${MAKE}  -f Makefile CONF=Debug
 
 # Clean Targets
 .clean-conf:
@@ -261,6 +258,3 @@ ${OBJECTDIR}/fs/zip/unzip.o: nbproject/Makefile-${CND_CONF}.mk fs/zip/unzip.c
 
 # Subprojects
 .clean-subprojects:
-	cd ../BspPlugin && ${MAKE}  -f Makefile CONF=Debug clean
-	cd ../BspPlugin && ${MAKE}  -f Makefile CONF=Debug clean
-	cd ../BasicGame && ${MAKE}  -f Makefile CONF=Debug clean
