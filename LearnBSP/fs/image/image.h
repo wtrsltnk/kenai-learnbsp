@@ -1,6 +1,4 @@
 /*
- * Learn BSP is a sample source code to see how a Half-Life level file
- * can be used in your 3D application
  * Copyright (C) 2009  Wouter Saaltink
 
  * This program is free software: you can redistribute it and/or modify
@@ -20,12 +18,14 @@
 #ifndef _IMAGE_H
 #define	_IMAGE_H
 
-#include "../../common/texture.h"
-#include "../../common/data.h"
+#include <texture.h>
+#include <data.h>
 
-bool openTarga(Texture& texture, const Data& data);
-bool openBitmap(Texture& texture, const Data& data);
-bool openMiptex(Texture& texture, const Data& data);
+bool openTarga(Texture& texture, const DataBlock& data);
+bool openJpeg(Texture& texture, const DataBlock& data);
+bool openPng(Texture& texture, const DataBlock& data);
+bool openBitmap(Texture& texture, const DataBlock& data);
+bool openMiptex(Texture& texture, const DataBlock& data);
 
 #endif	/* _IMAGE_H */
 
