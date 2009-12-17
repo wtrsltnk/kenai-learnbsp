@@ -123,38 +123,6 @@
             <linkerLibFileItem>lib/libz.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
-        <requiredProjects>
-          <makeArtifact PL="../BspPlugin"
-                        CT="3"
-                        CN="Debug"
-                        AC="true"
-                        BL="true"
-                        WD="../BspPlugin"
-                        BC="${MAKE}  -f Makefile CONF=Debug"
-                        CC="${MAKE}  -f Makefile CONF=Debug clean"
-                        OP="dist/Debug/GNU-Linux-x86/libbspplugin.a">
-          </makeArtifact>
-          <makeArtifact PL="../BspPlugin"
-                        CT="3"
-                        CN="Debug"
-                        AC="true"
-                        BL="true"
-                        WD="../BspPlugin"
-                        BC="${MAKE}  -f Makefile CONF=Debug"
-                        CC="${MAKE}  -f Makefile CONF=Debug clean"
-                        OP="dist/Debug/GNU-Linux-x86/libbspplugin.a">
-          </makeArtifact>
-          <makeArtifact PL="../BasicGame"
-                        CT="2"
-                        CN="Debug"
-                        AC="true"
-                        BL="true"
-                        WD="../BasicGame"
-                        BC="${MAKE}  -f Makefile CONF=Debug"
-                        CC="${MAKE}  -f Makefile CONF=Debug clean"
-                        OP="dist/Debug/GNU-Linux-x86/libBasicGame.so">
-          </makeArtifact>
-        </requiredProjects>
       </compileType>
       <item path="GLee/GLee.c" ex="true" tool="0">
       </item>
