@@ -84,19 +84,19 @@ bool HlBspWorld::parseEntityData(BspData& bsp, TextureLoader& textureLoader)
     {
         // Parse the entity data into the entity instance
         BspEntity* entity = new BspEntity();
-        if (!entity->parseFromTokenizer(tok))
-            return false;
+        if (entity->parseFromTokenizer(tok))
+		{
+			// Check the classname for special cases entities like the worldspawn
+			const char* classname = entity->getClassName();
+			if (strcasecmp(classname, "worldspawn") == 0)
+			{
+				this->setWorldEntity(entity);
+				textureLoader.setWadFiles(entity->getValue("wad"));
+			}
 
-        // Check the classname for special cases entities like the worldspawn
-        const char* classname = entity->getClassName();
-        if (strcasecmp(classname, "worldspawn") == 0)
-        {
-            this->setWorldEntity(entity);
-            textureLoader.setWadFiles(entity->getValue("wad"));
-        }
-
-        // Add the entity to the entity list
-        this->mEntities.push_back(entity);
+			// Add the entity to the entity list
+			this->mEntities.push_back(entity);
+		}
     }
     return true;
 }
