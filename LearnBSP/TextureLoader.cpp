@@ -154,6 +154,14 @@ bool TextureLoader::loadTextureFromFile(Texture& texture, const char* filename)
     {
         return openBitmap(texture, data);
     }
+    else if (strcasecmp(ext, ".jpg") == 0)
+    {
+        return openJpeg(texture, data);
+    }
+    else if (strcasecmp(ext, ".png") == 0)
+    {
+        return openPng(texture, data);
+    }
     return false;
 }
 

@@ -39,7 +39,7 @@ BspNode::BspNode()
  * \param leaf
  */
 BspNode::BspNode(BspLeaf* leaf)
-    : mFront(NULL), mBack(NULL), mLeaf(leaf), index(-leaf->index)
+    : mFront(NULL), mBack(NULL), mLeaf(leaf)
 {
 }
 

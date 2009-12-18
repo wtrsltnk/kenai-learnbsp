@@ -50,7 +50,6 @@ public:
     void setBoundingBox(const BoundingBox& bb);
     const BoundingBox& getBoundingBox() const;
 
-    int index;
 private:
     /*! \brief  */
     std::set<BspFace*> mFaces;
