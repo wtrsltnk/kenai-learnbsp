@@ -27,42 +27,13 @@
 #include <string.h>
 #include <iostream>
 #include <dirent.h>
+#include <sys/stat.h>
 
 using namespace fs;
 
-FileSystem::FileSystem(const char* gameRoot)
+FileSystem::FileSystem(const char* root)
 {
-    strcpy(this->gameRoot, gameRoot);
-//
-//    DIR* dir = opendir(gameRoot);
-//
-//    if (dir != NULL)
-//    {
-//        struct dirent *item;
-//        while ((item = readdir(dir)) != 0)
-//        {
-//            if (strcmp(item->d_name, ".") == 0 || strcmp(item->d_name, "..") == 0)
-//                continue;
-//
-//            if (item->d_type != 4)	// !FOLDER
-//            {
-//                char* ext = item->d_name + (strlen(item->d_name) - 4);
-//                if (strcasecmp(ext, ".zip") == 0)
-//                {
-//                    char fullpath[256] = { 0 };
-//                    sprintf(fullpath, "%s/%s", gameRoot, item->d_name);
-//                    this->packages.push_back(new ZipPackage(fullpath));
-//                }
-////                else if (strcasecmp(ext, ".wad") == 0)                           // Only add wad's that are neede by the bsp file
-////                {
-////                    char fullpath[256] = { 0 };
-////                    sprintf(fullpath, "%s/%s", gameRoot, item->d_name);
-////                    this->packages.push_back(new WadPackage(fullpath));
-////                }
-//            }
-//        }
-//        closedir(dir);
-//    }
+    strcpy(this->fileSystemRoot, root);
 }
 
 FileSystem::~FileSystem()
@@ -108,7 +79,7 @@ bool FileSystem::addPackage(const char* filename)
 
 const char* FileSystem::findFile(const char* name)
 {
-    if (FileSystem::findFileInFolder(gameRoot, name, findName))
+    if (FileSystem::findFileInFolder(fileSystemRoot, name, findName))
     {
         return findName;
     }
@@ -291,7 +262,7 @@ bool FileSystem::findFileInFolder(const char* folder, const char* file, char* re
             }
             else
             {
-                if (strcasecmp(item->d_name, file) == 0)
+                if (strncasecmp(item->d_name, file, strlen(file)) == 0)
                 {
                     strcpy(result, folder);
                     strcat(result, "/");

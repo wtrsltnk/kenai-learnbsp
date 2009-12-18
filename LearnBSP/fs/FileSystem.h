@@ -38,7 +38,7 @@ typedef std::vector<Package*> PackageList;
 class FileSystem
 {
 public:
-    FileSystem(const char* gameRoot);
+    FileSystem(const char* root);
     virtual ~FileSystem();
 
     virtual bool addPackage(const char* filename);
@@ -49,7 +49,7 @@ public:
 
 protected:
     /*! \brief */
-    char gameRoot[256];
+    char fileSystemRoot[256];
     /*! \brief */
     FileList files;
     /*! \brief */

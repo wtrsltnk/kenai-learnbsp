@@ -61,8 +61,7 @@ public:
     const BoundingBox& getBoundingBox() const;
 
     void addObject(BspObject* object, bool addToLeaf = false);
-
-    int index;
+    
 private:
     /*! \brief */
     BspNode* mParent;
