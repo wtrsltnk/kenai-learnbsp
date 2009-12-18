@@ -80,6 +80,7 @@
       <itemPath>BspObject.h</itemPath>
       <itemPath>BspWorld.h</itemPath>
       <itemPath>Collision.h</itemPath>
+      <itemPath>HlBspWorld.h</itemPath>
       <itemPath>TextureLoader.h</itemPath>
       <itemPath>types.h</itemPath>
     </logicalFolder>
@@ -97,6 +98,7 @@
       <itemPath>BspObject.cpp</itemPath>
       <itemPath>BspWorld.cpp</itemPath>
       <itemPath>Collision.cpp</itemPath>
+      <itemPath>HlBspWorld.cpp</itemPath>
       <itemPath>TextureLoader.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>

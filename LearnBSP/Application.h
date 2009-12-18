@@ -22,7 +22,7 @@
 
 #include "common/camera.h"
 #include "common/opengl.h"
-#include "BspWorld.h"
+#include "HlBspWorld.h"
 #include "fs/FileSystem.h"
 
 /*!
