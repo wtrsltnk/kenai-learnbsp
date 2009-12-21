@@ -23,7 +23,6 @@
 #include "BspLeaf.h"
 #include "BspModel.h"
 #include "BspObject.h"
-#include "Collision.h"
 #include <iostream>
 
 /*!
