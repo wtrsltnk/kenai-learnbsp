@@ -64,7 +64,7 @@ bool BspWorld::setupEntities()
         if (object != NULL)
         {
             this->mObjects.push_back(object);
-            this->mHeadNode->addObject(object, false);
+            this->mHeadNode->addObject(object);
         }
     }
     return true;

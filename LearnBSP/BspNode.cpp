@@ -116,43 +116,6 @@ void BspNode::gatherVisibleObjects(std::set<BspObject*>& objects, const float po
 
 /*!
  * \brief
- * \param start
- * \param end
- * \return
- */
-Collision BspNode::getCollision(const Vector3& start, const Vector3& end)
-{
-    if (this->mLeaf != NULL)
-    {
-        return this->mLeaf->getCollision(start, end);
-    }
-    else
-    {
-        float dStart = this->mSplit.distance(start);
-        float dEnd = this->mSplit.distance(end);
-
-        if ((dStart > 0) && (dEnd > 0))
-        {
-            return this->mFront->getCollision(start, end);
-        }
-        else if ((dStart < 0) && (dEnd < 0))
-        {
-            return this->mBack->getCollision(start, end);
-        }
-        else
-        {
-            Vector3 intersection = Collision::getIntersection(this->mSplit, start, end);
-
-            if (dStart > 0)
-                return this->mFront->getCollision(start, intersection);
-            
-            return this->mBack->getCollision(start, intersection);
-        }
-    }
-}
-
-/*!
- * \brief
  * \param normal
  * \param distance
  */
@@ -278,37 +241,19 @@ const BoundingBox& BspNode::getBoundingBox() const
  * \brief
  * \param object
  */
-void BspNode::addObject(BspObject* object, bool addToLeaf)
+void BspNode::addObject(BspObject* object)
 {
-    if (this->mLeaf != NULL)
-    {
-        this->mObjects.push_back(object);
-    }
-    else
-    {
-        if (addToLeaf)
-        {
-            this->mFront->addObject(object, true);
-            this->mBack->addObject(object, true);
-        }
-        else
-        {
-            BoundingBox bb(object->getMesh()->getMins(), object->getMesh()->getMaxs());
-
-            int intersect = bb.intersect(this->mSplit);
-
-            if (intersect < 0)
-                this->mBack->addObject(object);
-
-            if (intersect > 0)
-                this->mFront->addObject(object);
-
-            if (intersect == 0)
-            {
-                this->mObjects.push_back(object);
-                this->mBack->addObject(object, true);
-                this->mFront->addObject(object, true);
-            }
-        }
-    }
+	if (this->mLeaf == NULL)
+	{
+		float distance = this->mSplit.distance(Vector3(object->getOrigin()));
+		
+		if (distance > 0)
+			this->mFront->addObject(object);
+		else
+			this->mBack->addObject(object);
+	}
+	else
+	{
+		this->mLeaf->addObject(object);
+	}
 }

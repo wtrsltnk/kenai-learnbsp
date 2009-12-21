@@ -82,29 +82,6 @@ void BspLeaf::gatherVisibleObjects(std::set<BspObject*>& objects, bool pvs) cons
 }
 
 /*!
- * \brief
- * \param start
- * \param end
- * \return
- */
-Collision BspLeaf::getCollision(const Vector3& start, const Vector3& end)
-{
-    for (std::set<BspFace*>::iterator itr = this->mFaces.begin(); itr != this->mFaces.end(); ++itr)
-    {
-        BspFace* face = (*itr);
-        const Plane& plane = face->getPlane();
-        ePointClassification classStart = Collision::classifyPoint(plane, start);
-        ePointClassification classEnd = Collision::classifyPoint(plane, end);
-
-        if (classStart != classEnd)
-        {
-            return Collision(this, face, Collision::getIntersection(plane, start, end));
-        }
-    }
-    return Collision();
-}
-
-/*!
  * \brief Set the face in the given index
  * \param face Pointer to the face to set
  */

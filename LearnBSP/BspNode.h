@@ -27,7 +27,6 @@
 
 class BspLeaf;
 class BspObject;
-class Collision;
 
 /*!
  * \brief
@@ -42,8 +41,6 @@ public:
     void render() const;
     void render(const float point[3]) const;
     void gatherVisibleObjects(std::set<BspObject*>& objects, const float point[3]) const;
-
-    Collision getCollision(const Vector3& start, const Vector3& end);
 
     void setPlane(const float normal[3], float distance);
     const Plane& getPlane() const;
@@ -60,7 +57,7 @@ public:
     void setBoundingBox(const BoundingBox& bb);
     const BoundingBox& getBoundingBox() const;
 
-    void addObject(BspObject* object, bool addToLeaf = false);
+    void addObject(BspObject* object);
     
 private:
     /*! \brief */
@@ -75,8 +72,6 @@ private:
     BspLeaf* mLeaf;
     /*! \brief */
     BoundingBox mBB;
-    /*! \brief */
-    std::vector<BspObject*> mObjects;
     
 };
 

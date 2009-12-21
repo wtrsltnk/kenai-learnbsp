@@ -25,7 +25,6 @@
 
 class BspFace;
 class BspObject;
-class Collision;
 
 /*!
  * \brief
@@ -38,8 +37,6 @@ public:
 
     void render(bool renderPvs = true) const;
     void gatherVisibleObjects(std::set<BspObject*>& objects, bool pvs = true) const;
-
-    Collision getCollision(const Vector3& start, const Vector3& end);
 
     void addFace(BspFace* face);
     int getFaceCount() const;
