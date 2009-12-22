@@ -31,7 +31,7 @@
 class Application
 {
 public:
-    Application(int width, int height);
+    Application(int argc, char* argv[]);
     virtual ~Application();
 
     void run();
@@ -63,6 +63,8 @@ private:
     BspWorld* mWorld;
     /*! \brief */
     fs::FileSystem* mFileSystem;
+    /*! \brief */
+    char* mMap;
 
     bool openWindow(const char* title);
 

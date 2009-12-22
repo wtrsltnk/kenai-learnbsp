@@ -22,18 +22,35 @@
 #include "common/math3d.h"
 #include "BspLoader.h"
 #include <stdio.h>
+#include <string.h>
+#include <iostream>
 
 /*!
  * \brief
  * \param width The width of the window created for this Application
  * \param height The height of the window created for this Application
  */
-Application::Application(int width, int height)
-        : mWidth(width ? width : 1), mHeight(height ? height : 1), mResult(-1), mRunning(true), mSpeed(500.0f), mWorld(NULL)
+Application::Application(int argc, char* argv[])
+        : mWidth(800), mHeight(600), mResult(-1), mRunning(true), mSpeed(500.0f), mWorld(NULL), mMap(NULL)
 {
     Application::sCurrent = this;
     glfwInit();
-    this->mFileSystem = new fs::FileSystem("./data");
+
+	const char* gameroot = "./data";
+	for (int i = 0; i < argc; i++)
+	{
+		if (strcasecmp(argv[i], "-gameroot") == 0 && argc > i)
+		{
+			gameroot = argv[i + 1];
+			std::cout << "Game root: " << gameroot << std::endl;
+		}
+		else if (strcasecmp(argv[i], "-map") == 0 && argc > i)
+		{
+			this->mMap = argv[i + 1];
+			std::cout << "Map: " << this->mMap << std::endl;
+		}
+	}
+    this->mFileSystem = new fs::FileSystem(gameroot);
 }
 
 /*!
@@ -59,7 +76,7 @@ bool Application::initialize()
 {
 	BspLoader loader(this->mFileSystem);
 
-	if (this->mWorld = loader.loadWorld("cs_militia.bspg"))
+	if (this->mWorld = loader.loadWorld(this->mMap))
 	{
         this->mWorld->setCamera(&this->mCamera);
         this->mWorld->setupEntities();

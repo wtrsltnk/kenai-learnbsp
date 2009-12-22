@@ -23,9 +23,9 @@
 /*!
  * \brief 
  */
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
-    Application application(800, 600);
+    Application application(argc, argv);
 
     application.run();
 

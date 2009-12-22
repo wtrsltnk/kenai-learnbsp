@@ -1,6 +1,4 @@
 /*
- * Learn BSP is a sample source code to see how a Half-Life level file
- * can be used in your 3D application
  * Copyright (C) 2009  Wouter Saaltink
 
  * This program is free software: you can redistribute it and/or modify
@@ -17,24 +15,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPLOADER_H
-#define	_BSPLOADER_H
+#ifndef _Q3BSPWORLD_H
+#define	_Q3BSPWORLD_H
 
 #include "BspWorld.h"
+#include "Q3BspData.h"
 
-class BspLoader
+/*!
+ * \brief
+ */
+class Q3BspWorld : public BspWorld
 {
 public:
-    BspLoader(fs::FileSystem* filesystem);
-    virtual ~BspLoader();
+    Q3BspWorld();
+    virtual ~Q3BspWorld();
 
-    BspWorld* loadWorld(const char* filename);
-
+protected:
+    virtual bool onOpen(const Data& data, TextureLoader& textureLoader);
+    
 private:
-    TextureLoader* mTextureLoader;
-    fs::FileSystem* mFileSystem;
+    bool parseFaces(Q3BspData& bsp);
+    bool parseLightmaps(Q3BspData& bsp);
+    bool parseTextures(Q3BspData& bsp);
+    bool parseBrushes(Q3BspData& bsp);
 
 };
 
-#endif	/* _BSPLOADER_H */
+#endif	/* _Q3BSPWORLD_H */
 
