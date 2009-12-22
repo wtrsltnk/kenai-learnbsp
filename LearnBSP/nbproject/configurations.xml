@@ -88,7 +88,7 @@
       <itemPath>HlBspWorld.h</itemPath>
       <itemPath>hltypes.h</itemPath>
     </logicalFolder>
-    <logicalFolder name="f5" displayName="Q3" projectFiles="true">
+    <logicalFolder name="f5" displayName="Q3Bsp" projectFiles="true">
       <itemPath>Q3BspData.cpp</itemPath>
       <itemPath>Q3BspData.h</itemPath>
       <itemPath>Q3BspWorld.cpp</itemPath>

@@ -31,6 +31,7 @@ OBJECTDIR=build/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/fs/image/jpeg.o \
 	${OBJECTDIR}/common/font.o \
 	${OBJECTDIR}/BspMesh.o \
 	${OBJECTDIR}/BspFace.o \
@@ -43,21 +44,24 @@ OBJECTFILES= \
 	${OBJECTDIR}/common/renderoperations.o \
 	${OBJECTDIR}/fs/image/miptex.o \
 	${OBJECTDIR}/fs/File.o \
+	${OBJECTDIR}/Q3BspWorld.o \
 	${OBJECTDIR}/common/vector3.o \
-	${OBJECTDIR}/Collision.o \
 	${OBJECTDIR}/common/thread.o \
 	${OBJECTDIR}/TextureLoader.o \
 	${OBJECTDIR}/Application.o \
 	${OBJECTDIR}/BspLeaf.o \
 	${OBJECTDIR}/BspModel.o \
+	${OBJECTDIR}/BspLoader.o \
 	${OBJECTDIR}/common/camera.o \
 	${OBJECTDIR}/fs/image/bitmap.o \
 	${OBJECTDIR}/BspObject.o \
-	${OBJECTDIR}/BspData.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/common/texture.o \
+	${OBJECTDIR}/HlBspWorld.o \
 	${OBJECTDIR}/fs/zip/ioapi.o \
 	${OBJECTDIR}/fs/WadPackage.o \
+	${OBJECTDIR}/HlBspData.o \
+	${OBJECTDIR}/fs/image/png.o \
 	${OBJECTDIR}/fs/zip/mztools.o \
 	${OBJECTDIR}/common/math3d.o \
 	${OBJECTDIR}/fs/image/targa.o \
@@ -65,6 +69,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/fs/ZipPackage.o \
 	${OBJECTDIR}/BspWorld.o \
 	${OBJECTDIR}/BspEntity.o \
+	${OBJECTDIR}/Q3BspData.o \
 	${OBJECTDIR}/fs/FileSystemException.o \
 	${OBJECTDIR}/common/plane.o \
 	${OBJECTDIR}/BspNode.o \
@@ -84,7 +89,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-lglfw -lGLU -lpthread -lXrandr lib/libz.a
+LDLIBSOPTIONS=-lglfw -lGLU -lpthread -lXrandr lib/libz.a -ljpeg -lpng
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -95,6 +100,10 @@ dist/linuxDebug/GNU-Linux-x86/learnbsp: lib/libz.a
 dist/linuxDebug/GNU-Linux-x86/learnbsp: ${OBJECTFILES}
 	${MKDIR} -p dist/linuxDebug/GNU-Linux-x86
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/learnbsp ${OBJECTFILES} ${LDLIBSOPTIONS} 
+
+${OBJECTDIR}/fs/image/jpeg.o: nbproject/Makefile-${CND_CONF}.mk fs/image/jpeg.cpp 
+	${MKDIR} -p ${OBJECTDIR}/fs/image
+	$(COMPILE.cc) -g -o ${OBJECTDIR}/fs/image/jpeg.o fs/image/jpeg.cpp
 
 ${OBJECTDIR}/common/font.o: nbproject/Makefile-${CND_CONF}.mk common/font.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
@@ -144,13 +153,13 @@ ${OBJECTDIR}/fs/File.o: nbproject/Makefile-${CND_CONF}.mk fs/File.cpp
 	${MKDIR} -p ${OBJECTDIR}/fs
 	$(COMPILE.cc) -g -o ${OBJECTDIR}/fs/File.o fs/File.cpp
 
+${OBJECTDIR}/Q3BspWorld.o: nbproject/Makefile-${CND_CONF}.mk Q3BspWorld.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g -o ${OBJECTDIR}/Q3BspWorld.o Q3BspWorld.cpp
+
 ${OBJECTDIR}/common/vector3.o: nbproject/Makefile-${CND_CONF}.mk common/vector3.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
 	$(COMPILE.cc) -g -o ${OBJECTDIR}/common/vector3.o common/vector3.cpp
-
-${OBJECTDIR}/Collision.o: nbproject/Makefile-${CND_CONF}.mk Collision.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -o ${OBJECTDIR}/Collision.o Collision.cpp
 
 ${OBJECTDIR}/common/thread.o: nbproject/Makefile-${CND_CONF}.mk common/thread.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
@@ -172,6 +181,10 @@ ${OBJECTDIR}/BspModel.o: nbproject/Makefile-${CND_CONF}.mk BspModel.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.cc) -g -o ${OBJECTDIR}/BspModel.o BspModel.cpp
 
+${OBJECTDIR}/BspLoader.o: nbproject/Makefile-${CND_CONF}.mk BspLoader.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g -o ${OBJECTDIR}/BspLoader.o BspLoader.cpp
+
 ${OBJECTDIR}/common/camera.o: nbproject/Makefile-${CND_CONF}.mk common/camera.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
 	$(COMPILE.cc) -g -o ${OBJECTDIR}/common/camera.o common/camera.cpp
@@ -184,10 +197,6 @@ ${OBJECTDIR}/BspObject.o: nbproject/Makefile-${CND_CONF}.mk BspObject.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.cc) -g -o ${OBJECTDIR}/BspObject.o BspObject.cpp
 
-${OBJECTDIR}/BspData.o: nbproject/Makefile-${CND_CONF}.mk BspData.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -o ${OBJECTDIR}/BspData.o BspData.cpp
-
 ${OBJECTDIR}/main.o: nbproject/Makefile-${CND_CONF}.mk main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.cc) -g -o ${OBJECTDIR}/main.o main.cpp
@@ -196,6 +205,10 @@ ${OBJECTDIR}/common/texture.o: nbproject/Makefile-${CND_CONF}.mk common/texture.
 	${MKDIR} -p ${OBJECTDIR}/common
 	$(COMPILE.cc) -g -o ${OBJECTDIR}/common/texture.o common/texture.cpp
 
+${OBJECTDIR}/HlBspWorld.o: nbproject/Makefile-${CND_CONF}.mk HlBspWorld.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g -o ${OBJECTDIR}/HlBspWorld.o HlBspWorld.cpp
+
 ${OBJECTDIR}/fs/zip/ioapi.o: nbproject/Makefile-${CND_CONF}.mk fs/zip/ioapi.c 
 	${MKDIR} -p ${OBJECTDIR}/fs/zip
 	$(COMPILE.c) -g -o ${OBJECTDIR}/fs/zip/ioapi.o fs/zip/ioapi.c
@@ -203,6 +216,14 @@ ${OBJECTDIR}/fs/zip/ioapi.o: nbproject/Makefile-${CND_CONF}.mk fs/zip/ioapi.c
 ${OBJECTDIR}/fs/WadPackage.o: nbproject/Makefile-${CND_CONF}.mk fs/WadPackage.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs
 	$(COMPILE.cc) -g -o ${OBJECTDIR}/fs/WadPackage.o fs/WadPackage.cpp
+
+${OBJECTDIR}/HlBspData.o: nbproject/Makefile-${CND_CONF}.mk HlBspData.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g -o ${OBJECTDIR}/HlBspData.o HlBspData.cpp
+
+${OBJECTDIR}/fs/image/png.o: nbproject/Makefile-${CND_CONF}.mk fs/image/png.cpp 
+	${MKDIR} -p ${OBJECTDIR}/fs/image
+	$(COMPILE.cc) -g -o ${OBJECTDIR}/fs/image/png.o fs/image/png.cpp
 
 ${OBJECTDIR}/fs/zip/mztools.o: nbproject/Makefile-${CND_CONF}.mk fs/zip/mztools.c 
 	${MKDIR} -p ${OBJECTDIR}/fs/zip
@@ -232,6 +253,10 @@ ${OBJECTDIR}/BspEntity.o: nbproject/Makefile-${CND_CONF}.mk BspEntity.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.cc) -g -o ${OBJECTDIR}/BspEntity.o BspEntity.cpp
 
+${OBJECTDIR}/Q3BspData.o: nbproject/Makefile-${CND_CONF}.mk Q3BspData.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g -o ${OBJECTDIR}/Q3BspData.o Q3BspData.cpp
+
 ${OBJECTDIR}/fs/FileSystemException.o: nbproject/Makefile-${CND_CONF}.mk fs/FileSystemException.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs
 	$(COMPILE.cc) -g -o ${OBJECTDIR}/fs/FileSystemException.o fs/FileSystemException.cpp
@@ -252,7 +277,7 @@ ${OBJECTDIR}/fs/zip/unzip.o: nbproject/Makefile-${CND_CONF}.mk fs/zip/unzip.c
 .build-subprojects:
 
 # Clean Targets
-.clean-conf:
+.clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r build/linuxDebug
 	${RM} dist/linuxDebug/GNU-Linux-x86/learnbsp
 
