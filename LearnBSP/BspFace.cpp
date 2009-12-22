@@ -132,7 +132,7 @@ const Texture* BspFace::getTexture() const
  * \param brughtness
  * \return
  */
-const Texture* BspFace::setLightmap(const tBSPFace& bspFace, float min[2], float max[2], const unsigned char* lightData, float brightness)
+const Texture* BspFace::setLightmap(const hl::tBSPFace& bspFace, float min[2], float max[2], const unsigned char* lightData, float brightness)
 {
     if (this->mLightmap != NULL)
         delete this->mLightmap;

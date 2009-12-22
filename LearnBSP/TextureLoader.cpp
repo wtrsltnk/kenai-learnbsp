@@ -18,7 +18,7 @@
  */
 
 #include "TextureLoader.h"
-#include "types.h"
+#include "hltypes.h"
 #include <iostream>
 #include <string.h>
 #include <dirent.h>
@@ -83,7 +83,7 @@ void TextureLoader::setWadFiles(const char* wadstring)
  */
 bool TextureLoader::loadMiptexTexture(Texture& texture, const unsigned char* textureData)
 {
-    tBSPMipTexHeader* miptex = (tBSPMipTexHeader*)textureData;
+    hl::tBSPMipTexHeader* miptex = (hl::tBSPMipTexHeader*)textureData;
     
     texture.setName(miptex->name);
     texture.setDimentions(miptex->width, miptex->height, 4);

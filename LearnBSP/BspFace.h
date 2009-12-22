@@ -23,7 +23,7 @@
 #include "common/plane.h"
 #include "common/texture.h"
 #include "common/opengl.h"
-#include "types.h"
+#include "hltypes.h"
 /*!
  * \brief
  */
@@ -45,7 +45,7 @@ public:
     void setTexture(Texture* texture);
     const Texture* getTexture() const;
 
-    const Texture* setLightmap(const tBSPFace& bspFace, float min[2], float max[2], const unsigned char* lightData, float brightness = 0.5f);
+    const Texture* setLightmap(const hl::tBSPFace& bspFace, float min[2], float max[2], const unsigned char* lightData, float brightness = 0.5f);
     
 private:
     /*! \brief */

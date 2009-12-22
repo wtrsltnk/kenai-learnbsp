@@ -20,6 +20,7 @@
 #include "Application.h"
 #include "TextureLoader.h"
 #include "common/math3d.h"
+#include "BspLoader.h"
 #include <stdio.h>
 
 /*!
@@ -40,6 +41,8 @@ Application::Application(int width, int height)
  */
 Application::~Application()
 {
+	if (this->mWorld != NULL)
+		delete this->mWorld;
     delete this->mFileSystem;
     glfwTerminate();
 }
@@ -54,13 +57,10 @@ Application::~Application()
  */
 bool Application::initialize()
 {
-    TextureLoader textureLoader(this->mFileSystem);
-    Data data;
-    
-    if (this->mFileSystem->openFile(data, this->mFileSystem->findFile("cs_militia.bsp")))
-    {
-        this->mWorld = new HlBspWorld();
-        this->mWorld->open(data, textureLoader);
+	BspLoader loader(this->mFileSystem);
+
+	if (this->mWorld = loader.loadWorld("cs_militia.bspg"))
+	{
         this->mWorld->setCamera(&this->mCamera);
         this->mWorld->setupEntities();
         this->setPerspective(45.0f, 0.1f, 4096);

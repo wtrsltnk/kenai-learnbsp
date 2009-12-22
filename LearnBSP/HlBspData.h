@@ -17,22 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPDATA_H
-#define	_BSPDATA_H
+#ifndef _HLBSPDATA_H
+#define	_HLBSPDATA_H
 
 #include "common/data.h"
-#include "types.h"
+#include "hltypes.h"
 #include <stdlib.h>
 
-class BspData
+class HlBspData
 {
 public:
-    BspData(const Data& data);
-    virtual ~BspData();
+    HlBspData(const Data& data);
+    virtual ~HlBspData();
 
     static bool testBSP(const Data& data);
     
-    tBSPHeader header;
+    hl::tBSPHeader header;
     
 //#define HL1_BSP_ENTITYLUMP 0
     int entitySize;
@@ -40,7 +40,7 @@ public:
 
 //#define HL1_BSP_PLANELUMP 1
     int planeCount;
-    tBSPPlane* planes;
+    hl::tBSPPlane* planes;
 
 //#define HL1_BSP_TEXTURELUMP 2
     int textureSize;
@@ -48,7 +48,7 @@ public:
 
 //#define HL1_BSP_VERTEXLUMP 3
     int vertexCount;
-    tBSPVertex* vertices;
+    hl::tBSPVertex* vertices;
 
 //#define HL1_BSP_VISIBILITYLUMP 4
     int visibilitySize;
@@ -56,15 +56,15 @@ public:
 
 //#define HL1_BSP_NODELUMP 5
     int nodeCount;
-    tBSPNode* nodes;
+    hl::tBSPNode* nodes;
 
 //#define HL1_BSP_TEXINFOLUMP 6
     int texinfoCount;
-    tBSPTexInfo* texinfos;
+    hl::tBSPTexInfo* texinfos;
 
 //#define HL1_BSP_FACELUMP 7
     int faceCount;
-    tBSPFace* faces;
+    hl::tBSPFace* faces;
 
 //#define HL1_BSP_LIGHTINGLUMP 8
     int lightingSize;
@@ -72,11 +72,11 @@ public:
 
 //#define HL1_BSP_CLIPNODELUMP 9
     int clipnodeCount;
-    tBSPClipNode* clipnodes;
+    hl::tBSPClipNode* clipnodes;
 
 //#define HL1_BSP_LEAFLUMP 10
     int leafCount;
-    tBSPLeaf* leafs;
+    hl::tBSPLeaf* leafs;
 
 //#define HL1_BSP_MARKSURFACELUMP 11
     int marksurfaceCount;
@@ -84,7 +84,7 @@ public:
 
 //#define HL1_BSP_EDGELUMP 12
     int edgeCount;
-    tBSPEdge* edges;
+    hl::tBSPEdge* edges;
 
 //#define HL1_BSP_SURFEDGELUMP 13
     int surfedgeCount;
@@ -92,7 +92,7 @@ public:
 
 //#define HL1_BSP_MODELLUMP 14
     int modelCount;
-    tBSPModel* models;
+    hl::tBSPModel* models;
 
 private:
     /*!
@@ -102,7 +102,7 @@ private:
      * \param data
      */
     template <typename T>
-    static int loadLump(T** array, const tBSPLump& lump, const Data* data)
+    static int loadLump(T** array, const hl::tBSPLump& lump, const Data* data)
     {
         if (*array != NULL)
         {
@@ -126,5 +126,5 @@ private:
     }
 };
 
-#endif	/* _BSPDATA_H */
+#endif	/* _HLBSPDATA_H */
 

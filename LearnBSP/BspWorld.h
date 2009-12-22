@@ -29,9 +29,8 @@
 #include "BspLeaf.h"
 #include "BspFace.h"
 #include "BspModel.h"
-#include "BspData.h"
 #include "BspEntity.h"
-#include "types.h"
+#include "hltypes.h"
 #include "BspObject.h"
 #include <vector>
 #include <set>

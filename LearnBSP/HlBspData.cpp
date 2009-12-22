@@ -17,21 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "BspData.h"
+#include "HlBspData.h"
 #include <iostream>
-
 
 /*!
  * \brief
  * \param data
  */
-BspData::BspData(const Data& data)
+HlBspData::HlBspData(const Data& data)
     : entitySize(0), entityData(NULL), planeCount(0), planes(NULL), textureSize(0), textureData(NULL), vertexCount(0), vertices(NULL),
         visibilitySize(0), visibilityData(NULL), nodeCount(0), nodes(NULL), texinfoCount(0), texinfos(NULL), faceCount(0), faces(NULL),
         lightingSize(0), lightingData(NULL), clipnodeCount(0), clipnodes(NULL), leafCount(0), leafs(NULL), marksurfaceCount(0), marksurfaces(NULL),
         edgeCount(0), edges(NULL), surfedgeCount(0), surfedges(NULL), modelCount(0), models(NULL)
 {
-    tBSPHeader header;
+    hl::tBSPHeader header;
     
     if (!data.read(&header)) {
         std::cout << "Could not read the BSP header" << std::endl;
@@ -63,7 +62,7 @@ BspData::BspData(const Data& data)
 /*!
  * \brief
  */
-BspData::~BspData()
+HlBspData::~HlBspData()
 {
     if (entityData) delete []entityData;
     if (planes) delete []planes;
@@ -87,9 +86,9 @@ BspData::~BspData()
  * \param data
  * \return
  */
-bool BspData::testBSP(const Data& data)
+bool HlBspData::testBSP(const Data& data)
 {
-    tBSPHeader header;
+    hl::tBSPHeader header;
     
     if (!data.read(&header)) {
         std::cout << "Could not read the BSP header" << std::endl;
@@ -101,47 +100,47 @@ bool BspData::testBSP(const Data& data)
         return false;
     }
 
-    if (header.lumps[HL1_BSP_PLANELUMP].size % sizeof(tBSPPlane) != 0)
+    if (header.lumps[HL1_BSP_PLANELUMP].size % sizeof(hl::tBSPPlane) != 0)
     {
         std::cout << "Plane lump has the wrong size" << std::endl;
         return false;
     }
-    if (header.lumps[HL1_BSP_VERTEXLUMP].size % sizeof(tBSPVertex) != 0)
+    if (header.lumps[HL1_BSP_VERTEXLUMP].size % sizeof(hl::tBSPVertex) != 0)
     {
         std::cout << "Vertex lump has the wrong size" << std::endl;
         return false;
     }
-    if (header.lumps[HL1_BSP_NODELUMP].size % sizeof(tBSPNode) != 0)
+    if (header.lumps[HL1_BSP_NODELUMP].size % sizeof(hl::tBSPNode) != 0)
     {
         std::cout << " Node lump has the wrong size" << std::endl;
         return false;
     }
-    if (header.lumps[HL1_BSP_TEXINFOLUMP].size % sizeof(tBSPTexInfo) != 0)
+    if (header.lumps[HL1_BSP_TEXINFOLUMP].size % sizeof(hl::tBSPTexInfo) != 0)
     {
         std::cout << "Texture info lump has the wrong size" << std::endl;
         return false;
     }
-    if (header.lumps[HL1_BSP_FACELUMP].size % sizeof(tBSPFace) != 0)
+    if (header.lumps[HL1_BSP_FACELUMP].size % sizeof(hl::tBSPFace) != 0)
     {
         std::cout << "Face lump has the wrong size" << std::endl;
         return false;
     }
-    if (header.lumps[HL1_BSP_CLIPNODELUMP].size % sizeof(tBSPClipNode) != 0)
+    if (header.lumps[HL1_BSP_CLIPNODELUMP].size % sizeof(hl::tBSPClipNode) != 0)
     {
         std::cout << "Clipnode lump has the wrond size" << std::endl;
         return false;
     }
-    if (header.lumps[HL1_BSP_LEAFLUMP].size % sizeof(tBSPLeaf) != 0)
+    if (header.lumps[HL1_BSP_LEAFLUMP].size % sizeof(hl::tBSPLeaf) != 0)
     {
         std::cout << "Leaf lump has the wrong size" << std::endl;
         return false;
     }
-    if (header.lumps[HL1_BSP_EDGELUMP].size % sizeof(tBSPEdge) != 0)
+    if (header.lumps[HL1_BSP_EDGELUMP].size % sizeof(hl::tBSPEdge) != 0)
     {
         std::cout << "Edge lump has the wrong size" << std::endl;
         return false;
     }
-    if (header.lumps[HL1_BSP_MODELLUMP].size % sizeof(tBSPModel) != 0)
+    if (header.lumps[HL1_BSP_MODELLUMP].size % sizeof(hl::tBSPModel) != 0)
     {
         std::cout << "Model lump has the wrond size" << std::endl;
         return false;

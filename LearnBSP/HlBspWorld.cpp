@@ -20,10 +20,10 @@ HlBspWorld::~HlBspWorld()
 
 bool HlBspWorld::onOpen(const Data& data, TextureLoader& textureLoader)
 {
-    if (!BspData::testBSP(data))
+    if (!HlBspData::testBSP(data))
         return false;
 
-    BspData bsp(data);
+    HlBspData bsp(data);
 
     // Load the data structtures from the BSP file
     this->mLeafCount = bsp.leafCount;
@@ -76,7 +76,7 @@ bool HlBspWorld::onOpen(const Data& data, TextureLoader& textureLoader)
  * \param bsp
  * \return
  */
-bool HlBspWorld::parseEntityData(BspData& bsp, TextureLoader& textureLoader)
+bool HlBspWorld::parseEntityData(HlBspData& bsp, TextureLoader& textureLoader)
 {
     Tokenizer tok(bsp.entityData, bsp.entitySize);
 
@@ -106,7 +106,7 @@ bool HlBspWorld::parseEntityData(BspData& bsp, TextureLoader& textureLoader)
  * \param bsp
  * \return
  */
-bool HlBspWorld::parseTextures(BspData& bsp, TextureLoader& textureLoader)
+bool HlBspWorld::parseTextures(HlBspData& bsp, TextureLoader& textureLoader)
 {
     // Save the texture index table with in the first place the number of textures so this one is skipped
     int* table = (int*)bsp.textureData;
@@ -127,11 +127,11 @@ bool HlBspWorld::parseTextures(BspData& bsp, TextureLoader& textureLoader)
  * \param bsp
  * \return
  */
-bool HlBspWorld::parseLeafs(BspData& bsp)
+bool HlBspWorld::parseLeafs(HlBspData& bsp)
 {
     for (int l = 1; l < this->mLeafCount; l++)
     {
-        tBSPLeaf& leaf = bsp.leafs[l];
+        hl::tBSPLeaf& leaf = bsp.leafs[l];
         this->mLeafs[l].setBoundingBox(BoundingBox(leaf.mins, leaf.maxs));
         for (int f = 0; f < leaf.markSurfacesCount; f++)
         {
@@ -166,13 +166,13 @@ bool HlBspWorld::parseLeafs(BspData& bsp)
  * \param bsp
  * \return
  */
-bool HlBspWorld::parseFaces(BspData& bsp)
+bool HlBspWorld::parseFaces(HlBspData& bsp)
 {
     for (int f = 0; f < this->mFaceCount; f++)
     {
-        tBSPFace& face = bsp.faces[f];
-        tBSPPlane& plane = bsp.planes[face.planeIndex];
-        tBSPTexInfo& texinfo = bsp.texinfos[face.texinfoIndex];
+        hl::tBSPFace& face = bsp.faces[f];
+        hl::tBSPPlane& plane = bsp.planes[face.planeIndex];
+        hl::tBSPTexInfo& texinfo = bsp.texinfos[face.texinfoIndex];
         Texture* texture = &this->mTextures[texinfo.miptexIndex];
         this->mFaces[f].setPlane(plane.normal, plane.distance);
         this->mFaces[f].setVertices(this->mVertexIndices->current(), face.edgeCount);
@@ -193,14 +193,14 @@ bool HlBspWorld::parseFaces(BspData& bsp)
             int edgeIndex = bsp.surfedges[face.firstEdge + e];
             if (edgeIndex < 0)
             {
-                const tBSPEdge& edge = bsp.edges[-edgeIndex];
+                const hl::tBSPEdge& edge = bsp.edges[-edgeIndex];
                 vertex[0] = bsp.vertices[edge.vertex[1]].point[0];
                 vertex[1] = bsp.vertices[edge.vertex[1]].point[1];
                 vertex[2] = bsp.vertices[edge.vertex[1]].point[2];
             }
             else
             {
-                const tBSPEdge& edge = bsp.edges[edgeIndex];
+                const hl::tBSPEdge& edge = bsp.edges[edgeIndex];
                 vertex[0] = bsp.vertices[edge.vertex[0]].point[0];
                 vertex[1] = bsp.vertices[edge.vertex[0]].point[1];
                 vertex[2] = bsp.vertices[edge.vertex[0]].point[2];
@@ -234,11 +234,11 @@ bool HlBspWorld::parseFaces(BspData& bsp)
  * \param bsp
  * \return
  */
-bool HlBspWorld::parseModels(BspData& bsp)
+bool HlBspWorld::parseModels(HlBspData& bsp)
 {
     for (int m = 0; m < bsp.modelCount; m++)
     {
-        tBSPModel& model = bsp.models[m];
+        hl::tBSPModel& model = bsp.models[m];
         this->mModels[m].setHeadNode(createNode(bsp.nodes[model.headnode[0]], bsp));
         this->mModels[m].setBoundingBox(BoundingBox(model.mins, model.maxs));
         for (int f = 0; f < model.faceCount; f++)
@@ -256,7 +256,7 @@ bool HlBspWorld::parseModels(BspData& bsp)
  * \param bsp
  * \return
  */
-BspNode* HlBspWorld::createNode(const tBSPNode& node, BspData& bsp)
+BspNode* HlBspWorld::createNode(const hl::tBSPNode& node, HlBspData& bsp)
 {
     BspNode* result = new BspNode();
 
@@ -274,7 +274,7 @@ BspNode* HlBspWorld::createNode(const tBSPNode& node, BspData& bsp)
     result->setChildren(front, back);
 
     // Setup splitting plane
-    const tBSPPlane& plane = bsp.planes[node.planeIndex];
+    const hl::tBSPPlane& plane = bsp.planes[node.planeIndex];
     result->setPlane(plane.normal, plane.distance);
 
     // Setup bounding box
@@ -349,14 +349,14 @@ void HlBspWorld::setWorldEntity(BspEntity* world)
  * \param min
  * \param max
  */
-void HlBspWorld::getFaceBounds(const tBSPFace& bspFace, const tBSPTexInfo& texinfo, BspData& bsp, float min[2], float max[2])
+void HlBspWorld::getFaceBounds(const hl::tBSPFace& bspFace, const hl::tBSPTexInfo& texinfo, HlBspData& bsp, float min[2], float max[2])
 {
     min[0] = min[1] =  999999;
     max[0] = max[1] = -999999;
 
     for (int e = 0; e < bspFace.edgeCount; e++)
     {
-        const tBSPVertex* vertex = NULL;
+        const hl::tBSPVertex* vertex = NULL;
         int edgeIndex = bsp.surfedges[bspFace.firstEdge + e];
         if (edgeIndex >= 0)
             vertex = &bsp.vertices[bsp.edges[edgeIndex].vertex[0]];

@@ -70,24 +70,25 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Application.h</itemPath>
-      <itemPath>BspData.h</itemPath>
       <itemPath>BspEntity.h</itemPath>
       <itemPath>BspFace.h</itemPath>
       <itemPath>BspLeaf.h</itemPath>
+      <itemPath>BspLoader.cpp</itemPath>
+      <itemPath>BspLoader.h</itemPath>
       <itemPath>BspMesh.h</itemPath>
       <itemPath>BspModel.h</itemPath>
       <itemPath>BspNode.h</itemPath>
       <itemPath>BspObject.h</itemPath>
       <itemPath>BspWorld.h</itemPath>
+      <itemPath>HlBspData.h</itemPath>
       <itemPath>HlBspWorld.h</itemPath>
       <itemPath>TextureLoader.h</itemPath>
-      <itemPath>types.h</itemPath>
+      <itemPath>hltypes.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>Application.cpp</itemPath>
-      <itemPath>BspData.cpp</itemPath>
       <itemPath>BspEntity.cpp</itemPath>
       <itemPath>BspFace.cpp</itemPath>
       <itemPath>BspLeaf.cpp</itemPath>
@@ -96,6 +97,7 @@
       <itemPath>BspNode.cpp</itemPath>
       <itemPath>BspObject.cpp</itemPath>
       <itemPath>BspWorld.cpp</itemPath>
+      <itemPath>HlBspData.cpp</itemPath>
       <itemPath>HlBspWorld.cpp</itemPath>
       <itemPath>TextureLoader.cpp</itemPath>
       <itemPath>main.cpp</itemPath>

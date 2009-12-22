@@ -8,6 +8,9 @@
 #ifndef _BSP_TYPES_H
 #define	_BSP_TYPES_H
 
+namespace hl
+{
+
 #define HL1_BSP_SIGNATURE 30
 #define HL1_BSP_LUMPCOUNT 15
 
@@ -200,6 +203,8 @@ typedef struct sVertex
     float lslt[2];		// The lightmap texture coordinates
 
 } tVertex;
+
+}
 
 #endif	/* _BSP_TYPES_H */
 

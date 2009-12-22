@@ -9,6 +9,7 @@
 #define	_HLBSPWORLD_H
 
 #include "BspWorld.h"
+#include "HlBspData.h"
 
 class HlBspWorld : public BspWorld
 {
@@ -37,16 +38,16 @@ private:
     /*! \brief */
     int mMaxRange;
 
-    bool parseEntityData(BspData& bsp, TextureLoader& textureLoader);
-    bool parseTextures(BspData& bsp, TextureLoader& textureLoader);
-    bool parseLeafs(BspData& bsp);
-    bool parseFaces(BspData& bsp);
-    bool parseModels(BspData& bsp);
-    BspNode* createNode(const tBSPNode& node, BspData& bsp);
+    bool parseEntityData(HlBspData& bsp, TextureLoader& textureLoader);
+    bool parseTextures(HlBspData& bsp, TextureLoader& textureLoader);
+    bool parseLeafs(HlBspData& bsp);
+    bool parseFaces(HlBspData& bsp);
+    bool parseModels(HlBspData& bsp);
+    BspNode* createNode(const hl::tBSPNode& node, HlBspData& bsp);
     
     void setWorldEntity(BspEntity* world);
 
-    static void getFaceBounds(const tBSPFace& bspFace, const tBSPTexInfo& texinfo, BspData& bsp, float min[2], float max[2]);
+    static void getFaceBounds(const hl::tBSPFace& bspFace, const hl::tBSPTexInfo& texinfo, HlBspData& bsp, float min[2], float max[2]);
 
 };
 
