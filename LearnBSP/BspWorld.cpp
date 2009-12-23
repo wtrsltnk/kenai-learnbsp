@@ -64,7 +64,6 @@ bool BspWorld::setupEntities()
         if (object != NULL)
         {
             this->mObjects.push_back(object);
-            this->mHeadNode->addObject(object);
         }
     }
     return true;
@@ -84,26 +83,12 @@ void BspWorld::setCamera(Camera* camera)
  */
 void BspWorld::render()
 {
-    const BspLeaf* leaf = this->mHeadNode->getChild(mCamera->getPosition());
+	RenderOptions options(this->mCamera, 1.0f);
 
-    if (leaf->getFaceCount() > 0)
-    {
-        glColor3f(1.0f, 1.0f, 1.0f);
-        leaf->render();
-    }
-    else
-    {
-        glColor3f(1.0f, 0.0f, 0.0f);
-        this->renderAllFaces();
-    }
-
-    std::set<BspObject*> objects;
-    this->mHeadNode->gatherVisibleObjects(objects, this->mCamera->getPosition());
-
-    for (std::set<BspObject*>::iterator itr = objects.begin(); itr != objects.end(); ++itr)
-    {
-        (*itr)->render(1.0f);
-    }
+	for (int m = 0; m < 1; m++)
+	{
+		this->mModels[m].render(options);
+	}
 }
 
 /*!

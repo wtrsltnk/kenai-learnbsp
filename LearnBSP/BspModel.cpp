@@ -22,6 +22,7 @@
 #include "BspNode.h"
 #include "BspEntity.h"
 #include "common/renderoperations.h"
+#include "BspLeaf.h"
 #include <iostream>
 #include <string.h>
 
@@ -46,19 +47,27 @@ BspModel::~BspModel()
  * \brief
  * \param time
  */
-void BspModel::update(double time)
+void BspModel::update(RenderOptions& options)
 {
 }
 
 /*!
  * \brief
  */
-void BspModel::render() const
+void BspModel::render(RenderOptions& options) const
 {
-    for (std::vector<BspFace*>::const_iterator face = this->mFaces.begin(); face != this->mFaces.end(); ++face)
-    {
-        (*face)->render();
-    }
+	const BspLeaf* leaf = this->mHeadNode->getChild(options.getCamera()->getPosition());
+	if (leaf != NULL)
+	{
+		leaf->render();
+	}
+	else
+	{
+		for (std::vector<BspFace*>::const_iterator face = this->mFaces.begin(); face != this->mFaces.end(); ++face)
+		{
+			(*face)->render();
+		}
+	}
 }
 
 /*!

@@ -20,6 +20,8 @@
 #ifndef _BSPMESH_H
 #define	_BSPMESH_H
 
+#include "RenderOptions.h"
+
 /*!
  * \brief
  */
@@ -30,9 +32,9 @@ public:
     virtual ~BspMesh();
 
     /*! \brief */
-    virtual void update(double time) = 0;
+    virtual void update(RenderOptions& options) = 0;
     /*! \brief */
-    virtual void render() const = 0;
+    virtual void render(RenderOptions& options) const = 0;
     
     /*! \brief */
     void setSolid(bool solid);

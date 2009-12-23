@@ -79,6 +79,8 @@
       <itemPath>BspNode.h</itemPath>
       <itemPath>BspObject.h</itemPath>
       <itemPath>BspWorld.h</itemPath>
+      <itemPath>RenderOptions.cpp</itemPath>
+      <itemPath>RenderOptions.h</itemPath>
       <itemPath>TextureLoader.h</itemPath>
     </logicalFolder>
     <logicalFolder name="f3" displayName="HlBsp" projectFiles="true">

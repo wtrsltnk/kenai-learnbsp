@@ -58,6 +58,12 @@ void BspLeaf::render(const float point[3]) const
     {
         (*face)->render();
     }
+
+	for (std::set<BspLeaf*>::const_iterator itr = this->mVisibleLeafs.begin(); itr != this->mVisibleLeafs.end(); ++itr)
+	{
+		const BspLeaf* leaf = *itr;
+		leaf->renderLeafOnly();
+	}
 }
 
 /*!

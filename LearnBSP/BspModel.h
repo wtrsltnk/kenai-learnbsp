@@ -22,6 +22,7 @@
 
 #include "common/boundingbox.h"
 #include "BspMesh.h"
+#include "RenderOptions.h"
 #include <vector>
 
 class BspFace;
@@ -38,8 +39,8 @@ public:
     BspModel();
     virtual ~BspModel();
 
-    virtual void update(double time);
-    virtual void render() const;
+    virtual void update(RenderOptions& options);
+    virtual void render(RenderOptions& options) const;
 
     const BspLeaf* getLeaf(const float position[3]) const;
 

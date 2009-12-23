@@ -258,7 +258,6 @@ bool HlBspWorld::parseModels(HlBspData& bsp)
             this->mModels[m].addFace(&this->mFaces[model.firstFace + f]);
         }
     }
-    this->mHeadNode = this->mModels[0].getHeadNode();
     return true;
 }
 

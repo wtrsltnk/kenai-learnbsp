@@ -56,6 +56,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/fs/image/bitmap.o \
 	${OBJECTDIR}/BspObject.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/RenderOptions.o \
 	${OBJECTDIR}/common/texture.o \
 	${OBJECTDIR}/HlBspWorld.o \
 	${OBJECTDIR}/fs/zip/ioapi.o \
@@ -200,6 +201,10 @@ ${OBJECTDIR}/BspObject.o: nbproject/Makefile-${CND_CONF}.mk BspObject.cpp
 ${OBJECTDIR}/main.o: nbproject/Makefile-${CND_CONF}.mk main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.cc) -g -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/RenderOptions.o: nbproject/Makefile-${CND_CONF}.mk RenderOptions.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g -o ${OBJECTDIR}/RenderOptions.o RenderOptions.cpp
 
 ${OBJECTDIR}/common/texture.o: nbproject/Makefile-${CND_CONF}.mk common/texture.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common

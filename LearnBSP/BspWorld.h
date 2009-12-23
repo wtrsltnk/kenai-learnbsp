@@ -82,8 +82,6 @@ protected:
     std::vector<BspObject*> mObjects;
 
     /*! \brief */
-    BspNode* mHeadNode;
-    /*! \brief */
     BspEntity* mWorldEntity;
     
     /*! \brief */
