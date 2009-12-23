@@ -84,17 +84,17 @@ void BspWorld::setCamera(Camera* camera)
  */
 void BspWorld::render()
 {
-    const BspLeaf* leaf = this->mHeadNode->getLeaf(mCamera->getPosition());
+    const BspLeaf* leaf = this->mHeadNode->getChild(mCamera->getPosition());
 
     if (leaf->getFaceCount() > 0)
     {
         glColor3f(1.0f, 1.0f, 1.0f);
-        this->mHeadNode->render(mCamera->getPosition());
+        leaf->render();
     }
     else
     {
         glColor3f(1.0f, 0.0f, 0.0f);
-        this->mHeadNode->render();
+        this->renderAllFaces();
     }
 
     std::set<BspObject*> objects;
@@ -111,7 +111,6 @@ void BspWorld::render()
  */
 void BspWorld::renderAllFaces() const
 {
-    glColor3f(1.0f, 1.0f, 1.0f);
     for (int f = 1; f < this->mFaceCount; f++)
     {
         this->mFaces[f].render();
@@ -123,6 +122,11 @@ void BspWorld::renderAllFaces() const
  */
 void BspWorld::close()
 {
+	if (this->mTextures != NULL)
+        delete []this->mTextures;
+    this->mTextures = NULL;
+    this->mTextureCount = 0;
+
     if (this->mLeafs != NULL)
         delete []this->mLeafs;
     this->mLeafs = NULL;
@@ -137,11 +141,6 @@ void BspWorld::close()
         delete []this->mModels;
     this->mModels = NULL;
     this->mModelCount = 0;
-
-    if (this->mTextures != NULL)
-        delete []this->mTextures;
-    this->mTextures = NULL;
-    this->mTextureCount = 0;
 
     if (this->mVertexIndices != NULL)
         delete this->mVertexIndices;

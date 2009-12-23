@@ -35,29 +35,26 @@ class BspNode
 {
 public:
     BspNode();
-    BspNode(BspLeaf* leaf);
     virtual ~BspNode();
 
-    void render() const;
-    void render(const float point[3]) const;
-    void gatherVisibleObjects(std::set<BspObject*>& objects, const float point[3]) const;
+    virtual void render() const;
+    virtual void render(const float point[3]) const;
+    virtual void gatherVisibleObjects(std::set<BspObject*>& objects, const float point[3]) const;
 
     void setPlane(const float normal[3], float distance);
     const Plane& getPlane() const;
+
+    void setBoundingBox(const BoundingBox& bb);
+    const BoundingBox& getBoundingBox() const;
 
     void setChildren(BspNode* front, BspNode* back);
     const BspNode* getFront() const;
     const BspNode* getBack() const;
     const BspNode* getParent() const;
 
-    const BspNode* getChild(const float point[3]) const;
-    const BspLeaf* getLeaf(const float point[3]) const;
-    const BspLeaf* getLeaf() const;
+    virtual const BspLeaf* getChild(const float point[3]) const;
 
-    void setBoundingBox(const BoundingBox& bb);
-    const BoundingBox& getBoundingBox() const;
-
-    void addObject(BspObject* object);
+    virtual void addObject(BspObject* object);
     
 private:
     /*! \brief */
@@ -68,8 +65,6 @@ private:
     BspNode* mBack;
     /*! \brief */
     Plane mSplit;
-    /*! \brief */
-    BspLeaf* mLeaf;
     /*! \brief */
     BoundingBox mBB;
     

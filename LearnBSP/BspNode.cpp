@@ -29,16 +29,7 @@
  * \brief
  */
 BspNode::BspNode()
-    : mParent(NULL), mFront(NULL), mBack(NULL), mLeaf(NULL)
-{
-}
-
-/*!
- * \brief
- * \param leaf
- */
-BspNode::BspNode(BspLeaf* leaf)
-    : mFront(NULL), mBack(NULL), mLeaf(leaf)
+    : mParent(NULL), mFront(NULL), mBack(NULL)
 {
 }
 
@@ -47,10 +38,11 @@ BspNode::BspNode(BspLeaf* leaf)
  */
 BspNode::~BspNode()
 {
-    if (this->mFront != NULL)
+	// Only remove the BspNode objects, the BspLeaf objects get removed another way
+    if (this->mFront != NULL && static_cast <BspLeaf*> (this->mFront) == NULL)
         delete this->mFront;
 
-    if (this->mBack != NULL)
+    if (this->mBack != NULL && static_cast <BspLeaf*> (this->mBack) == NULL)
         delete this->mBack;
 }
 
@@ -59,15 +51,8 @@ BspNode::~BspNode()
  */
 void BspNode::render() const
 {
-    if (this->mLeaf != NULL)
-    {
-        this->mLeaf->render(false);
-    }
-    else
-    {
-        this->mFront->render();
-        this->mBack->render();
-    }
+	this->mFront->render();
+	this->mBack->render();
 }
 
 /*!
@@ -76,19 +61,12 @@ void BspNode::render() const
  */
 void BspNode::render(const float point[3]) const
 {
-    if (this->mLeaf != NULL)
-    {
-        this->mLeaf->render();
-    }
-    else
-    {
-        float distance = this->mSplit.distance(Vector3(point));
+	float distance = this->mSplit.distance(Vector3(point));
 
-        if (distance >= 0)
-            this->mFront->render(point);
-        else
-            this->mBack->render(point);
-    }
+	if (distance < 0)
+		this->mBack->render(point);
+	else
+		this->mFront->render(point);
 }
 
 /*!
@@ -98,19 +76,12 @@ void BspNode::render(const float point[3]) const
  */
 void BspNode::gatherVisibleObjects(std::set<BspObject*>& objects, const float point[3]) const
 {
-    if (this->mLeaf != NULL)
-    {
-        this->mLeaf->gatherVisibleObjects(objects, true);
-    }
-    else
-    {
-        float distance = this->mSplit.distance(Vector3(point));
+	float distance = this->mSplit.distance(Vector3(point));
 
-        if (distance >= 0)
-            this->mFront->gatherVisibleObjects(objects, point);
-        else
-            this->mBack->gatherVisibleObjects(objects, point);
-    }
+	if (distance < 0)
+		this->mBack->gatherVisibleObjects(objects, point);
+	else
+		this->mFront->gatherVisibleObjects(objects, point);
 }
 
 /*!
@@ -179,43 +150,14 @@ const BspNode* BspNode::getParent() const
  * \param point
  * \return
  */
-const BspNode* BspNode::getChild(const float point[3]) const
+const BspLeaf* BspNode::getChild(const float point[3]) const
 {
-    if (this->mLeaf == NULL)
-    {
-        float distance = this->mSplit.distance(Vector3(point));
+	float distance = this->mSplit.distance(Vector3(point));
 
-        if (distance >= 0)
-            return this->mFront;
-        else
-            return this->mBack;
-    }
+	if (distance < 0)
+		return this->mBack->getChild(point);
 
-    return NULL;
-}
-
-/*!
- * \brief
- * \param point
- * \return
- */
-const BspLeaf* BspNode::getLeaf(const float position[3]) const
-{
-    const BspNode* child = this->getChild(position);
-
-    if (child == NULL)
-        return this->mLeaf;
-
-    return child->getLeaf(position);
-}
-
-/*!
- * \brief
- * \return
- */
-const BspLeaf* BspNode::getLeaf() const
-{
-    return this->mLeaf;
+	return this->mFront->getChild(point);
 }
 
 /*!
@@ -242,17 +184,10 @@ const BoundingBox& BspNode::getBoundingBox() const
  */
 void BspNode::addObject(BspObject* object)
 {
-	if (this->mLeaf == NULL)
-	{
-		float distance = this->mSplit.distance(Vector3(object->getOrigin()));
-		
-		if (distance > 0)
-			this->mFront->addObject(object);
-		else
-			this->mBack->addObject(object);
-	}
+	float distance = this->mSplit.distance(Vector3(object->getOrigin()));
+
+	if (distance < 0)
+		this->mBack->addObject(object);
 	else
-	{
-		this->mLeaf->addObject(object);
-	}
+		this->mFront->addObject(object);
 }

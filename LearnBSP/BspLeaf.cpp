@@ -39,45 +39,74 @@ BspLeaf::~BspLeaf()
 
 /*!
  * \brief
+ */
+void  BspLeaf::renderLeafOnly() const
+{
+    for (std::set<BspFace*>::const_iterator face = this->mFaces.begin(); face != this->mFaces.end(); ++face)
+    {
+        (*face)->render();
+    }
+}
+
+/*!
+ * \brief
+ * \param point
+ */
+void BspLeaf::render(const float point[3]) const
+{
+    for (std::set<BspFace*>::const_iterator face = this->mFaces.begin(); face != this->mFaces.end(); ++face)
+    {
+        (*face)->render();
+    }
+}
+
+/*!
+ * \brief
  * \param renderPvs
  */
-void BspLeaf::render(bool renderPvs) const
+void BspLeaf::render() const
 {
     for (std::set<BspFace*>::const_iterator face = this->mFaces.begin(); face != this->mFaces.end(); ++face)
     {
         (*face)->render();
     }
 
-    if (renderPvs)
+	for (std::set<BspLeaf*>::const_iterator itr = this->mVisibleLeafs.begin(); itr != this->mVisibleLeafs.end(); ++itr)
+	{
+		const BspLeaf* leaf = *itr;
+		leaf->renderLeafOnly();
+	}
+}
+
+/*!
+ * \brief
+ * \param objects
+ */
+void BspLeaf::gatherVisibleObjectsLeafOnly(std::set<BspObject*>& objects) const
+{
+    for (std::set<BspObject*>::const_iterator object = this->mObjects.begin(); object != this->mObjects.end(); ++object)
     {
-        for (std::set<BspLeaf*>::const_iterator itr = this->mVisibleLeafs.begin(); itr != this->mVisibleLeafs.end(); ++itr)
-        {
-            const BspLeaf* leaf = *itr;
-            leaf->render(false);
-        }
+        objects.insert(*object);
     }
 }
 
 /*!
  * \brief
  * \param objects
- * \param pvs
+ * \param point
  */
-void BspLeaf::gatherVisibleObjects(std::set<BspObject*>& objects, bool pvs) const
+void BspLeaf::gatherVisibleObjects(std::set<BspObject*>& objects, const float point[3]) const
 {
     for (std::set<BspObject*>::const_iterator object = this->mObjects.begin(); object != this->mObjects.end(); ++object)
     {
         objects.insert(*object);
     }
 
-    if (pvs)
-    {
-        for (std::set<BspLeaf*>::const_iterator itr = this->mVisibleLeafs.begin(); itr != this->mVisibleLeafs.end(); ++itr)
-        {
-            const BspLeaf* leaf = *itr;
-            leaf->gatherVisibleObjects(objects, false);
-        }
-    }
+	for (std::set<BspLeaf*>::const_iterator itr = this->mVisibleLeafs.begin(); itr != this->mVisibleLeafs.end(); ++itr)
+	{
+		const BspLeaf* leaf = *itr;
+		leaf->gatherVisibleObjectsLeafOnly(objects);
+	}
 }
 
 /*!
@@ -96,6 +125,14 @@ void BspLeaf::addFace(BspFace* face)
 int BspLeaf::getFaceCount() const
 {
     return this->mFaces.size();
+}
+
+/*!
+ * \brief gets the
+ */
+const BspLeaf* BspLeaf::getChild(const float point[3]) const
+{
+	return this;
 }
 
 /*!

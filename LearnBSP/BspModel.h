@@ -38,7 +38,6 @@ public:
     BspModel();
     virtual ~BspModel();
 
-    virtual bool collides(float start[3], float end[3]) const;
     virtual void update(double time);
     virtual void render() const;
 

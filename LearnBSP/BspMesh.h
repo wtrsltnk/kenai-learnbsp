@@ -30,8 +30,6 @@ public:
     virtual ~BspMesh();
 
     /*! \brief */
-    virtual bool collides(float start[3], float end[3]) const = 0;
-    /*! \brief */
     virtual void update(double time) = 0;
     /*! \brief */
     virtual void render() const = 0;

@@ -44,17 +44,6 @@ BspModel::~BspModel()
 
 /*!
  * \brief
- * \param start
- * \param end
- * \return
- */
-bool BspModel::collides(float start[3], float end[3]) const
-{
-    return false;
-}
-
-/*!
- * \brief
  * \param time
  */
 void BspModel::update(double time)
@@ -78,15 +67,7 @@ void BspModel::render() const
  */
 const BspLeaf* BspModel::getLeaf(const float position[3]) const
 {
-    const BspNode* node = this->mHeadNode;
-    const BspNode* child = node->getChild(position);
-
-    while (child != NULL)
-    {
-        node = child;
-        child = node->getChild(position);
-    }
-    return node->getLeaf();
+    return this->mHeadNode->getChild(position);
 }
 
 /*!

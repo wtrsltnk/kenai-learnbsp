@@ -55,7 +55,7 @@ private:
     bool parseLeafs(HlBspData& bsp);
     bool parseFaces(HlBspData& bsp);
     bool parseModels(HlBspData& bsp);
-    BspNode* createNode(const hl::tBSPNode& node, HlBspData& bsp);
+    BspNode* createNode(const hl::tBSPNode& node, const hl::tBSPModel& model, HlBspData& bsp);
     
     void setWorldEntity(BspEntity* world);
 

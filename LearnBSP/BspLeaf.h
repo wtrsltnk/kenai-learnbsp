@@ -22,6 +22,7 @@
 
 #include "common/boundingbox.h"
 #include <set>
+#include "BspNode.h"
 
 class BspFace;
 class BspObject;
@@ -29,20 +30,25 @@ class BspObject;
 /*!
  * \brief
  */
-class BspLeaf
+class BspLeaf : public BspNode
 {
 public:
     BspLeaf();
     virtual ~BspLeaf();
 
-    void render(bool renderPvs = true) const;
-    void gatherVisibleObjects(std::set<BspObject*>& objects, bool pvs = true) const;
+    void renderLeafOnly() const;
+    virtual void render() const;
+    virtual void render(const float point[3]) const;
+    void gatherVisibleObjectsLeafOnly(std::set<BspObject*>& objects) const;
+    virtual void gatherVisibleObjects(std::set<BspObject*>& objects, const float point[3]) const;
 
     void addFace(BspFace* face);
     int getFaceCount() const;
 
+    virtual const BspLeaf* getChild(const float point[3]) const;
+
     void addVisibleLeaf(BspLeaf* leaf);
-    void addObject(BspObject* object);
+    virtual void addObject(BspObject* object);
 
     void setBoundingBox(const BoundingBox& bb);
     const BoundingBox& getBoundingBox() const;

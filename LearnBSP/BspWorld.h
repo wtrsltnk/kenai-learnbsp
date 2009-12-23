@@ -59,7 +59,7 @@ protected:
 protected:
     /*! \brief */
     Camera* mCamera;
-    
+
     /*! \brief */
     int mLeafCount;
     /*! \brief */

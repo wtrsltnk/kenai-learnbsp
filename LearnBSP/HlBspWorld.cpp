@@ -251,7 +251,7 @@ bool HlBspWorld::parseModels(HlBspData& bsp)
     for (int m = 0; m < bsp.modelCount; m++)
     {
         hl::tBSPModel& model = bsp.models[m];
-        this->mModels[m].setHeadNode(createNode(bsp.nodes[model.headnode[0]], bsp));
+        this->mModels[m].setHeadNode(createNode(bsp.nodes[model.headnode[0]], model, bsp));
         this->mModels[m].setBoundingBox(BoundingBox(model.mins, model.maxs));
         for (int f = 0; f < model.faceCount; f++)
         {
@@ -268,7 +268,7 @@ bool HlBspWorld::parseModels(HlBspData& bsp)
  * \param bsp
  * \return
  */
-BspNode* HlBspWorld::createNode(const hl::tBSPNode& node, HlBspData& bsp)
+BspNode* HlBspWorld::createNode(const hl::tBSPNode& node, const hl::tBSPModel& model, HlBspData& bsp)
 {
     BspNode* result = new BspNode();
 
@@ -276,13 +276,15 @@ BspNode* HlBspWorld::createNode(const hl::tBSPNode& node, HlBspData& bsp)
     BspNode* front = NULL;
     BspNode* back = NULL;
     if (node.children[0] > 0)
-        front = createNode(bsp.nodes[node.children[0]], bsp);
+        front = createNode(bsp.nodes[node.children[0]], model, bsp);
     else
-        front = new BspNode(&this->mLeafs[-(node.children[0] + 1)]);
+        front = &this->mLeafs[-(node.children[0] + 1)];
+
     if (node.children[1] > 0)
-        back = createNode(bsp.nodes[node.children[1]], bsp);
+        back = createNode(bsp.nodes[node.children[1]], model, bsp);
     else
-        back = new BspNode(&this->mLeafs[-(node.children[1] + 1)]);
+        back = &this->mLeafs[-(node.children[1] + 1)];
+
     result->setChildren(front, back);
 
     // Setup splitting plane
