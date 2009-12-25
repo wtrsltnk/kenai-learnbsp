@@ -125,6 +125,14 @@ void Application::destroy()
  */
 void Application::keyPressed(int key, int action)
 {
+	if (key == 32 && action == 1)
+	{
+		if (this->mWorld != NULL)
+		{
+			this->mWorld->shoot();
+		}
+	}
+//	std::cout << key << " " << action << std::endl;
 }
 
 /*!

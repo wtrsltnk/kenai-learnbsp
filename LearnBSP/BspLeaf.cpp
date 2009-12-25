@@ -20,7 +20,6 @@
 #include "BspLeaf.h"
 #include "BspFace.h"
 #include "BspObject.h"
-#include "common/renderoperations.h"
 #include <iostream>
 
 /*!
@@ -42,10 +41,17 @@ BspLeaf::~BspLeaf()
  */
 void  BspLeaf::renderLeafOnly() const
 {
+	RenderOptions options(NULL, 0);
     for (std::set<BspFace*>::const_iterator face = this->mFaces.begin(); face != this->mFaces.end(); ++face)
     {
         (*face)->render();
     }
+
+	for (std::set<BspObject*>::const_iterator itr = this->mObjects.begin(); itr != this->mObjects.end(); ++itr)
+	{
+		const BspObject* object = *itr;
+		object->render(options);
+	}
 }
 
 /*!
@@ -134,11 +140,24 @@ int BspLeaf::getFaceCount() const
 }
 
 /*!
+ * \brief Get's a reference to the set with faces
+ * \return A reference to the set with face
+ */
+const std::set<BspFace*>& BspLeaf::getFaces() const
+{
+    return this->mFaces;
+}
+
+/*!
  * \brief gets the
  */
 const BspLeaf* BspLeaf::getChild(const float point[3]) const
 {
-	return this;
+	if (this->mBB.contains(point))
+	{
+		return this;
+	}
+	return NULL;
 }
 
 /*!

@@ -24,7 +24,7 @@
 #include <dirent.h>
 #include <vector>
 #include "fs/image/image.h"
-#include "common/stringfunctions.h"
+#include "common/common.h"
 
 /*!
  * \brief
@@ -56,13 +56,13 @@ void TextureLoader::setWadFiles(const char* wadstring)
     while (wad != NULL)
     {
         wad[0] = '\0'; wad++;
-        const char* file = StringFunctions::getFilename(wad);
+        const char* file = Common::getFilename(wad);
         if (file != NULL) wadFiles.push_back(file);
 
         wad = strrchr(wads, ';');
     }
 
-    const char* file = StringFunctions::getFilename(wads);
+    const char* file = Common::getFilename(wads);
     if (file != NULL) wadFiles.push_back(file);
 
     for (std::vector<const char*>::iterator itr = wadFiles.begin(); itr != wadFiles.end(); ++itr)
@@ -144,7 +144,7 @@ bool TextureLoader::loadMiptexTexture(Texture& texture, const unsigned char* tex
 bool TextureLoader::loadTextureFromFile(Texture& texture, const char* filename)
 {
     Data data(filename, true);
-    const char* ext = StringFunctions::getExtention(filename);
+    const char* ext = Common::getExtention(filename);
 
     if (strcasecmp(ext, ".tga") == 0)
     {

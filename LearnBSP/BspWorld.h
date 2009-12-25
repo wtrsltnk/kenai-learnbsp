@@ -50,6 +50,8 @@ public:
     void render();
     void renderAllFaces() const;
 
+    void shoot();
+
     bool setupEntities();
     void setCamera(Camera* camera);
 
@@ -80,6 +82,8 @@ protected:
     std::vector<BspEntity*> mEntities;
     /*! \brief */
     std::vector<BspObject*> mObjects;
+    /*! \brief */
+    std::vector<BspEntity*> mCameraPositions;
 
     /*! \brief */
     BspEntity* mWorldEntity;

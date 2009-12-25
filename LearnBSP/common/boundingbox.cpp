@@ -215,3 +215,16 @@ bool BoundingBox::contains(const BoundingBox& bb) const
         bb.mMins[1] >= this->mMins[1] && bb.mMaxs[1] <= this->mMaxs[1] &&
         bb.mMins[2] >= this->mMins[2] && bb.mMaxs[2] <= this->mMaxs[2];
 }
+
+/*!
+ * \brief
+ * \param bb
+ * \return
+ */
+bool BoundingBox::contains(const float* point) const
+{
+    return
+        mMins[0] <= point[0] && mMaxs[0] >= point[0] &&
+        mMins[1] <= point[1] && mMaxs[1] >= point[1] &&
+        mMins[2] <= point[2] && mMaxs[2] >= point[2];
+}

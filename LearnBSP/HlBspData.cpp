@@ -43,6 +43,14 @@ HlBspData::HlBspData(const Data& data)
     }
 
     this->entitySize = loadLump(&this->entityData, header.lumps[HL1_BSP_ENTITYLUMP], &data);
+	char name[256];
+	sprintf(name, "%s.entities", data.name);
+	FILE* file = fopen(name, "wt");
+	if (file != false)
+	{
+		fwrite(this->entityData, 1, this->entitySize, file);
+		fclose(file);
+	}
     this->planeCount = loadLump(&this->planes, header.lumps[HL1_BSP_PLANELUMP], &data);
     this->textureSize = loadLump(&this->textureData, header.lumps[HL1_BSP_TEXTURELUMP], &data);
     this->vertexCount = loadLump(&this->vertices, header.lumps[HL1_BSP_VERTEXLUMP], &data);

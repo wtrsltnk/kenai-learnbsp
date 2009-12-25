@@ -44,6 +44,7 @@ public:
 
     void addFace(BspFace* face);
     int getFaceCount() const;
+    const std::set<BspFace*>& getFaces() const;
 
     virtual const BspLeaf* getChild(const float point[3]) const;
 

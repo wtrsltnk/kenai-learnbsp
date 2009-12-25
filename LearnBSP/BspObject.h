@@ -24,6 +24,11 @@
 #include <string>
 #include "BspMesh.h"
 
+enum eBspTypes
+{
+    BSP_PROP
+};
+
 /*!
  * \brief
  */
@@ -54,11 +59,11 @@ public:
     int getID() const;
     const char* getName() const;
     int getType() const;
+    const BspMesh* getMesh() const;
     virtual bool isType(const char* type) const = 0;
     const float* getOrigin() const;
 
-    virtual void render(double time) = 0;
-    virtual const BspMesh* getMesh() const = 0;
+    virtual void render(RenderOptions& options) const = 0;
     virtual void onThink(ThinkArgs& args) = 0;
     virtual void onTouch(TouchArgs& args) = 0;
 
@@ -67,6 +72,8 @@ public:
 protected:
     /*! \brief */
     float mOrigin[3];
+    /*! \brief */
+    BspMesh* mMesh;
 
     void setNextThink(double time);
     

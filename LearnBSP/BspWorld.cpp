@@ -18,9 +18,9 @@
  */
 
 #include "BspWorld.h"
-#include "common/tokenizer.h"
-#include <iostream>
+#include "BspProp.h"
 #include <string.h>
+#include <iostream>
 
 /*!
  * \brief
@@ -56,16 +56,44 @@ bool BspWorld::open(const Data& data, TextureLoader& textureLoader)
  */
 bool BspWorld::setupEntities()
 {
-    for (std::vector<BspEntity*>::const_iterator itr = this->mEntities.begin(); itr != this->mEntities.end(); ++itr)
+	this->mModels[0].setEntity(this->mWorldEntity);
+    for (std::vector<BspEntity*>::iterator itr = this->mEntities.begin(); itr != this->mEntities.end(); ++itr)
     {
-        const BspEntity* entity = *itr;
-        const char* classname = entity->getClassName();
-        BspObject* object = NULL;//PluginManager::Instance()->getEntityInstance(classname, entity->getValues());
-        if (object != NULL)
-        {
-            this->mObjects.push_back(object);
-        }
+        BspEntity* entity = *itr;
+		const char* model = entity->getValue("model");
+		const char* classname = entity->getValue("classname");
+		if (model != NULL)
+		{
+			int index = 0;
+			if (sscanf(model, "*%d", &index) != false)
+			{
+				std::cout << classname << " " << model << " " << index << std::endl;
+
+				/// Index == 0 is not possible, thats the worldspawn!
+				if (index > 0 && index < this->mModelCount)
+					this->mModels[index].setEntity(entity);
+			}
+		}
+		if (strcasecmp(classname, "cycler_sprite") == 0)
+		{
+			const char* origin = entity->getValue("origin");
+			float position[3];
+			if (sscanf(origin, "%f %f %f", &position[0], &position[1], &position[2]))
+			{
+				BspProp* prop = new BspProp(position, model);
+				this->mModels[0].addObject(prop);
+			}
+		}
     }
+	if (this->mCameraPositions.begin() != this->mEntities.end())
+	{
+		BspEntity* entity = this->mCameraPositions[0];
+
+		float position[3];
+		const char* origin = entity->getValue("origin");
+		if (sscanf(origin, "%f %f %f", &position[0], &position[1], &position[2]))
+			this->mCamera->SetPosition(position);
+	}
     return true;
 }
 
@@ -85,9 +113,10 @@ void BspWorld::render()
 {
 	RenderOptions options(this->mCamera, 1.0f);
 
-	for (int m = 0; m < 1; m++)
+	this->mModels[0].render(options);
+	for (int m = 1; m < this->mModelCount; m++)
 	{
-		this->mModels[m].render(options);
+		this->mModels[m].renderAllFaces();
 	}
 }
 
@@ -100,6 +129,21 @@ void BspWorld::renderAllFaces() const
     {
         this->mFaces[f].render();
     }
+}
+
+/*!
+ * \brief
+ */
+void BspWorld::shoot()
+{
+	for (int m = 0; m < this->mModelCount; m++)
+	{
+		 const BspLeaf* leaf = this->mModels[m].getHeadNode()->getChild(this->mCamera->getPosition());
+		 if (leaf != NULL)
+		 {
+			 std::cout << "Entity: " << this->mModels[m].getEntity()->getClassName() << "Found leaf" << std::endl;
+		 }
+	}
 }
 
 /*!

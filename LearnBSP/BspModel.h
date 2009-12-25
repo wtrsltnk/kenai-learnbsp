@@ -23,12 +23,14 @@
 #include "common/boundingbox.h"
 #include "BspMesh.h"
 #include "RenderOptions.h"
+#include "RenderMode.h"
 #include <vector>
 
 class BspFace;
 class BspNode;
 class BspLeaf;
 class BspEntity;
+class BspObject;
 
 /*!
  * \brief
@@ -41,13 +43,18 @@ public:
 
     virtual void update(RenderOptions& options);
     virtual void render(RenderOptions& options) const;
+    void renderAllFaces() const;
 
     const BspLeaf* getLeaf(const float position[3]) const;
 
     void setHeadNode(BspNode* node);
     BspNode* getHeadNode();
 
+    void setEntity(BspEntity* entity);
+    BspEntity* getEntity();
+
     void addFace(BspFace* face);
+    void addObject(BspObject* object);
 
     void setBoundingBox(const BoundingBox& bb);
     const BoundingBox& getBoundingBox() const;
@@ -56,9 +63,13 @@ private:
     /*! \brief */
     BspNode* mHeadNode;
     /*! \brief */
+    BspEntity* mEntity;
+    /*! \brief */
     std::vector<BspFace*> mFaces;
     /*! \brief */
     BoundingBox mBB;
+    /*! \brief */
+    RenderMode mRenderMode;
 
 };
 

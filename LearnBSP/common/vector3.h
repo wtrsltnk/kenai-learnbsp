@@ -44,6 +44,9 @@ public:
     /// Returns the dotproduct. Calculated with (this).(V), this.x*v.x + this.y*v.y + this.z*v.z
     float dotProduct(const Vector3& v) const;
 
+    /// Inverses the vector
+    void inverseMe();
+
     /// Returns the vector as a float array
     operator float* ();
 

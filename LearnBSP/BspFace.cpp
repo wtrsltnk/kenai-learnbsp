@@ -46,6 +46,7 @@ void BspFace::render()
 {
     if (this->mFaceFlags != 0)
         return;
+	
     if (this->mTexture != NULL)
     {
         glActiveTexture(GL_TEXTURE0);
@@ -94,6 +95,24 @@ void BspFace::setVertices(int first, int count)
         case 4: this->mFaceType = GL_QUADS; break;
         default: this->mFaceType = GL_POLYGON; break;
     }
+}
+
+/*!
+ * \brief
+ * \return
+ */
+int BspFace::getFirstVertex() const
+{
+    return this->mFirstVertex;
+}
+
+/*!
+ * \brief
+ * \return
+ */
+int BspFace::getVertexCount() const
+{
+    return this->mVertexCount;
 }
 
 /*!

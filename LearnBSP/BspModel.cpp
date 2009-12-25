@@ -21,16 +21,16 @@
 #include "BspFace.h"
 #include "BspNode.h"
 #include "BspEntity.h"
-#include "common/renderoperations.h"
 #include "BspLeaf.h"
+#include "RenderMode.h"
+#include <stdio.h>
 #include <iostream>
-#include <string.h>
 
 /*!
  * \brief
  */
 BspModel::BspModel()
-    : mHeadNode(NULL)
+    : mHeadNode(NULL), mEntity(NULL)
 {
 }
 
@@ -56,6 +56,9 @@ void BspModel::update(RenderOptions& options)
  */
 void BspModel::render(RenderOptions& options) const
 {
+	glPushMatrix();
+	this->mRenderMode.setupFx();
+	
 	const BspLeaf* leaf = this->mHeadNode->getChild(options.getCamera()->getPosition());
 	if (leaf != NULL)
 	{
@@ -68,6 +71,21 @@ void BspModel::render(RenderOptions& options) const
 			(*face)->render();
 		}
 	}
+	glPopMatrix();
+}
+
+/*!
+ * \brief
+ */
+void BspModel::renderAllFaces() const
+{
+	glPushMatrix();
+	this->mRenderMode.setupFx();
+	for (std::vector<BspFace*>::const_iterator face = this->mFaces.begin(); face != this->mFaces.end(); ++face)
+	{
+		(*face)->render();
+	}
+	glPopMatrix();
 }
 
 /*!
@@ -99,11 +117,80 @@ BspNode* BspModel::getHeadNode()
 
 /*!
  * \brief
+ * \return
+ */
+void BspModel::setEntity(BspEntity* entity)
+{
+    this->mEntity = entity;
+
+	if (this->mEntity != NULL)
+	{
+		const Map& values = this->mEntity->getValues();
+		for (Map::const_iterator value = values.begin(); value != values.end(); ++value)
+		{
+			if ((*value).first == "origin")
+			{
+				int x, y, z;
+				if (sscanf((*value).second.c_str(), "%d %d %d", &x, &y, &z) != false)
+				{
+					this->mRenderMode.mOrigin[0] = x;
+					this->mRenderMode.mOrigin[1] = y;
+					this->mRenderMode.mOrigin[2] = z;
+				}
+			}
+			else if ((*value).first == "rendermode")
+			{
+				int mode = 0;
+				if (sscanf((*value).second.c_str(), "%d", &mode) != false)
+					this->mRenderMode.mFxMode = mode;
+				std::cout << (*value).second << " " << this->mRenderMode.mFxMode << std::endl;
+			}
+			else if ((*value).first == "rendercolor")
+			{
+				int r, g, b;
+				if (sscanf((*value).second.c_str(), "%d %d %d", &r, &g, &b) != false)
+				{
+					this->mRenderMode.mFxColor[0] = (float)r / 255.0f;
+					this->mRenderMode.mFxColor[1] = (float)g / 255.0f;
+					this->mRenderMode.mFxColor[2] = (float)b / 255.0f;
+				}
+			}
+			else if ((*value).first == "renderamt")
+			{
+				int renderamt;
+				if (sscanf((*value).second.c_str(), "%d", &renderamt) != false)
+					this->mRenderMode.mFxAmount = (float)renderamt / 255.0f;
+				std::cout << (*value).second << " " << this->mRenderMode.mFxAmount << std::endl;
+			}
+		}
+	}
+}
+
+/*!
+ * \brief
+ * \return
+ */
+BspEntity* BspModel::getEntity()
+{
+    return this->mEntity;
+}
+
+/*!
+ * \brief
  * \param face
  */
 void BspModel::addFace(BspFace* face)
 {
     this->mFaces.push_back(face);
+}
+
+/*!
+ * \brief
+ * \param face
+ */
+void BspModel::addObject(BspObject* object)
+{
+	this->mHeadNode->addObject(object);
 }
 
 /*!

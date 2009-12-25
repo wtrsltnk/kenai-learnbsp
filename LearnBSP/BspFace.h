@@ -39,6 +39,8 @@ public:
     const Plane& getPlane() const;
 
     void setVertices(int first, int count);
+    int getFirstVertex() const;
+    int getVertexCount() const;
 
     void setFlags(int flags);
 
@@ -46,7 +48,8 @@ public:
     const Texture* getTexture() const;
 
     const Texture* setLightmap(const hl::tBSPFace& bspFace, float min[2], float max[2], const unsigned char* lightData, float brightness = 0.5f);
-    
+
+    int side;
 private:
     /*! \brief */
     Plane mPlane;

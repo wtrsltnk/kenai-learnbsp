@@ -56,7 +56,7 @@ Vector3::Vector3(const Vector3& v)
  * \brief
  * \param v
  */
-Vector3::Vector3(const float v[3])
+Vector3::Vector3(const float v[])
 {
     (*this) = v;
 }
@@ -112,6 +112,16 @@ const Vector3 Vector3::crossProduct(const Vector3& v) const
 float Vector3::dotProduct(const Vector3& v) const
 {
     return (this->mVector[0] * v.mVector[0]) + (this->mVector[1] * v.mVector[1]) + (this->mVector[2] * v.mVector[2]);
+}
+
+/*!
+ * \brief
+ */
+void  Vector3::inverseMe()
+{
+    this->mVector[0] = -this->mVector[0];
+    this->mVector[1] = -this->mVector[1];
+    this->mVector[2] = -this->mVector[2];
 }
 
 /*!

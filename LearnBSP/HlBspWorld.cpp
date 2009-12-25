@@ -105,6 +105,10 @@ bool HlBspWorld::parseEntityData(HlBspData& bsp, TextureLoader& textureLoader)
 				this->setWorldEntity(entity);
 				textureLoader.setWadFiles(entity->getValue("wad"));
 			}
+			else if (strcasecmp(classname, "trigger_camera") == 0 || strcasecmp(classname, "info_player_start") == 0)
+			{
+				this->mCameraPositions.push_back(entity);
+			}
 
 			// Add the entity to the entity list
 			this->mEntities.push_back(entity);
@@ -190,6 +194,7 @@ bool HlBspWorld::parseFaces(HlBspData& bsp)
         this->mFaces[f].setVertices(this->mVertexIndices->current(), face.edgeCount);
         this->mFaces[f].setFlags(texinfo.flags);
         this->mFaces[f].setTexture(texture);
+        this->mFaces[f].side = face.side;
 
         float is = 1.0f / float(texture->width);
         float it = 1.0f / float(texture->height);
@@ -303,6 +308,8 @@ BspNode* HlBspWorld::createNode(const hl::tBSPNode& node, const hl::tBSPModel& m
  */
 void HlBspWorld::setWorldEntity(BspEntity* world)
 {
+	this->mWorldEntity = world;
+	
     const char* wad = world->getValue("wad");
     if (wad != NULL)
     {

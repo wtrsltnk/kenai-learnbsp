@@ -44,6 +44,7 @@ public:
     int intersect(const Plane& plane) const;
     bool intersect(const BoundingBox& bb) const;
     bool contains(const BoundingBox& bb) const;
+    bool contains(const float* point) const;
     
 private:
     /*! \brief */

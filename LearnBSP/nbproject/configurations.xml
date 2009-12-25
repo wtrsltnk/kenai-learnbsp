@@ -6,19 +6,16 @@
       <itemPath>common/boundingbox.h</itemPath>
       <itemPath>common/camera.cpp</itemPath>
       <itemPath>common/camera.h</itemPath>
+      <itemPath>common/common.cpp</itemPath>
+      <itemPath>common/common.h</itemPath>
       <itemPath>common/data.cpp</itemPath>
       <itemPath>common/data.h</itemPath>
-      <itemPath>common/font.cpp</itemPath>
-      <itemPath>common/font.h</itemPath>
       <itemPath>common/indexarray.h</itemPath>
       <itemPath>common/math3d.cpp</itemPath>
       <itemPath>common/math3d.h</itemPath>
+      <itemPath>common/opengl.h</itemPath>
       <itemPath>common/plane.cpp</itemPath>
       <itemPath>common/plane.h</itemPath>
-      <itemPath>common/renderoperations.cpp</itemPath>
-      <itemPath>common/renderoperations.h</itemPath>
-      <itemPath>common/stringfunctions.cpp</itemPath>
-      <itemPath>common/stringfunctions.h</itemPath>
       <itemPath>common/texture.cpp</itemPath>
       <itemPath>common/texture.h</itemPath>
       <itemPath>common/thread.cpp</itemPath>
@@ -36,6 +33,10 @@
         <itemPath>fs/image/miptex.cpp</itemPath>
         <itemPath>fs/image/png.cpp</itemPath>
         <itemPath>fs/image/targa.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f3" displayName="Mesh" projectFiles="true">
+        <itemPath>fs/mesh/Mesh.cpp</itemPath>
+        <itemPath>fs/mesh/Mesh.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Zip" projectFiles="true">
         <itemPath>fs/zip/crypt.h</itemPath>
@@ -70,6 +71,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Application.h</itemPath>
+      <itemPath>BspCollision.h</itemPath>
       <itemPath>BspEntity.h</itemPath>
       <itemPath>BspFace.h</itemPath>
       <itemPath>BspLeaf.h</itemPath>
@@ -78,8 +80,10 @@
       <itemPath>BspModel.h</itemPath>
       <itemPath>BspNode.h</itemPath>
       <itemPath>BspObject.h</itemPath>
+      <itemPath>BspProp.h</itemPath>
       <itemPath>BspWorld.h</itemPath>
-      <itemPath>RenderOptions.cpp</itemPath>
+      <itemPath>FreeTypeFont.h</itemPath>
+      <itemPath>RenderMode.h</itemPath>
       <itemPath>RenderOptions.h</itemPath>
       <itemPath>TextureLoader.h</itemPath>
     </logicalFolder>
@@ -101,6 +105,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>Application.cpp</itemPath>
+      <itemPath>BspCollision.cpp</itemPath>
       <itemPath>BspEntity.cpp</itemPath>
       <itemPath>BspFace.cpp</itemPath>
       <itemPath>BspLeaf.cpp</itemPath>
@@ -109,7 +114,11 @@
       <itemPath>BspModel.cpp</itemPath>
       <itemPath>BspNode.cpp</itemPath>
       <itemPath>BspObject.cpp</itemPath>
+      <itemPath>BspProp.cpp</itemPath>
       <itemPath>BspWorld.cpp</itemPath>
+      <itemPath>FreeTypeFont.cpp</itemPath>
+      <itemPath>RenderMode.cpp</itemPath>
+      <itemPath>RenderOptions.cpp</itemPath>
       <itemPath>TextureLoader.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
@@ -129,6 +138,11 @@
         <dependencyChecking>false</dependencyChecking>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>/usr/include/freetype2</pElem>
+          </incDir>
+        </ccTool>
         <linkerTool>
           <linkerLibItems>
             <linkerLibLibItem>glfw</linkerLibLibItem>
@@ -138,6 +152,7 @@
             <linkerLibFileItem>lib/libz.a</linkerLibFileItem>
             <linkerLibLibItem>jpeg</linkerLibLibItem>
             <linkerLibLibItem>png</linkerLibLibItem>
+            <linkerLibLibItem>freetype</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
