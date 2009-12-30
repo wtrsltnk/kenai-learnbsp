@@ -8,6 +8,19 @@
 #include "common.h"
 #include "opengl.h"
 #include <string.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <sys/stat.h>
+
+void Common::print(const char* format, ...)
+{
+	char destination[1024];
+	va_list ap;
+
+	va_start(ap, format);
+	printf(format, ap);
+	va_end(ap);
+}
 
 const char* Common::getFilename(const char* fullname)
 {
@@ -38,11 +51,77 @@ const char* Common::getExtention(const char* fullname)
     return strrchr(fullname, '.');
 }
 
+int Common::stringLength(const char* string)
+{
+	return strlen(string);
+}
+
+const char* Common::stringCopy(char* destination, const char* source, int size)
+{
+	if (size > 0)
+		return strncpy(destination, source, size);
+	
+	return strcpy(destination, source);
+}
+
+int Common::stringCompare(const char* str1, const char* str2, int size, bool casesensitive)
+{
+	if (size == -1)
+	{
+		if (casesensitive)
+		{
+			return strcasecmp(str1, str2);
+		}
+		return strcmp(str1, str2);
+	}
+	else
+	{
+		if (casesensitive)
+		{
+			return strncasecmp(str1, str2, size);
+		}
+		return strncmp(str1, str2, size);
+	}
+}
+
+const char* Common::stringSplit(const char* haystack, const char* needle)
+{
+	return strstr(haystack, needle);
+}
+
+const char* Common::stringCharSplit(const char* haystack, int needle, bool reverse)
+{
+	if (reverse)
+		return strrchr(haystack, needle);
+
+	return strchr(haystack, needle);
+}
+
+char* Common::stringFormat(char* destination, const char* format, ...)
+{
+	va_list ap;
+
+	va_start(ap, format);
+		vsprintf(destination, format, ap);
+	va_end(ap);
+
+	return destination;
+}
+
+int Common::stringScan(const char* source, const char* format, ...)
+{
+	va_list ap;
+
+	va_start(ap, format);
+		int result = sscanf(source, format, ap);
+	va_end(ap);
+
+	return result;
+}
+
 void Common::renderBoundingBox(const BoundingBox& bb)
 {
     glPushAttrib(GL_ENABLE_BIT);
-    glDisable(GL_DEPTH_TEST);
-    glCullFace(GL_FRONT);
     glActiveTexture(GL_TEXTURE0);
     glDisable(GL_TEXTURE_2D);
     glActiveTexture(GL_TEXTURE1);
@@ -156,3 +235,23 @@ void Common::renderCrosshair(float size)
     glMatrixMode(GL_MODELVIEW);
 }
 
+float Common::getTickCount()
+{
+	return glfwGetTime();
+}
+
+void* Common::memoryCopy(void* dest, const void* src, int size)
+{
+	return memcpy(dest, src, size);
+}
+
+void* Common::memorySet(void* dest, int c, int size)
+{
+	return memset(dest, c, size);
+}
+
+bool Common::fileExists(const char* filename)
+{
+	struct stat stat_base;
+	return (stat(filename, &stat_base) == 0);
+}

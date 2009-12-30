@@ -21,8 +21,8 @@
 #define	_BSPLEAF_H
 
 #include "common/boundingbox.h"
-#include <set>
 #include "BspNode.h"
+#include <set>
 
 class BspFace;
 class BspObject;
@@ -36,17 +36,17 @@ public:
     BspLeaf();
     virtual ~BspLeaf();
 
-    void renderLeafOnly() const;
-    virtual void render() const;
-    virtual void render(const float point[3]) const;
-    void gatherVisibleObjectsLeafOnly(std::set<BspObject*>& objects) const;
-    virtual void gatherVisibleObjects(std::set<BspObject*>& objects, const float point[3]) const;
+    void renderLeafOnly();
+    virtual void render();
+    virtual void render(const float point[3]);
+    void gatherVisibleObjectsLeafOnly(std::set<BspObject*>& objects);
+    virtual void gatherVisibleObjects(std::set<BspObject*>& objects, const float point[3]);
 
     void addFace(BspFace* face);
     int getFaceCount() const;
     const std::set<BspFace*>& getFaces() const;
 
-    virtual const BspLeaf* getChild(const float point[3]) const;
+    virtual BspLeaf* getChild(const float point[3]);
 
     void addVisibleLeaf(BspLeaf* leaf);
     virtual void addObject(BspObject* object);

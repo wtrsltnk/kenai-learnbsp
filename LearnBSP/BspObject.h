@@ -20,9 +20,10 @@
 #ifndef _BSPOBJECT_H
 #define	_BSPOBJECT_H
 
-#include <map>
+#include "fs/FileSystem.h"
+#include "RenderOptions.h"
 #include <string>
-#include "BspMesh.h"
+#include <map>
 
 enum eBspTypes
 {
@@ -59,21 +60,18 @@ public:
     int getID() const;
     const char* getName() const;
     int getType() const;
-    const BspMesh* getMesh() const;
     virtual bool isType(const char* type) const = 0;
     const float* getOrigin() const;
 
-    virtual void render(RenderOptions& options) const = 0;
+    virtual void render(RenderOptions& options) = 0;
     virtual void onThink(ThinkArgs& args) = 0;
     virtual void onTouch(TouchArgs& args) = 0;
 
-    virtual void preCache() { }
+    virtual void preCache(fs::FileSystem& filesystem) { }
     
 protected:
     /*! \brief */
     float mOrigin[3];
-    /*! \brief */
-    BspMesh* mMesh;
 
     void setNextThink(double time);
     

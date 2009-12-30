@@ -1,13 +1,24 @@
 #include "texture.h"
-#include "opengl.h"
-#include <string.h>
+#include "../../common/opengl.h"
+#include "../../common/common.h"
+
+using namespace fs;
 
 /*!
  * \brief
  */
 Texture::Texture()
-        : name(0), width(0), height(0), bpp(0), repeat(true), data(0), glIndex(0)
+        : Resource(fs::TextureResource, ""), name(0), width(0), height(0), bpp(0), repeat(true), data(0), glIndex(0)
 {
+}
+
+/*!
+ * \brief
+ */
+Texture::Texture(const char* filename)
+        : Resource(fs::TextureResource, filename), name(0), width(0), height(0), bpp(0), repeat(true), data(0), glIndex(0)
+{
+	this->setName(filename);
 }
 
 /*!
@@ -25,34 +36,34 @@ Texture::~Texture()
  */
 unsigned int Texture::upload()
 {
-        GLuint format = GL_RGB;
+	GLuint format = GL_RGB;
 
-        switch (this->bpp)
-        {
-            case 3: format = GL_RGB; break;
-            case 4: format = GL_RGBA; break;
-        }
+	switch (this->bpp)
+	{
+		case 3: format = GL_RGB; break;
+		case 4: format = GL_RGBA; break;
+	}
 
 	glGenTextures(1, &this->glIndex);
 	glBindTexture(GL_TEXTURE_2D, this->glIndex);
 
-        if (this->repeat)
-        {
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        }
-        else
-        {
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-        }
-        
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, this->width, this->height, 0, format, GL_UNSIGNED_BYTE, this->data);
+	if (this->repeat)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	}
+	else
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	}
 
-        return this->glIndex;
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+	glTexImage2D(GL_TEXTURE_2D, 0, format, this->width, this->height, 0, format, GL_UNSIGNED_BYTE, this->data);
+
+	return this->glIndex;
 }
 
 /*!
@@ -69,10 +80,7 @@ void Texture::unload()
  */
 Texture* Texture::copy() const
 {
-    Texture* result = new Texture();
-
-    result->name = new char[strlen(name) + 1];
-    strcpy(result->name, name);
+    Texture* result = new Texture(this->name);
 
     result->width = this->width;
     result->height = this->height;
@@ -83,7 +91,7 @@ Texture* Texture::copy() const
     if (dataSize > 0)
     {
         result->data = new unsigned char[dataSize];
-        memcpy(result->data, data, dataSize);
+        Common::memoryCopy(result->data, data, dataSize);
     }
     else
     {
@@ -114,8 +122,8 @@ void Texture::copyFrom(const Texture& from)
 
     if (from.name != NULL)
     {
-        this->name = new char[strlen(from.name) + 1];
-        strcpy(this->name, from.name);
+        this->name = new char[Common::stringLength(from.name) + 1];
+        Common::stringCopy(this->name, from.name);
     }
 
     this->width = from.width;
@@ -127,7 +135,7 @@ void Texture::copyFrom(const Texture& from)
     if (dataSize > 0)
     {
         this->data = new unsigned char[dataSize];
-        memcpy(this->data, from.data, dataSize);
+        Common::memoryCopy(this->data, from.data, dataSize);
     }
 }
 
@@ -145,8 +153,8 @@ void Texture::setName(const char* name)
             this->name = NULL;
         }
 
-        this->name = new char[strlen(name) + 1];
-        strcpy(this->name, name);
+        this->name = new char[Common::stringLength(name) + 1];
+        Common::stringCopy(this->name, name);
     }
 }
 

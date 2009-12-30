@@ -18,7 +18,7 @@
  */
 
 #include "ZipPackage.h"
-#include <string.h>
+#include "../common/common.h"
 
 using namespace fs;
 
@@ -50,7 +50,7 @@ const char* ZipPackage::findFile(const char* filename)
             {
                 unz_file_info info;
                 unzGetCurrentFileInfo(this->mFile, NULL, this->mFindbuffer, 512, NULL, 0, NULL, 0);
-                if (strstr(this->mFindbuffer, filename) != NULL)
+                if (Common::stringSplit(this->mFindbuffer, filename) != NULL)
                 {
                     result = this->mFindbuffer;
                 }
@@ -76,8 +76,8 @@ bool ZipPackage::openFile(Data& data, const char* filename)
 
             data.dataSize = info.uncompressed_size;
             data.data = new unsigned char[data.dataSize];
-            data.name = new char[strlen(filename) + 1];
-            strcpy(data.name, filename);
+            data.name = new char[Common::stringLength(filename) + 1];
+            Common::stringCopy(data.name, filename);
             if (unzReadCurrentFile(this->mFile, data.data, data.dataSize) != data.dataSize)
                 result = false;
             unzCloseCurrentFile(this->mFile);

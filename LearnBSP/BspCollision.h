@@ -47,8 +47,8 @@ public:
     virtual ~BspCollision();
 
     sCollisionData testCollision(Vector3& start, Vector3& end);
-    sCollisionData testNode(const BspNode* node, Vector3& start, Vector3& end);
-    sCollisionData testLeaf(const BspLeaf* leaf, Vector3& start, Vector3& end);
+    sCollisionData testNode(BspNode* node, Vector3& start, Vector3& end);
+    sCollisionData testLeaf(BspLeaf* leaf, Vector3& start, Vector3& end);
     sCollisionData testFaceCollision(Vector3& start, Vector3& end, BspFace* face);
     bool planeIntersectLineSegment(const Plane& plane, const Vector3& pStart, const Vector3& pEnd, sCollisionData& intersection);
     bool point_in_poly(const Vector3& p, const BspFace* f);

@@ -17,55 +17,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "BspMesh.h"
+#include "Resource.h"
+#include "../common/common.h"
 
-/*!
- * \brief
- */
-BspMesh::BspMesh()
-    : mIsSolid(false)
+using namespace fs;
+
+Resource::Resource(int type, const char* filename)
+	: mType(type)
 {
+	this->mFilename = new char[Common::stringLength(filename) + 1];
+	Common::stringCopy(this->mFilename , filename);
 }
 
-/*!
- * \brief
- */
-BspMesh::~BspMesh()
+Resource::~Resource()
 {
+	delete []this->mFilename;
 }
 
-/*!
- * \brief
- * \param solid
- */
-void BspMesh::setSolid(bool solid)
-{
-    this->mIsSolid = solid;
-}
-
-/*!
- * \brief
- * \return
- */
-bool BspMesh::isSolid() const
-{
-    return this->mIsSolid;
-}
-
-/*!
- * \brief
- * \return
- */
-const float* BspMesh::getMins() const
-{
-    return this->mMins;
-}
-
-/*!
- * \brief
- * \return
- */
-const float* BspMesh::getMaxs() const
-{
-    return this->mMaxs;
-}

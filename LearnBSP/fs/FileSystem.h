@@ -21,7 +21,7 @@
 #define	_FILESYSTEM_H
 
 #include "../common/data.h"
-#include "../common/texture.h"
+#include "../fs/image/texture.h"
 #include <vector>
 
 namespace fs
@@ -29,8 +29,10 @@ namespace fs
 
 class File;
 class Package;
+class Resource;
 typedef std::vector<File*> FileList;
 typedef std::vector<Package*> PackageList;
+typedef std::vector<Resource*> ResourceList;
 
 /*!
  * \brief
@@ -46,6 +48,7 @@ public:
     virtual bool openFile(Data& data, const char* filename);
     virtual bool openTexture(Texture& texture, const char* filename);
     virtual bool openTexture(Texture& texture, const Data& data, const char* packageName = NULL);
+    virtual Resource* openResource(const char* filename);
 
 protected:
     /*! \brief */
@@ -54,6 +57,8 @@ protected:
     FileList files;
     /*! \brief */
     PackageList packages;
+    /*! \brief */
+    ResourceList resources;
     /*! \brief */
     char findName[256];
 

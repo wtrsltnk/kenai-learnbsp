@@ -19,14 +19,15 @@
 
 #include "BspWorld.h"
 #include "BspProp.h"
-#include <string.h>
+#include "common/common.h"
 #include <iostream>
+#include <vector>
 
 /*!
  * \brief
  */
 BspWorld::BspWorld()
-    : mLeafCount(0), mLeafs(NULL), mFaceCount(0), mFaces(NULL), mModelCount(0), mModels(NULL),
+    : mLeafCount(0), mLeafs(NULL), mFaceCount(0), mFaces(NULL), mModelCount(0), mGeometries(NULL),
         mTextureCount(0), mTextures(NULL), mWorldEntity(NULL),
         mVertexIndices(NULL), mTextureUV(NULL), mLightmapUV(NULL)
 {
@@ -45,18 +46,18 @@ BspWorld::~BspWorld()
  * \param data
  * \return 
  */
-bool BspWorld::open(const Data& data, TextureLoader& textureLoader)
+bool BspWorld::open(fs::Resource* resource, TextureLoader& textureLoader)
 {
-	return this->onOpen(data, textureLoader);
+	return this->onOpen(resource, textureLoader);
 }
 
 /*!
  * \brief
  * \return
  */
-bool BspWorld::setupEntities()
+bool BspWorld::setupEntities(fs::FileSystem& filesystem)
 {
-	this->mModels[0].setEntity(this->mWorldEntity);
+	this->mGeometries[0].setEntity(this->mWorldEntity);
     for (std::vector<BspEntity*>::iterator itr = this->mEntities.begin(); itr != this->mEntities.end(); ++itr)
     {
         BspEntity* entity = *itr;
@@ -67,21 +68,21 @@ bool BspWorld::setupEntities()
 			int index = 0;
 			if (sscanf(model, "*%d", &index) != false)
 			{
-				std::cout << classname << " " << model << " " << index << std::endl;
-
 				/// Index == 0 is not possible, thats the worldspawn!
 				if (index > 0 && index < this->mModelCount)
-					this->mModels[index].setEntity(entity);
+					this->mGeometries[index].setEntity(entity);
 			}
 		}
-		if (strcasecmp(classname, "cycler_sprite") == 0)
+		if (Common::stringCompare(classname, "cycler_sprite") == 0)
 		{
+//			entity->print();
 			const char* origin = entity->getValue("origin");
 			float position[3];
 			if (sscanf(origin, "%f %f %f", &position[0], &position[1], &position[2]))
 			{
-				BspProp* prop = new BspProp(position, model);
-				this->mModels[0].addObject(prop);
+				BspProp* prop = new BspProp(entity);
+				this->mObjects.push_back(prop);
+				prop->preCache(filesystem);
 			}
 		}
     }
@@ -113,17 +114,21 @@ void BspWorld::render()
 {
 	RenderOptions options(this->mCamera, 1.0f);
 
-	this->mModels[0].render(options);
+	this->mGeometries[0].render(options);
 	for (int m = 1; m < this->mModelCount; m++)
 	{
-		this->mModels[m].renderAllFaces();
+		this->mGeometries[m].renderAllFaces();
+	}
+	for (std::vector<BspObject*>::const_iterator itr = this->mObjects.begin(); itr != this->mObjects.end(); ++itr)
+	{
+		(*itr)->render(options);
 	}
 }
 
 /*!
  * \brief
  */
-void BspWorld::renderAllFaces() const
+void BspWorld::renderAllFaces()
 {
     for (int f = 1; f < this->mFaceCount; f++)
     {
@@ -138,10 +143,10 @@ void BspWorld::shoot()
 {
 	for (int m = 0; m < this->mModelCount; m++)
 	{
-		 const BspLeaf* leaf = this->mModels[m].getHeadNode()->getChild(this->mCamera->getPosition());
+		 const BspLeaf* leaf = this->mGeometries[m].getHeadNode()->getChild(this->mCamera->getPosition());
 		 if (leaf != NULL)
 		 {
-			 std::cout << "Entity: " << this->mModels[m].getEntity()->getClassName() << "Found leaf" << std::endl;
+			 std::cout << "Entity: " << this->mGeometries[m].getEntity()->getClassName() << "Found leaf" << std::endl;
 		 }
 	}
 }
@@ -166,9 +171,9 @@ void BspWorld::close()
     this->mFaces = NULL;
     this->mFaceCount = 0;
 
-    if (this->mModels != NULL)
-        delete []this->mModels;
-    this->mModels = NULL;
+    if (this->mGeometries != NULL)
+        delete []this->mGeometries;
+    this->mGeometries = NULL;
     this->mModelCount = 0;
 
     if (this->mVertexIndices != NULL)
@@ -190,10 +195,10 @@ void BspWorld::close()
         delete entity;
     }
 
-    while (!this->mObjects.empty())
-    {
-        BspObject* object = this->mObjects.back();
-        this->mObjects.pop_back();
-        delete object;
-    }
+//    while (!this->mObjects.empty())
+//    {
+//        BspObject* object = this->mObjects.back();
+//        this->mObjects.pop_back();
+//        delete object;
+//    }
 }

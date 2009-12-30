@@ -23,8 +23,11 @@
 #include "File.h"
 #include "image/image.h"
 #include "FileSystemException.h"
-
-#include <string.h>
+#include "Resource.h"
+#include "../HlBspData.h"
+#include "../Q3BspData.h"
+#include "../common/common.h"
+#include "mesh/Mdl.h"
 #include <iostream>
 #include <dirent.h>
 #include <sys/stat.h>
@@ -33,22 +36,42 @@ using namespace fs;
 
 FileSystem::FileSystem(const char* root)
 {
-    strcpy(this->fileSystemRoot, root);
+    Common::stringCopy(this->fileSystemRoot, root);
 }
 
 FileSystem::~FileSystem()
 {
+	while (this->resources.empty() == false)
+	{
+		Resource* resource = this->resources.back();
+		this->resources.pop_back();
+		delete resource;
+	}
+
+	while (this->files.empty() == false)
+	{
+		File* file = this->files.back();
+		this->files.pop_back();
+		delete file;
+	}
+
+	while (this->packages.empty() == false)
+	{
+		Package* package = this->packages.back();
+		this->packages.pop_back();
+		delete package;
+	}
 }
 
 bool FileSystem::addPackage(const char* filename)
 {
-    const char* ext = strrchr(filename, '.');
+    const char* ext = Common::getExtention(filename);
     const char* fullpath = findFile(filename);
 
     if (fullpath == NULL)
         return false;
     
-    if (strcasecmp(ext, ".wad") == 0)
+    if (Common::stringCompare(ext, ".wad") == 0)
     {
         try
         {
@@ -61,7 +84,7 @@ bool FileSystem::addPackage(const char* filename)
             return false;
         }
     }
-    else if (strcasecmp(ext, ".zip") == 0)
+	else if (Common::stringCompare(ext, ".zip") == 0 && Common::stringCompare(ext, ".pk3") == 0)
     {
         try
         {
@@ -80,16 +103,15 @@ bool FileSystem::addPackage(const char* filename)
 const char* FileSystem::findFile(const char* name)
 {
     if (FileSystem::findFileInFolder(fileSystemRoot, name, findName))
-    {
         return findName;
-    }
-    for (PackageList::iterator itr = this->packages.begin(); itr != this->packages.end(); ++itr)
+	
+    for (PackageList::iterator package = this->packages.begin(); package != this->packages.end(); ++package)
     {
-        const char* found = (*itr)->findFile(name);
+        const char* found = (*package)->findFile(name);
 
         if (found != NULL)
         {
-            sprintf(findName, "%s@%s", (*itr)->getPackagename(), found);
+            sprintf(findName, "%s@%s", (*package)->getPackagename(), found);
             return findName;
         }
     }
@@ -144,8 +166,7 @@ bool FileSystem::openTexture(Texture& texture, const char* filename)
 
     if (openFile(file, filename))
     {
-        const char* packageName = getPackageName(filename);
-        return openTexture(texture, file, packageName);
+        return openTexture(texture, file, getPackageName(filename));
     }
 
     return false;
@@ -159,37 +180,130 @@ bool FileSystem::openTexture(Texture& texture, const Data& data, const char* pac
 
     if (packageName != NULL)
     {
-        const char* ext = strrchr(packageName, '.');
-        if (strcasecmp(ext, ".wad") == 0)
+        const char* ext = Common::getExtention(packageName);
+        if (Common::stringCompare(ext, ".wad") == 0)
         {
             return openMiptex(texture, data);
         }
     }
-    const char* ext = strrchr(data.name, '.');
+    const char* ext = Common::getExtention(data.name);
 
-    if (strcasecmp(ext, ".tga") == 0)
+    if (Common::stringCompare(ext, ".tga") == 0)
     {
         result = openTarga(texture, data);
     }
-    else if (strcasecmp(ext, ".bmp") == 0)
+    else if (Common::stringCompare(ext, ".bmp") == 0)
     {
         result = openBitmap(texture, data);
     }
-    else if (strcasecmp(ext, ".jpg") == 0)
+    else if (Common::stringCompare(ext, ".jpg") == 0)
     {
         result = openJpeg(texture, data);
     }
-    else if (strcasecmp(ext, ".png") == 0)
+    else if (Common::stringCompare(ext, ".png") == 0)
     {
         result = openPng(texture, data);
     }
     return result;
 }
 
+Resource* FileSystem::openResource(const char* name)
+{
+	const char* find = this->findFile(name);
+
+	if (find == NULL)
+		return NULL;
+	
+    const char* ext = Common::getExtention(find);
+
+	for (ResourceList::iterator itr = this->resources.begin(); itr != this->resources.end(); ++itr)
+		if (Common::stringCompare((*itr)->getFilename(), find) == 0)
+			return (*itr);
+
+	Data file;
+	if (this->openFile(file, find))
+	{
+		Resource* result = NULL;
+
+        const char* packageName = this->getPackageName(find);
+		if (packageName != NULL)
+		{
+			const char* ext = Common::getExtention(packageName);
+			if (Common::stringCompare(ext, ".wad") == 0)
+			{
+				Texture* texture = new Texture(find);
+				if (openMiptex(*texture, file) == false)
+				{
+					delete texture;
+					return NULL;
+				}
+				result = texture;
+			}
+		}
+		else if (Common::stringCompare(ext, ".tga") == 0)
+		{
+			Texture* texture = new Texture(find);
+			if (openTarga(*texture, file) == false)
+			{
+				delete texture;
+				return NULL;
+			}
+			result = texture;
+		}
+		else if (Common::stringCompare(ext, ".bmp") == 0)
+		{
+			Texture* texture = new Texture(find);
+			if (openBitmap(*texture, file) == false)
+			{
+				delete texture;
+				return NULL;
+			}
+			result = texture;
+		}
+		else if (Common::stringCompare(ext, ".jpg") == 0)
+		{
+			Texture* texture = new Texture(find);
+			if (openJpeg(*texture, file) == false)
+			{
+				delete texture;
+				return NULL;
+			}
+			result = texture;
+		}
+		else if (Common::stringCompare(ext, ".png") == 0)
+		{
+			Texture* texture = new Texture(find);
+			if (openPng(*texture, file) == false)
+			{
+				delete texture;
+				return NULL;
+			}
+			result = texture;
+		}
+		else if (Common::stringCompare(ext, ".mdl") == 0)
+		{
+			result = new Mdl(file, *this);
+		}
+		else if (Common::stringCompare(ext, ".bsp") == 0)
+		{
+			if (HlBspData::testBSP(file))
+				result = new HlBspData(file);
+			else if (Q3BspData::testBSP(file))
+				result = new Q3BspData(file);
+		}
+
+		if (result != NULL)
+			this->resources.push_back(result);
+		
+		return result;
+	}
+	return NULL;
+}
+
 Package* FileSystem::getPackage(const char* name)
 {
     for (PackageList::iterator itr = this->packages.begin(); itr != this->packages.end(); ++itr)
-        if (strcasecmp((*itr)->getPackagename(), name) == 0)
+        if (Common::stringCompare((*itr)->getPackagename(), name) == 0)
             return *itr;
     
     return NULL;
@@ -198,7 +312,7 @@ Package* FileSystem::getPackage(const char* name)
 File* FileSystem::getFile(const char* name)
 {
     for (FileList::iterator itr = this->files.begin(); itr != this->files.end(); ++itr)
-        if (strcasecmp((*itr)->name, name) == 0)
+        if (Common::stringCompare((*itr)->name, name) == 0)
             return *itr;
     
     return NULL;
@@ -207,12 +321,12 @@ File* FileSystem::getFile(const char* name)
 const char* FileSystem::getPackageName(const char* filename)
 {
     static char packageName[256] = { 0 };
-    const char* split = strstr(filename, "@");
+    const char* split = Common::stringSplit(filename, "@");
 
-    memset(packageName, 0, 256);
+    Common::memorySet(packageName, 0, 256);
     if (split != NULL)
     {
-        strncpy(packageName, filename, split - filename);
+        Common::stringCopy(packageName, filename, split - filename);
         return packageName;
     }
     return NULL;
@@ -220,7 +334,7 @@ const char* FileSystem::getPackageName(const char* filename)
 
 const char* FileSystem::getFileName(const char* filename)
 {
-    const char* split = strstr(filename, "@");
+    const char* split = Common::stringSplit(filename, "@");
 
     if (split != NULL)
     {
@@ -239,7 +353,7 @@ bool FileSystem::findFileInFolder(const char* folder, const char* file, char* re
         struct dirent *item;
         while ((item = readdir(dir)) != 0)
         {
-            if (strcmp(item->d_name, ".") == 0 || strcmp(item->d_name, "..") == 0 || strcmp(item->d_name, ".svn") == 0)
+            if (Common::stringCompare(item->d_name, ".") == 0 || Common::stringCompare(item->d_name, "..") == 0 || Common::stringCompare(item->d_name, ".svn") == 0)
                 continue;
 
 #ifdef WIN32
@@ -251,9 +365,7 @@ bool FileSystem::findFileInFolder(const char* folder, const char* file, char* re
 #endif
 			{
                 char newFolder[256] = { 0 };
-                strcpy(newFolder, folder);
-                strcat(newFolder, "/");
-                strcat(newFolder, item->d_name);
+				Common::stringFormat(newFolder, "%s/%s", folder, item->d_name);
                 if (FileSystem::findFileInFolder(newFolder, file, result))
                 {
                     found = true;
@@ -262,11 +374,9 @@ bool FileSystem::findFileInFolder(const char* folder, const char* file, char* re
             }
             else
             {
-                if (strncasecmp(item->d_name, file, strlen(file)) == 0)
+                if (Common::stringCompare(item->d_name, file, Common::stringLength(file)) == 0)
                 {
-                    strcpy(result, folder);
-                    strcat(result, "/");
-                    strcat(result, item->d_name);
+					Common::stringFormat(result, "%s/%s", folder, item->d_name);
                     found = true;
                     break;
                 }

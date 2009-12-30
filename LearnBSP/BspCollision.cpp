@@ -19,9 +19,7 @@
 #include "BspFace.h"
 #include "BspNode.h"
 #include "BspLeaf.h"
-#include <stdlib.h>
 #include <iostream>
-#include <string.h>
 
 /*!
  * \brief
@@ -64,7 +62,7 @@ sCollisionData BspCollision::testCollision(Vector3& start, Vector3& end)
  * \param end
  * \return
  */
-sCollisionData BspCollision::testNode(const BspNode* node, Vector3& start, Vector3& end)
+sCollisionData BspCollision::testNode(BspNode* node, Vector3& start, Vector3& end)
 {
     return testLeaf(node->getChild(start), start, end);
 }
@@ -76,13 +74,13 @@ sCollisionData BspCollision::testNode(const BspNode* node, Vector3& start, Vecto
  * \param end
  * \return
  */
-sCollisionData BspCollision::testLeaf(const BspLeaf* leaf, Vector3& start, Vector3& end)
+sCollisionData BspCollision::testLeaf(BspLeaf* leaf, Vector3& start, Vector3& end)
 {
     sCollisionData result = { false, 9999.9f, NULL, 0, Vector3(), start };
 
 	if (leaf != NULL)
 	{
-		for (std::set<BspFace*>::const_iterator face = leaf->getFaces().begin(); face != leaf->getFaces().end(); ++face)
+		for (std::set<BspFace*>::iterator face = leaf->getFaces().begin(); face != leaf->getFaces().end(); ++face)
 		{
 			sCollisionData faceResult = testFaceCollision(start, end, (*face));
 

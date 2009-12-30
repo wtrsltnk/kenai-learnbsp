@@ -6,59 +6,38 @@
  */
 
 #include "BspProp.h"
-#include "BspMesh.h"
 #include "common/common.h"
-#include <string.h>
+#include "BspEntity.h"
 #include <GL/gl.h>
+#include <iostream>
 
-BspProp::BspProp(float origin[3], const char* mesh)
-	: BspObject("prop", BSP_PROP)
+BspProp::BspProp(BspEntity* entity)
+	: BspObject("prop", BSP_PROP), mMdlMesh(NULL), mEntity(entity)
 {
-	this->mOrigin[0] = origin[0];
-	this->mOrigin[1] = origin[1];
-	this->mOrigin[2] = origin[2];
-	strcpy(this->mMeshName, mesh);
+	RenderMode::fromEntity(entity, this->mRenderMode);
 }
 
 BspProp::~BspProp()
 {
+	if (this->mMdlMesh != NULL)
+		delete this->mMdlMesh;
 }
 
 bool BspProp::isType(const char* type) const
 {
-	if (strcasecmp(type, "prop") == 0)
+	if (Common::stringCompare(type, "prop") == 0)
 		return true;
 
 	return false;
 }
 
-void BspProp::render(RenderOptions& options) const
+void BspProp::render(RenderOptions& options)
 {
 	glPushMatrix();
-	glTranslatef(this->mOrigin[0], this->mOrigin[1], this->mOrigin[2]);
-	if (this->mMesh != NULL)
-	{
-		this->mMesh->render(options);
-	}
-	else
-	{
-		float size = 100.0f;
-		glBegin(GL_LINES);
-		glVertex3f(size, size, size);
-		glVertex3f(-size, -size, -size);
-		glVertex3f(size, size, -size);
-		glVertex3f(-size, -size, size);
-		glVertex3f(size, -size, -size);
-		glVertex3f(-size, size, size);
-		glVertex3f(-size, -size, -size);
-		glVertex3f(size, size, size);
-		glEnd();
-	}
+	this->mRenderMode.setupFx();
+	if (this->mMdlMesh != NULL)
+		this->mMdlMesh->render();
 	glPopMatrix();
-}
-
-const BspMesh* BspProp::getMesh() const
-{
 }
 
 void BspProp::onThink(ThinkArgs& args)
@@ -69,7 +48,14 @@ void BspProp::onTouch(TouchArgs& args)
 {
 }
 
-void BspProp::preCache()
+void BspProp::preCache(fs::FileSystem& filesystem)
 {
-	// Load Mesh here from mMesh
+	const char* meshname = this->mEntity->getValue("model");
+	std::cout << meshname << std::endl;
+	this->mMdlMesh = (Mdl*)filesystem.openResource(Common::getFilename(meshname));
+
+	if (this->mMdlMesh != NULL)
+	{
+		this->mMdlMesh->initialize();
+	}
 }

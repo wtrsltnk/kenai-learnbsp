@@ -8,25 +8,28 @@
 #ifndef _BSPPROP_H
 #define	_BSPPROP_H
 
+#include "fs/mesh/Mdl.h"
 #include "BspObject.h"
+#include "RenderMode.h"
 
 class BspProp : public BspObject
 {
 public:
-    BspProp(float origin[3], const char* mesh);
+    BspProp(BspEntity* entity);
     virtual ~BspProp();
 
     virtual bool isType(const char* type) const;
 
-    virtual void render(RenderOptions& options) const;
-    virtual const BspMesh* getMesh() const;
+    virtual void render(RenderOptions& options);
     virtual void onThink(ThinkArgs& args);
     virtual void onTouch(TouchArgs& args);
 
-    virtual void preCache();
+    virtual void preCache(fs::FileSystem& filesystem);
 
 private:
-    char mMeshName[256];
+    BspEntity* mEntity;
+    Mdl* mMdlMesh;
+    RenderMode mRenderMode;
 
 };
 

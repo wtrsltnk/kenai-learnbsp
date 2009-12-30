@@ -22,8 +22,8 @@
 
 #include "common/camera.h"
 #include "common/opengl.h"
-#include "HlBspWorld.h"
 #include "fs/FileSystem.h"
+#include "HlBspWorld.h"
 
 /*!
  * \brief 

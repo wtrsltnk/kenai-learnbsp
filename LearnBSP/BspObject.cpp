@@ -18,7 +18,7 @@
  */
 
 #include "BspObject.h"
-#include <string.h>
+#include "common/common.h"
 
 /*! \brief */
 int BspObject::sIDCount = 0;
@@ -27,10 +27,10 @@ int BspObject::sIDCount = 0;
  * \brief
  */
 BspObject::BspObject(const char* name, int type)
-        : mID(BspObject::sIDCount++), mType(type), mMesh(NULL)
+        : mID(BspObject::sIDCount++), mType(type)
 {
-    this->mName = new char[strlen(name) + 1];
-    strcpy(this->mName, name);
+    this->mName = new char[Common::stringLength(name) + 1];
+    Common::stringCopy(this->mName, name);
 }
 
 /*!
@@ -66,15 +66,6 @@ const char* BspObject::getName() const
 int BspObject::getType() const
 {
     return this->mType;
-}
-
-/*!
- * \brief
- * \return
- */
-const BspMesh* BspObject::getMesh() const
-{
-	return this->mMesh;
 }
 
 /*!

@@ -21,8 +21,9 @@
 #include "q3types.h"
 #include "common/data.h"
 #include <stdlib.h>
+#include "fs/Resource.h"
 
-class Q3BspData
+class Q3BspData : public fs::Resource
 {
 public:
     Q3BspData(const Data& data);

@@ -17,7 +17,6 @@
 
 #include "Q3BspWorld.h"
 #include <iostream>
-#include <string.h>
 
 /*!
  * \brief
@@ -38,12 +37,12 @@ Q3BspWorld::~Q3BspWorld()
  * \param file
  * return
  */
-bool Q3BspWorld::onOpen(const Data& file, TextureLoader& textureLoader)
+bool Q3BspWorld::onOpen(fs::Resource* resource, TextureLoader& textureLoader)
 {
-    if (!Q3BspData::testBSP(file))
-        return false;
+    Q3BspData* bsp = static_cast<Q3BspData*>(resource);
 
-    Q3BspData bsp(file);
+	if (bsp == NULL)
+		return false;
 
 //    this->mFaceCount = bsp.faceCount;
 //    this->mTextureCount = bsp.textureCount;

@@ -18,9 +18,9 @@
  */
 
 #include "BspFace.h"
-#include "common/texture.h"
+#include "fs/image/texture.h"
 #include "common/math3d.h"
-#include <string.h>
+#include "common/common.h"
 
 /*!
  * \brief
@@ -128,7 +128,7 @@ void BspFace::setFlags(int flags)
  * \brief
  * \param texture
  */
-void BspFace::setTexture(Texture* texture)
+void BspFace::setTexture(fs::Texture* texture)
 {
     this->mTexture = texture;
 }
@@ -137,7 +137,7 @@ void BspFace::setTexture(Texture* texture)
  * \brief
  * \return
  */
-const Texture* BspFace::getTexture() const
+const fs::Texture* BspFace::getTexture() const
 {
     return this->mTexture;
 }
@@ -151,12 +151,12 @@ const Texture* BspFace::getTexture() const
  * \param brughtness
  * \return
  */
-const Texture* BspFace::setLightmap(const hl::tBSPFace& bspFace, float min[2], float max[2], const unsigned char* lightData, float brightness)
+const fs::Texture* BspFace::setLightmap(const hl::tBSPFace& bspFace, float min[2], float max[2], const unsigned char* lightData, float brightness)
 {
     if (this->mLightmap != NULL)
         delete this->mLightmap;
     
-    this->mLightmap = new Texture;
+    this->mLightmap = new fs::Texture("lightmap");
 
     // compute lightmap size
     int size[2];
@@ -177,7 +177,7 @@ const Texture* BspFace::setLightmap(const hl::tBSPFace& bspFace, float min[2], f
 
     this->mLightmap->data = new unsigned char[dataSize];
 
-    memcpy(this->mLightmap->data, lightData + bspFace.lightOffset, dataSize);
+    Common::memoryCopy(this->mLightmap->data, lightData + bspFace.lightOffset, dataSize);
 
     // scale lightmap value...
     for (int i = 0; i < dataSize; i++)

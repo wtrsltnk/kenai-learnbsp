@@ -20,7 +20,7 @@
 #ifndef _TEXTURELOADER_H
 #define	_TEXTURELOADER_H
 
-#include "common/texture.h"
+#include "fs/image/texture.h"
 #include "fs/FileSystem.h"
 
 /*!
@@ -33,8 +33,8 @@ public:
     virtual ~TextureLoader();
 
     void setWadFiles(const char* wadstring);
-    bool loadMiptexTexture(Texture& texture, const unsigned char* textureData);
-    bool loadTextureFromFile(Texture& texture, const char* filename);
+    bool loadMiptexTexture(fs::Texture& texture, const unsigned char* textureData);
+    bool loadTextureFromFile(fs::Texture& texture, const char* filename);
 
 private:
     fs::FileSystem* mFileSystem;

@@ -22,7 +22,7 @@ extern "C" {
   #include <jpeglib.h>
 }
 
-bool openJpeg(Texture& texture, const Data& data)
+bool openJpeg(fs::Texture& texture, const Data& data)
 {
     struct jpeg_decompress_struct cinfo;
 

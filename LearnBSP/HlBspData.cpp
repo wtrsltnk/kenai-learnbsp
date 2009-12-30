@@ -25,7 +25,7 @@
  * \param data
  */
 HlBspData::HlBspData(const Data& data)
-    : entitySize(0), entityData(NULL), planeCount(0), planes(NULL), textureSize(0), textureData(NULL), vertexCount(0), vertices(NULL),
+    : fs::Resource(fs::HlBspResource, data.name), entitySize(0), entityData(NULL), planeCount(0), planes(NULL), textureSize(0), textureData(NULL), vertexCount(0), vertices(NULL),
         visibilitySize(0), visibilityData(NULL), nodeCount(0), nodes(NULL), texinfoCount(0), texinfos(NULL), faceCount(0), faces(NULL),
         lightingSize(0), lightingData(NULL), clipnodeCount(0), clipnodes(NULL), leafCount(0), leafs(NULL), marksurfaceCount(0), marksurfaces(NULL),
         edgeCount(0), edges(NULL), surfedgeCount(0), surfedges(NULL), modelCount(0), models(NULL)
@@ -43,14 +43,6 @@ HlBspData::HlBspData(const Data& data)
     }
 
     this->entitySize = loadLump(&this->entityData, header.lumps[HL1_BSP_ENTITYLUMP], &data);
-	char name[256];
-	sprintf(name, "%s.entities", data.name);
-	FILE* file = fopen(name, "wt");
-	if (file != false)
-	{
-		fwrite(this->entityData, 1, this->entitySize, file);
-		fclose(file);
-	}
     this->planeCount = loadLump(&this->planes, header.lumps[HL1_BSP_PLANELUMP], &data);
     this->textureSize = loadLump(&this->textureData, header.lumps[HL1_BSP_TEXTURELUMP], &data);
     this->vertexCount = loadLump(&this->vertices, header.lumps[HL1_BSP_VERTEXLUMP], &data);

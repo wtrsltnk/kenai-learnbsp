@@ -48,7 +48,7 @@ typedef struct sTGAHeader
  * \param data
  * \return
  */
-bool openTarga(Texture& texture, const Data& data)
+bool openTarga(fs::Texture& texture, const Data& data)
 {
     tTGAHeader* header = (tTGAHeader*)data.data;
 

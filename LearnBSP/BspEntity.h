@@ -46,6 +46,7 @@ public:
     const Map& getValues() const;
 
     bool parseFromTokenizer(Tokenizer& tok);
+    void print();
     
 private:
     /*! \brief */

@@ -6,11 +6,14 @@
  */
 
 #include "RenderMode.h"
+#include "BspEntity.h"
 #include <GL/gl.h>
+#include <stdio.h>
 
 RenderMode::RenderMode()
 {
 	this->mOrigin[0] = this->mOrigin[1] = this->mOrigin[2] = 0;
+	this->mAngles[0] = this->mAngles[1] = this->mAngles[2] = 0;
 	this->mFxAmount = 1.0f;
 	this->mFxMode = 4;
 	this->mFxColor[0] = this->mFxColor[1] = this->mFxColor[2] = 1.0f;
@@ -26,6 +29,9 @@ RenderMode::~RenderMode()
 void RenderMode::setupFx() const
 {
 	glTranslatef(this->mOrigin[0], this->mOrigin[1], this->mOrigin[2]);
+    glRotatef (this->mAngles[1],  0, 0, 1);
+    glRotatef (this->mAngles[0],  0, 1, 0);
+    glRotatef (this->mAngles[2],  1, 0, 0);
 	switch (this->mFxMode)
 	{
 		case 1:	// Color blending
@@ -80,3 +86,55 @@ void RenderMode::setupFx() const
 	}
 }
 
+void RenderMode::fromEntity(BspEntity* entity, RenderMode& rendermode)
+{
+	if (entity != NULL)
+	{
+		const Map& values = entity->getValues();
+		for (Map::const_iterator value = values.begin(); value != values.end(); ++value)
+		{
+			if ((*value).first == "origin")
+			{
+				float x, y, z;
+				if (sscanf((*value).second.c_str(), "%f %f %f", &x, &y, &z) != false)
+				{
+					rendermode.mOrigin[0] = x;
+					rendermode.mOrigin[1] = y;
+					rendermode.mOrigin[2] = z;
+				}
+			}
+			else if ((*value).first == "angles")
+			{
+				float x, y, z;
+				if (sscanf((*value).second.c_str(), "%f %f %f", &x, &y, &z) != false)
+				{
+					rendermode.mAngles[0] = x;
+					rendermode.mAngles[1] = y;
+					rendermode.mAngles[2] = z;
+				}
+			}
+			else if ((*value).first == "rendermode")
+			{
+				int mode = 0;
+				if (sscanf((*value).second.c_str(), "%d", &mode) != false)
+					rendermode.mFxMode = mode;
+			}
+			else if ((*value).first == "rendercolor")
+			{
+				float r, g, b;
+				if (sscanf((*value).second.c_str(), "%f %f %f", &r, &g, &b) != false)
+				{
+					rendermode.mFxColor[0] = (float)r / 255.0f;
+					rendermode.mFxColor[1] = (float)g / 255.0f;
+					rendermode.mFxColor[2] = (float)b / 255.0f;
+				}
+			}
+			else if ((*value).first == "renderamt")
+			{
+				int renderamt;
+				if (sscanf((*value).second.c_str(), "%d", &renderamt) != false)
+					rendermode.mFxAmount = (float)renderamt / 255.0f;
+			}
+		}
+	}
+}

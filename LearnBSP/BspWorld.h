@@ -23,17 +23,19 @@
 #include "common/camera.h"
 #include "common/data.h"
 #include "common/indexarray.h"
-#include "common/texture.h"
+
+#include "fs/image/texture.h"
+#include "fs/Resource.h"
+
 #include "TextureLoader.h"
 #include "BspNode.h"
 #include "BspLeaf.h"
 #include "BspFace.h"
-#include "BspModel.h"
+#include "BspGeometry.h"
 #include "BspEntity.h"
-#include "hltypes.h"
 #include "BspObject.h"
+
 #include <vector>
-#include <set>
 
 /*!
  * \brief
@@ -44,19 +46,19 @@ public:
     BspWorld();
     virtual ~BspWorld();
 
-    bool open(const Data& file, TextureLoader& textureLoader);
+    bool open(fs::Resource* resource, TextureLoader& textureLoader);
     void close();
 
     void render();
-    void renderAllFaces() const;
+    void renderAllFaces();
 
     void shoot();
 
-    bool setupEntities();
+    bool setupEntities(fs::FileSystem& filesystem);
     void setCamera(Camera* camera);
 
 protected:
-    virtual bool onOpen(const Data& file, TextureLoader& textureLoader) = 0;
+    virtual bool onOpen(fs::Resource* resource, TextureLoader& textureLoader) = 0;
 
 protected:
     /*! \brief */
@@ -73,11 +75,11 @@ protected:
     /*! \brief */
     int mModelCount;
     /*! \brief */
-    BspModel* mModels;
+    BspGeometry* mGeometries;
     /*! \brief */
     int mTextureCount;
     /*! \brief */
-    Texture* mTextures;
+    fs::Texture* mTextures;
     /*! \brief */
     std::vector<BspEntity*> mEntities;
     /*! \brief */

@@ -19,7 +19,7 @@
 
 #include "WadPackage.h"
 #include "FileSystemException.h"
-#include <string.h>
+#include "../common/common.h"
 
 using namespace fs;
 
@@ -53,7 +53,7 @@ const char* WadPackage::findFile(const char* filename)
     for (int i = 0; i < this->mHeader.lumpsCount; i++)
     {
         tWADLump& lump = this->mLumps[i];
-        if (strcasecmp(lump.name, filename) == 0)
+        if (Common::stringCompare(lump.name, filename) == 0)
         {
             return this->mLumps[i].name;
         }
@@ -66,12 +66,12 @@ bool WadPackage::openFile(Data& data, const char* filename)
     for (int i = 0; i < this->mHeader.lumpsCount; i++)
     {
         const tWADLump& lump = this->mLumps[i];
-        if (strcasecmp(lump.name, filename) == 0)
+        if (Common::stringCompare(lump.name, filename) == 0)
         {
             if (data.name != NULL)
                 delete []data.name;
-            data.name = new char[strlen(filename) + 1];
-            strcpy(data.name, filename);
+            data.name = new char[Common::stringLength(filename) + 1];
+            Common::stringCopy(data.name, filename);
             
             data.dataSize = lump.size;
 

@@ -17,43 +17,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPMESH_H
-#define	_BSPMESH_H
+#ifndef _RESOURCE_H
+#define	_RESOURCE_H
 
-#include "RenderOptions.h"
-
-/*!
- * \brief
- */
-class BspMesh
+namespace fs
 {
-public:
-    BspMesh();
-    virtual ~BspMesh();
 
-    /*! \brief */
-    virtual void update(RenderOptions& options) = 0;
-    /*! \brief */
-    virtual void render(RenderOptions& options) const = 0;
+enum ResourceTypes
+{
+    TextureResource,
+
+    HlMdlResource,
+    HlBspResource,
     
-    /*! \brief */
-    void setSolid(bool solid);
-    /*! \brief */
-    bool isSolid() const;
-
-    const float* getMins() const;
-    const float* getMaxs() const;
-
-protected:
-    /*! \brief */
-    bool mIsSolid;
-    /*! \brief */
-    float mMins[3];
-    /*! \brief */
-    float mMaxs[3];
-
-    
+    Q3BspResource
 };
 
-#endif	/* _BSPMESH_H */
+class Resource
+{
+protected:
+    Resource(int type, const char* filename);
+    
+public:
+    virtual ~Resource();
+
+    int getType() { return this->mType; }
+    const char* getFilename() { return this->mFilename; }
+    
+private:
+    int mType;
+    char* mFilename;
+
+};
+
+}
+
+#endif	/* _RESOURCE_H */
 

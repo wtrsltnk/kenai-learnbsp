@@ -18,7 +18,8 @@
  */
 
 #include "BspEntity.h"
-#include <string.h>
+#include "common/common.h"
+#include <iostream>
 
 /*!
  * \brief
@@ -108,7 +109,7 @@ const char* BspEntity::getValue(const char* key) const
  */
 bool BspEntity::parseFromTokenizer(Tokenizer& tok)
 {
-    while (tok.nextToken() && strcmp(tok.getToken(), "}") != 0)
+    while (tok.nextToken() && Common::stringCompare(tok.getToken(), "}") != 0)
     {
         std::string key = tok.getToken();
         if (!tok.nextToken())
@@ -121,6 +122,18 @@ bool BspEntity::parseFromTokenizer(Tokenizer& tok)
         this->mValues.insert(std::pair<std::string, std::string>(key, value));
     }
     return true;
+}
+
+/*!
+ * \brief
+ */
+void BspEntity::print()
+{
+	for (Map::const_iterator itr = this->mValues.begin(); itr != this->mValues.end(); ++itr)
+	{
+		std::cout << (*itr).first << " : " << (*itr).second << std::endl;
+	}
+	std::cout << std::endl;
 }
 
 /*!

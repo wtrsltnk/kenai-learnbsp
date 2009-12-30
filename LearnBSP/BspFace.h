@@ -21,8 +21,8 @@
 #define	_BSPFACE_H
 
 #include "common/plane.h"
-#include "common/texture.h"
 #include "common/opengl.h"
+#include "fs/image/texture.h"
 #include "hltypes.h"
 /*!
  * \brief
@@ -44,10 +44,10 @@ public:
 
     void setFlags(int flags);
 
-    void setTexture(Texture* texture);
-    const Texture* getTexture() const;
+    void setTexture(fs::Texture* texture);
+    const fs::Texture* getTexture() const;
 
-    const Texture* setLightmap(const hl::tBSPFace& bspFace, float min[2], float max[2], const unsigned char* lightData, float brightness = 0.5f);
+    const fs::Texture* setLightmap(const hl::tBSPFace& bspFace, float min[2], float max[2], const unsigned char* lightData, float brightness = 0.5f);
 
     int side;
 private:
@@ -62,9 +62,9 @@ private:
     /*! \brief */
     int mFaceFlags;
     /*! \brief */
-    Texture* mTexture;
+    fs::Texture* mTexture;
     /*! \brief */
-    Texture* mLightmap;
+    fs::Texture* mLightmap;
 
 };
 

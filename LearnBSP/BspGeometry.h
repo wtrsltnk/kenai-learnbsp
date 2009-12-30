@@ -17,11 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _BSPMODEL_H
-#define	_BSPMODEL_H
+#ifndef _BSPGEOMETRY_H
+#define	_BSPGEOMETRY_H
 
 #include "common/boundingbox.h"
-#include "BspMesh.h"
 #include "RenderOptions.h"
 #include "RenderMode.h"
 #include <vector>
@@ -35,17 +34,17 @@ class BspObject;
 /*!
  * \brief
  */
-class BspModel : public BspMesh
+class BspGeometry
 {
 public:
-    BspModel();
-    virtual ~BspModel();
+    BspGeometry();
+    virtual ~BspGeometry();
 
     virtual void update(RenderOptions& options);
-    virtual void render(RenderOptions& options) const;
-    void renderAllFaces() const;
+    virtual void render(RenderOptions& options);
+    void renderAllFaces();
 
-    const BspLeaf* getLeaf(const float position[3]) const;
+    BspLeaf* getLeaf(const float position[3]);
 
     void setHeadNode(BspNode* node);
     BspNode* getHeadNode();
@@ -73,5 +72,5 @@ private:
 
 };
 
-#endif	/* _BSPMODEL_H */
+#endif	/* _BSPGEOMETRY_H */
 

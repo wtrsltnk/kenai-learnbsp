@@ -18,11 +18,9 @@
  */
 
 #include "Application.h"
-#include "TextureLoader.h"
 #include "common/math3d.h"
+#include "common/common.h"
 #include "BspLoader.h"
-#include <stdio.h>
-#include <string.h>
 #include <iostream>
 
 /*!
@@ -36,18 +34,44 @@ Application::Application(int argc, char* argv[])
     Application::sCurrent = this;
     glfwInit();
 
-	const char* gameroot = "./data";
+	char gameroot[256] = { 0 };
+	bool foundGameroot = false;
 	for (int i = 0; i < argc; i++)
 	{
-		if (strcasecmp(argv[i], "-gameroot") == 0 && argc > i)
+		if (Common::stringCompare(argv[i], "-gameroot") == 0 && argc > i)
 		{
-			gameroot = argv[i + 1];
+			Common::stringCopy(gameroot, argv[i + 1]);
 			std::cout << "Game root: " << gameroot << std::endl;
+			foundGameroot = true;
 		}
-		else if (strcasecmp(argv[i], "-map") == 0 && argc > i)
+	}
+	if (argc > 1)
+	{
+		const char* ext = Common::getExtention(argv[argc - 1]);
+		if (Common::stringCompare(ext ,".bsp") == 0)
 		{
-			this->mMap = argv[i + 1];
+			this->mMap = argv[argc - 1];
 			std::cout << "Map: " << this->mMap << std::endl;
+			glfwSetWindowTitle(this->mMap);
+		}
+	}
+	
+	if (foundGameroot == false)
+	{
+		Common::stringCopy(gameroot, this->mMap);
+		int i = Common::stringLength(gameroot);
+		char tmp[256] = { 0 };
+		while (foundGameroot == false || i <= 0)
+		{
+			/// Find the last slash
+			while (gameroot[i] != '/' && i > 0)
+				i--;
+			gameroot[i] = '\0';
+			Common::stringFormat(tmp, "%s/hl.exe", gameroot);
+			if (Common::fileExists(tmp))
+			{
+				foundGameroot = true;
+			}
 		}
 	}
     this->mFileSystem = new fs::FileSystem(gameroot);
@@ -76,10 +100,10 @@ bool Application::initialize()
 {
 	BspLoader loader(this->mFileSystem);
 
-	if (this->mWorld = loader.loadWorld(this->mMap))
+	if (this->mWorld = loader.loadWorld(Common::getFilename(this->mMap)))
 	{
         this->mWorld->setCamera(&this->mCamera);
-        this->mWorld->setupEntities();
+        this->mWorld->setupEntities(*this->mFileSystem);
         this->setPerspective(45.0f, 0.1f, 4096);
     }
     glClearColor(0.4f, 0.6f, 1.0f, 1.0f);

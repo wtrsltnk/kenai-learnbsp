@@ -19,12 +19,11 @@
 
 #include "TextureLoader.h"
 #include "hltypes.h"
-#include <iostream>
-#include <string.h>
-#include <dirent.h>
-#include <vector>
 #include "fs/image/image.h"
 #include "common/common.h"
+#include <iostream>
+#include <vector>
+#include <string.h>
 
 /*!
  * \brief
@@ -49,8 +48,8 @@ void TextureLoader::setWadFiles(const char* wadstring)
 {
     std::vector<const char*> wadFiles;
     const char* value = wadstring;
-    char* wads = new char[strlen(value) + 1];
-    strcpy(wads, value);
+    char* wads = new char[Common::stringLength(value) + 1];
+    Common::stringCopy(wads, value);
 
     char* wad = strrchr(wads, ';');
     while (wad != NULL)
@@ -81,7 +80,7 @@ void TextureLoader::setWadFiles(const char* wadstring)
  * \param textureData
  * \return
  */
-bool TextureLoader::loadMiptexTexture(Texture& texture, const unsigned char* textureData)
+bool TextureLoader::loadMiptexTexture(fs::Texture& texture, const unsigned char* textureData)
 {
     hl::tBSPMipTexHeader* miptex = (hl::tBSPMipTexHeader*)textureData;
     
@@ -141,24 +140,24 @@ bool TextureLoader::loadMiptexTexture(Texture& texture, const unsigned char* tex
  * \param filename
  * \return
  */
-bool TextureLoader::loadTextureFromFile(Texture& texture, const char* filename)
+bool TextureLoader::loadTextureFromFile(fs::Texture& texture, const char* filename)
 {
     Data data(filename, true);
     const char* ext = Common::getExtention(filename);
 
-    if (strcasecmp(ext, ".tga") == 0)
+    if (Common::stringCompare(ext, ".tga") == 0)
     {
         return openTarga(texture, data);
     }
-    else if (strcasecmp(ext, ".bmp") == 0)
+    else if (Common::stringCompare(ext, ".bmp") == 0)
     {
         return openBitmap(texture, data);
     }
-    else if (strcasecmp(ext, ".jpg") == 0)
+    else if (Common::stringCompare(ext, ".jpg") == 0)
     {
         return openJpeg(texture, data);
     }
-    else if (strcasecmp(ext, ".png") == 0)
+    else if (Common::stringCompare(ext, ".png") == 0)
     {
         return openPng(texture, data);
     }

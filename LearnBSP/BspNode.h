@@ -37,9 +37,9 @@ public:
     BspNode();
     virtual ~BspNode();
 
-    virtual void render() const;
-    virtual void render(const float point[3]) const;
-    virtual void gatherVisibleObjects(std::set<BspObject*>& objects, const float point[3]) const;
+    virtual void render();
+    virtual void render(const float point[3]);
+    virtual void gatherVisibleObjects(std::set<BspObject*>& objects, const float point[3]);
 
     void setPlane(const float normal[3], float distance);
     const Plane& getPlane() const;
@@ -48,11 +48,11 @@ public:
     const BoundingBox& getBoundingBox() const;
 
     void setChildren(BspNode* front, BspNode* back);
-    const BspNode* getFront() const;
-    const BspNode* getBack() const;
-    const BspNode* getParent() const;
+    BspNode* getFront();
+    BspNode* getBack();
+    BspNode* getParent();
 
-    virtual const BspLeaf* getChild(const float point[3]) const;
+    virtual BspLeaf* getChild(const float point[3]);
 
     virtual void addObject(BspObject* object);
     

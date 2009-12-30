@@ -21,7 +21,7 @@
 #include "common/plane.h"
 #include "BspNode.h"
 #include "BspLeaf.h"
-#include "BspModel.h"
+#include "BspGeometry.h"
 #include "BspObject.h"
 #include <iostream>
 
@@ -49,7 +49,7 @@ BspNode::~BspNode()
 /*!
  * \brief
  */
-void BspNode::render() const
+void BspNode::render()
 {
 	this->mFront->render();
 	this->mBack->render();
@@ -59,7 +59,7 @@ void BspNode::render() const
  * \brief
  * \param position
  */
-void BspNode::render(const float point[3]) const
+void BspNode::render(const float point[3])
 {
 	float distance = this->mSplit.distance(Vector3(point));
 
@@ -74,7 +74,7 @@ void BspNode::render(const float point[3]) const
  * \param objects
  * \param position
  */
-void BspNode::gatherVisibleObjects(std::set<BspObject*>& objects, const float point[3]) const
+void BspNode::gatherVisibleObjects(std::set<BspObject*>& objects, const float point[3])
 {
 	float distance = this->mSplit.distance(Vector3(point));
 
@@ -122,7 +122,7 @@ void BspNode::setChildren(BspNode* front, BspNode* back)
  * \brief
  * \return
  */
-const BspNode* BspNode::getFront() const
+BspNode* BspNode::getFront()
 {
     return this->mFront;
 }
@@ -131,7 +131,7 @@ const BspNode* BspNode::getFront() const
  * \brief
  * \return
  */
-const BspNode* BspNode::getBack() const
+BspNode* BspNode::getBack()
 {
     return this->mBack;
 }
@@ -140,7 +140,7 @@ const BspNode* BspNode::getBack() const
  * \brief
  * \return
  */
-const BspNode* BspNode::getParent() const
+BspNode* BspNode::getParent()
 {
     return this->mParent;
 }
@@ -150,7 +150,7 @@ const BspNode* BspNode::getParent() const
  * \param point
  * \return
  */
-const BspLeaf* BspNode::getChild(const float point[3]) const
+BspLeaf* BspNode::getChild(const float point[3])
 {
 	float distance = this->mSplit.distance(Vector3(point));
 

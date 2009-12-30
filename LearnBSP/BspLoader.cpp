@@ -38,12 +38,32 @@ BspWorld* BspLoader::loadWorld(const char* filename)
 	{
 		Data data;
 
+		fs::Resource* resource = this->mFileSystem->openResource(filename);
+		if (resource != NULL)
+		{
+			if (static_cast<HlBspData*>(resource) != NULL)
+			{
+				HlBspWorld* result = new HlBspWorld();
+				if (result->open(resource, *this->mTextureLoader))
+					return result;
+				else
+					delete result;
+			}
+			else if (static_cast<Q3BspData*>(resource) != NULL)
+			{
+				Q3BspWorld* result = new Q3BspWorld();
+				if (result->open(resource, *this->mTextureLoader))
+					return result;
+				else
+					delete result;
+			}
+		}
 		if (this->mFileSystem->openFile(data, this->mFileSystem->findFile(filename)))
 		{
 			if (HlBspData::testBSP(data))
 			{
 				HlBspWorld* result = new HlBspWorld();
-				if (result->open(data, *this->mTextureLoader))
+				if (result->open(resource, *this->mTextureLoader))
 					return result;
 				else
 					delete result;
@@ -51,7 +71,7 @@ BspWorld* BspLoader::loadWorld(const char* filename)
 			else if (Q3BspData::testBSP(data))
 			{
 				Q3BspWorld* result = new Q3BspWorld();
-				if (result->open(data, *this->mTextureLoader))
+				if (result->open(resource, *this->mTextureLoader))
 					return result;
 				else
 					delete result;

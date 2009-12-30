@@ -36,7 +36,7 @@ public:
     int getMaxRange() const;
 
 protected:
-    virtual bool onOpen(const Data& data, TextureLoader& textureLoader);
+    virtual bool onOpen(fs::Resource* resource, TextureLoader& textureLoader);
     
 private:
     /*! \brief */

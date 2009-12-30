@@ -8,6 +8,8 @@
 #ifndef _RENDERMODE_H
 #define	_RENDERMODE_H
 
+class BspEntity;
+
 class RenderMode
 {
 public:
@@ -20,6 +22,9 @@ public:
     int mFxMode;
     float mFxColor[3];
     float mOrigin[3];
+    float mAngles[3];
+
+    static void fromEntity(BspEntity* entity, RenderMode& rendermode);
 
 };
 

@@ -17,10 +17,9 @@
 
 #include "Q3BspData.h"
 #include <iostream>
-#include <string.h>
 
 Q3BspData::Q3BspData(const Data& data)
-    : entitySize(0), entityData(NULL), textureCount(0), textures(NULL), planeCount(0), planes(NULL),
+    : fs::Resource(fs::Q3BspResource, data.name), entitySize(0), entityData(NULL), textureCount(0), textures(NULL), planeCount(0), planes(NULL),
         nodeCount(0), nodes(NULL), leafCount(0), leafs(NULL), leafFaceCount(0), leafFaces(NULL),
         leafBrushCount(0), leafBrushes(NULL), modelCount(0), models(NULL), brushCount(0), brushes(NULL),
         brushSideCount(0), brushSides(NULL), vertexCount(0), vertices(NULL), meshVertCount(0), meshVerts(NULL),

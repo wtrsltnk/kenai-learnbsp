@@ -18,8 +18,7 @@
  */
 
 #include "HlBspWorld.h"
-#include <stdio.h>
-#include <string.h>
+#include "common/common.h"
 
 HlBspWorld::HlBspWorld()
 	: BspWorld(), mTitle(NULL), mSkyName(NULL), mWad(NULL), mWaveHeight(5), mMaxRange(4096)
@@ -30,43 +29,43 @@ HlBspWorld::~HlBspWorld()
 {
 }
 
-bool HlBspWorld::onOpen(const Data& data, TextureLoader& textureLoader)
+bool HlBspWorld::onOpen(fs::Resource* resource, TextureLoader& textureLoader)
 {
-    if (!HlBspData::testBSP(data))
-        return false;
+	HlBspData* bsp = static_cast<HlBspData*>(resource);
 
-    HlBspData bsp(data);
-
+	if (bsp == NULL)
+		return false;
+	
     // Load the data structtures from the BSP file
-    this->mLeafCount = bsp.leafCount;
-    this->mFaceCount = bsp.faceCount;
-    this->mModelCount = bsp.modelCount;
-    this->mTextureCount = ((int*)bsp.textureData)[0];
+    this->mLeafCount = bsp->leafCount;
+    this->mFaceCount = bsp->faceCount;
+    this->mModelCount = bsp->modelCount;
+    this->mTextureCount = ((int*)bsp->textureData)[0];
 
     // Create the Object instances fro nodes, leafs and faces
     this->mLeafs = new BspLeaf[this->mLeafCount];
     this->mFaces = new BspFace[this->mFaceCount];
-    this->mModels = new BspModel[this->mModelCount];
-    this->mTextures = new Texture[this->mTextureCount];
+    this->mGeometries = new BspGeometry[this->mModelCount];
+    this->mTextures = new fs::Texture[this->mTextureCount];
 
     // Setup the index arrays
     this->mVertexIndices = new IndexArray<3>;
     this->mTextureUV = new IndexArray<2>;
     this->mLightmapUV = new IndexArray<2>;
 
-    if (!parseEntityData(bsp, textureLoader))
+    if (!parseEntityData(*bsp, textureLoader))
         return false;
 
-    if (!parseTextures(bsp, textureLoader))
+    if (!parseTextures(*bsp, textureLoader))
         return false;
 
-    if (!parseLeafs(bsp))
+    if (!parseLeafs(*bsp))
         return false;
 
-    if (!parseFaces(bsp))
+    if (!parseFaces(*bsp))
         return false;
 
-    if (!parseModels(bsp))
+    if (!parseModels(*bsp))
         return false;
 
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -92,7 +91,7 @@ bool HlBspWorld::parseEntityData(HlBspData& bsp, TextureLoader& textureLoader)
 {
     Tokenizer tok(bsp.entityData, bsp.entitySize);
 
-    while (tok.nextToken() && strcmp(tok.getToken(), "{") == 0)
+    while (tok.nextToken() && Common::stringCompare(tok.getToken(), "{") == 0)
     {
         // Parse the entity data into the entity instance
         BspEntity* entity = new BspEntity();
@@ -100,12 +99,12 @@ bool HlBspWorld::parseEntityData(HlBspData& bsp, TextureLoader& textureLoader)
 		{
 			// Check the classname for special cases entities like the worldspawn
 			const char* classname = entity->getClassName();
-			if (strcasecmp(classname, "worldspawn") == 0)
+			if (Common::stringCompare(classname, "worldspawn") == 0)
 			{
 				this->setWorldEntity(entity);
 				textureLoader.setWadFiles(entity->getValue("wad"));
 			}
-			else if (strcasecmp(classname, "trigger_camera") == 0 || strcasecmp(classname, "info_player_start") == 0)
+			else if (Common::stringCompare(classname, "trigger_camera") == 0 || Common::stringCompare(classname, "info_player_start") == 0)
 			{
 				this->mCameraPositions.push_back(entity);
 			}
@@ -189,7 +188,7 @@ bool HlBspWorld::parseFaces(HlBspData& bsp)
         hl::tBSPFace& face = bsp.faces[f];
         hl::tBSPPlane& plane = bsp.planes[face.planeIndex];
         hl::tBSPTexInfo& texinfo = bsp.texinfos[face.texinfoIndex];
-        Texture* texture = &this->mTextures[texinfo.miptexIndex];
+        fs::Texture* texture = &this->mTextures[texinfo.miptexIndex];
         this->mFaces[f].setPlane(plane.normal, plane.distance);
         this->mFaces[f].setVertices(this->mVertexIndices->current(), face.edgeCount);
         this->mFaces[f].setFlags(texinfo.flags);
@@ -200,7 +199,7 @@ bool HlBspWorld::parseFaces(HlBspData& bsp)
         float it = 1.0f / float(texture->height);
         float min[2], max[2];
         HlBspWorld::getFaceBounds(face, texinfo, bsp, min, max);
-        const Texture* lightmap = this->mFaces[f].setLightmap(face, min, max, bsp.lightingData);
+        const fs::Texture* lightmap = this->mFaces[f].setLightmap(face, min, max, bsp.lightingData);
 
         for (int e = 0; e < face.edgeCount; e++)
         {
@@ -256,11 +255,11 @@ bool HlBspWorld::parseModels(HlBspData& bsp)
     for (int m = 0; m < bsp.modelCount; m++)
     {
         hl::tBSPModel& model = bsp.models[m];
-        this->mModels[m].setHeadNode(createNode(bsp.nodes[model.headnode[0]], model, bsp));
-        this->mModels[m].setBoundingBox(BoundingBox(model.mins, model.maxs));
+        this->mGeometries[m].setHeadNode(createNode(bsp.nodes[model.headnode[0]], model, bsp));
+        this->mGeometries[m].setBoundingBox(BoundingBox(model.mins, model.maxs));
         for (int f = 0; f < model.faceCount; f++)
         {
-            this->mModels[m].addFace(&this->mFaces[model.firstFace + f]);
+            this->mGeometries[m].addFace(&this->mFaces[model.firstFace + f]);
         }
     }
     return true;
@@ -313,37 +312,37 @@ void HlBspWorld::setWorldEntity(BspEntity* world)
     const char* wad = world->getValue("wad");
     if (wad != NULL)
     {
-        this->mWad = new char[strlen(wad) + 1];
-        strcpy(this->mWad, wad);
+        this->mWad = new char[Common::stringLength(wad) + 1];
+        Common::stringCopy(this->mWad, wad);
     }
     else
     {
         this->mWad = new char[9];
-        strcpy(this->mWad, "zhlt.wad");
+        Common::stringCopy(this->mWad, "zhlt.wad");
     }
 
     const char* chaptertitle = world->getValue("chaptertitle");
     if (chaptertitle != NULL)
     {
-        this->mWad = new char[strlen(chaptertitle) + 1];
-        strcpy(this->mWad, chaptertitle);
+        this->mWad = new char[Common::stringLength(chaptertitle) + 1];
+        Common::stringCopy(this->mWad, chaptertitle);
     }
     else
     {
         this->mWad = new char[9];
-        strcpy(this->mWad, "No Title");
+        Common::stringCopy(this->mWad, "No Title");
     }
 
     const char* skyname = world->getValue("skyname");
     if (skyname != NULL)
     {
-        this->mSkyName = new char[strlen(wad) + 1];
-        strcpy(this->mSkyName, skyname);
+        this->mSkyName = new char[Common::stringLength(wad) + 1];
+        Common::stringCopy(this->mSkyName, skyname);
     }
     else
     {
         this->mWad = new char[5];
-        strcpy(this->mWad, "dusk");
+        Common::stringCopy(this->mWad, "dusk");
     }
 
     const char* waveheight = world->getValue("WaveHeight");

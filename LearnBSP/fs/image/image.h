@@ -18,14 +18,14 @@
 #ifndef _IMAGE_H
 #define	_IMAGE_H
 
-#include "../../common/texture.h"
+#include "texture.h"
 #include "../../common/data.h"
 
-bool openTarga(Texture& texture, const Data& data);
-bool openJpeg(Texture& texture, const Data& data);
-bool openPng(Texture& texture, const Data& data);
-bool openBitmap(Texture& texture, const Data& data);
-bool openMiptex(Texture& texture, const Data& data);
+bool openTarga(fs::Texture& texture, const Data& data);
+bool openJpeg(fs::Texture& texture, const Data& data);
+bool openPng(fs::Texture& texture, const Data& data);
+bool openBitmap(fs::Texture& texture, const Data& data);
+bool openMiptex(fs::Texture& texture, const Data& data);
 
 #endif	/* _IMAGE_H */
 

@@ -38,7 +38,7 @@ typedef struct sBSPMipTexHeader
  * \param data
  * \return 
  */
-bool openMiptex(Texture& texture, const Data& data)
+bool openMiptex(fs::Texture& texture, const Data& data)
 {
     tBSPMipTexHeader miptex;
     data.read(&miptex);

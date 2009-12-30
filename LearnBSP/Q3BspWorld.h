@@ -31,7 +31,7 @@ public:
     virtual ~Q3BspWorld();
 
 protected:
-    virtual bool onOpen(const Data& data, TextureLoader& textureLoader);
+    virtual bool onOpen(fs::Resource* resource, TextureLoader& textureLoader);
     
 private:
     bool parseFaces(Q3BspData& bsp);

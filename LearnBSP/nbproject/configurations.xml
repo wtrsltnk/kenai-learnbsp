@@ -16,8 +16,6 @@
       <itemPath>common/opengl.h</itemPath>
       <itemPath>common/plane.cpp</itemPath>
       <itemPath>common/plane.h</itemPath>
-      <itemPath>common/texture.cpp</itemPath>
-      <itemPath>common/texture.h</itemPath>
       <itemPath>common/thread.cpp</itemPath>
       <itemPath>common/thread.h</itemPath>
       <itemPath>common/tokenizer.cpp</itemPath>
@@ -33,10 +31,24 @@
         <itemPath>fs/image/miptex.cpp</itemPath>
         <itemPath>fs/image/png.cpp</itemPath>
         <itemPath>fs/image/targa.cpp</itemPath>
+        <itemPath>fs/image/texture.cpp</itemPath>
+        <itemPath>fs/image/texture.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f3" displayName="Mesh" projectFiles="true">
+        <itemPath>fs/mesh/Mdl.cpp</itemPath>
+        <itemPath>fs/mesh/Mdl.h</itemPath>
         <itemPath>fs/mesh/Mesh.cpp</itemPath>
         <itemPath>fs/mesh/Mesh.h</itemPath>
+        <itemPath>fs/mesh/hlsdk/cmdlib.c</itemPath>
+        <itemPath>fs/mesh/hlsdk/cmdlib.h</itemPath>
+        <itemPath>fs/mesh/hlsdk/mathlib.c</itemPath>
+        <itemPath>fs/mesh/hlsdk/mathlib.h</itemPath>
+        <itemPath>fs/mesh/mdltypes.h</itemPath>
+        <itemPath>fs/mesh/hlsdk/mdlviewer.h</itemPath>
+        <itemPath>fs/mesh/hlsdk/studio.h</itemPath>
+        <itemPath>fs/mesh/hlsdk/studio_event.h</itemPath>
+        <itemPath>fs/mesh/hlsdk/studio_render.cpp</itemPath>
+        <itemPath>fs/mesh/hlsdk/studio_utils.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Zip" projectFiles="true">
         <itemPath>fs/zip/crypt.h</itemPath>
@@ -58,6 +70,8 @@
       <itemPath>fs/FileSystemException.h</itemPath>
       <itemPath>fs/Package.cpp</itemPath>
       <itemPath>fs/Package.h</itemPath>
+      <itemPath>fs/Resource.cpp</itemPath>
+      <itemPath>fs/Resource.h</itemPath>
       <itemPath>fs/WadPackage.cpp</itemPath>
       <itemPath>fs/WadPackage.h</itemPath>
       <itemPath>fs/ZipPackage.cpp</itemPath>
@@ -74,10 +88,9 @@
       <itemPath>BspCollision.h</itemPath>
       <itemPath>BspEntity.h</itemPath>
       <itemPath>BspFace.h</itemPath>
+      <itemPath>BspGeometry.h</itemPath>
       <itemPath>BspLeaf.h</itemPath>
       <itemPath>BspLoader.h</itemPath>
-      <itemPath>BspMesh.h</itemPath>
-      <itemPath>BspModel.h</itemPath>
       <itemPath>BspNode.h</itemPath>
       <itemPath>BspObject.h</itemPath>
       <itemPath>BspProp.h</itemPath>
@@ -108,10 +121,9 @@
       <itemPath>BspCollision.cpp</itemPath>
       <itemPath>BspEntity.cpp</itemPath>
       <itemPath>BspFace.cpp</itemPath>
+      <itemPath>BspGeometry.cpp</itemPath>
       <itemPath>BspLeaf.cpp</itemPath>
       <itemPath>BspLoader.cpp</itemPath>
-      <itemPath>BspMesh.cpp</itemPath>
-      <itemPath>BspModel.cpp</itemPath>
       <itemPath>BspNode.cpp</itemPath>
       <itemPath>BspObject.cpp</itemPath>
       <itemPath>BspProp.cpp</itemPath>

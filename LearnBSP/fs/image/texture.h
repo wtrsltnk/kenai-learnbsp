@@ -1,13 +1,19 @@
 #ifndef _TEXTURE_H
 #define	_TEXTURE_H
 
+#include "../Resource.h"
+
+namespace fs
+{
+
 /*!
  * \brief
  */
-class Texture
+class Texture : public Resource
 {
 public:
     Texture();
+    Texture(const char* filename);
     virtual ~Texture();
 
     unsigned int upload();
@@ -36,6 +42,8 @@ public:
     unsigned int glIndex;
 
 };
+
+}
 
 #endif	/* _TEXTURE_H */
 

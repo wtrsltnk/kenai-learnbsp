@@ -60,7 +60,7 @@ Data::Data(const char* name, bool readFromFile) : name(0), data(0), dataSize(0)
  */
 Data::~Data()
 {
-    if (name != 0) delete []name;
+//    if (name != 0) delete []name;
     if (data != 0) delete []data;
 }
 

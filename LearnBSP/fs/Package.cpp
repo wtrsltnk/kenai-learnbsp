@@ -18,7 +18,7 @@
  */
 
 #include "Package.h"
-#include <string.h>
+#include "../common/common.h"
 
 using namespace fs;
 
@@ -27,8 +27,8 @@ using namespace fs;
  */
 Package::Package(const char* name)
 {
-    this->mPackageName = new char[strlen(name) + 1];
-    strcpy(this->mPackageName, name);
+    this->mPackageName = new char[Common::stringLength(name) + 1];
+    Common::stringCopy(this->mPackageName, name);
 }
 
 /*!

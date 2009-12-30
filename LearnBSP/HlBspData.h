@@ -23,8 +23,9 @@
 #include "common/data.h"
 #include "hltypes.h"
 #include <stdlib.h>
+#include "fs/Resource.h"
 
-class HlBspData
+class HlBspData : public fs::Resource
 {
 public:
     HlBspData(const Data& data);

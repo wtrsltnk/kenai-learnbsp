@@ -71,7 +71,7 @@ typedef struct sBMPRGBQuad
 
 #pragma pack()
 
-bool parseBMPData(unsigned char* data, int datasize, tBMPRGBQuad* palette, int palettesize, tBMPInfoHeader* info, Texture& texture);
+bool parseBMPData(unsigned char* data, int datasize, tBMPRGBQuad* palette, int palettesize, tBMPInfoHeader* info, fs::Texture& texture);
 
 /*!
  * \brief
@@ -79,7 +79,7 @@ bool parseBMPData(unsigned char* data, int datasize, tBMPRGBQuad* palette, int p
  * \param data
  * \return
  */
-bool openBitmap(Texture& texture, const Data& data)
+bool openBitmap(fs::Texture& texture, const Data& data)
 {
     tBMPFileHeader fileHeader;
     tBMPInfoHeader info;
@@ -146,7 +146,7 @@ bool openBitmap(Texture& texture, const Data& data)
  * \param texture
  * \return 
  */
-bool parseBMPData(unsigned char* data, int datasize, tBMPRGBQuad* palette, int palettesize, tBMPInfoHeader* info, Texture& texture)
+bool parseBMPData(unsigned char* data, int datasize, tBMPRGBQuad* palette, int palettesize, tBMPInfoHeader* info, fs::Texture& texture)
 {
     switch (info->compression)
     {
