@@ -209,7 +209,10 @@ bool FileSystem::openTexture(Texture& texture, const Data& data, const char* pac
 
 Resource* FileSystem::openResource(const char* name)
 {
-	const char* find = this->findFile(name);
+	const char* find = name;
+
+	if (Common::fileExists(name) == false)
+		find = this->findFile(name);
 
 	if (find == NULL)
 		return NULL;

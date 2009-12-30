@@ -26,6 +26,16 @@ public:
         glfwUnlockMutex(mMutex);
     }
 
+    static GLFWmutex createMutex()
+    {
+        return glfwCreateMutex();
+    }
+
+    static void destroyMutex(GLFWmutex mutex)
+    {
+        glfwDestroyMutex(mutex);
+    }
+
 private:
     /* \brief */
     GLFWmutex& mMutex;

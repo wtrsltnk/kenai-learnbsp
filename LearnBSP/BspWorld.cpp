@@ -63,6 +63,7 @@ bool BspWorld::setupEntities(fs::FileSystem& filesystem)
         BspEntity* entity = *itr;
 		const char* model = entity->getValue("model");
 		const char* classname = entity->getValue("classname");
+		
 		if (model != NULL)
 		{
 			int index = 0;

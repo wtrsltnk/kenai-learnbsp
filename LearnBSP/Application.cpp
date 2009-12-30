@@ -34,6 +34,7 @@ Application::Application(int argc, char* argv[])
     Application::sCurrent = this;
     glfwInit();
 
+	/// ToDo: fix this gameroot stuff, now it will not work when you give a gameroot and a mapname with fullpath
 	char gameroot[256] = { 0 };
 	bool foundGameroot = false;
 	for (int i = 0; i < argc; i++)

@@ -43,7 +43,7 @@ const char* Common::getFilename(const char* fullname)
     if (backslash != NULL)
         return backslash + 1;
 
-    return NULL;
+    return fullname;
 }
 
 const char* Common::getExtention(const char* fullname)
@@ -70,17 +70,17 @@ int Common::stringCompare(const char* str1, const char* str2, int size, bool cas
 	{
 		if (casesensitive)
 		{
-			return strcasecmp(str1, str2);
+			return strcmp(str1, str2);
 		}
-		return strcmp(str1, str2);
+		return strcasecmp(str1, str2);
 	}
 	else
 	{
 		if (casesensitive)
 		{
-			return strncasecmp(str1, str2, size);
+			return strncmp(str1, str2, size);
 		}
-		return strncmp(str1, str2, size);
+		return strncasecmp(str1, str2, size);
 	}
 }
 

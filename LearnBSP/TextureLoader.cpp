@@ -55,8 +55,11 @@ void TextureLoader::setWadFiles(const char* wadstring)
     while (wad != NULL)
     {
         wad[0] = '\0'; wad++;
-        const char* file = Common::getFilename(wad);
-        if (file != NULL) wadFiles.push_back(file);
+		if (Common::stringCompare(wad, "") != 0)
+		{
+			const char* file = Common::getFilename(wad);
+			if (file != NULL) wadFiles.push_back(file);
+		}
 
         wad = strrchr(wads, ';');
     }

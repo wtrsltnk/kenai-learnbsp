@@ -95,6 +95,8 @@
       <itemPath>BspObject.h</itemPath>
       <itemPath>BspProp.h</itemPath>
       <itemPath>BspWorld.h</itemPath>
+      <itemPath>Console.cpp</itemPath>
+      <itemPath>Console.h</itemPath>
       <itemPath>FreeTypeFont.h</itemPath>
       <itemPath>RenderMode.h</itemPath>
       <itemPath>RenderOptions.h</itemPath>
