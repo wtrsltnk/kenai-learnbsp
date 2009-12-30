@@ -18,6 +18,7 @@
  */
 
 #include <stdlib.h>
+#include <iostream>
 #include "Application.h"
 
 /*!
@@ -25,10 +26,18 @@
  */
 int main(int argc, char* argv[])
 {
-    Application application(argc, argv);
+	if (argc > 1)
+	{
+		Application application(argc, argv);
 
-    application.run();
+		application.run();
 
-    return application.cleanup();
+		return application.cleanup();
+	}
+	else
+	{
+		std::cout << "No bsp file given" << std::endl;
+		return 1;
+	}
 }
 
