@@ -188,7 +188,7 @@
           <developmentMode>5</developmentMode>
           <architecture>1</architecture>
           <incDir>
-            <pElem>../BspPlugin</pElem>
+            <pElem>/usr/include/freetype2</pElem>
           </incDir>
         </ccTool>
         <fortranCompilerTool>
@@ -201,52 +201,11 @@
             <linkerLibLibItem>pthread</linkerLibLibItem>
             <linkerLibLibItem>Xrandr</linkerLibLibItem>
             <linkerLibFileItem>lib/libz.a</linkerLibFileItem>
-            <linkerLibProjectItem>
-              <makeArtifact PL="../BspPlugin"
-                            CT="3"
-                            CN="Release"
-                            AC="false"
-                            BL="true"
-                            WD="../BspPlugin"
-                            BC="${MAKE}  -f Makefile CONF=Release"
-                            CC="${MAKE}  -f Makefile CONF=Release clean"
-                            OP="dist/Release/GNU-Linux-x86/libbspplugin.a">
-              </makeArtifact>
-            </linkerLibProjectItem>
+            <linkerLibLibItem>jpeg</linkerLibLibItem>
+            <linkerLibLibItem>png</linkerLibLibItem>
+            <linkerLibLibItem>freetype</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
-        <requiredProjects>
-          <makeArtifact PL="../BspPlugin"
-                        CT="3"
-                        CN="Release"
-                        AC="false"
-                        BL="true"
-                        WD="../BspPlugin"
-                        BC="${MAKE}  -f Makefile CONF=Release"
-                        CC="${MAKE}  -f Makefile CONF=Release clean"
-                        OP="dist/Release/GNU-Linux-x86/libbspplugin.a">
-          </makeArtifact>
-          <makeArtifact PL="../Basics"
-                        CT="2"
-                        CN="Release"
-                        AC="true"
-                        BL="true"
-                        WD="../Basics"
-                        BC="${MAKE}  -f Makefile CONF=Release"
-                        CC="${MAKE}  -f Makefile CONF=Release clean"
-                        OP="dist/Release/GNU-Linux-x86/libBasics.so">
-          </makeArtifact>
-          <makeArtifact PL="../BasicGame"
-                        CT="2"
-                        CN="Release"
-                        AC="false"
-                        BL="true"
-                        WD="../BasicGame"
-                        BC="${MAKE}  -f Makefile CONF=Release"
-                        CC="${MAKE}  -f Makefile CONF=Release clean"
-                        OP="dist/Release/GNU-Linux-x86/libBasicGame.so">
-          </makeArtifact>
-        </requiredProjects>
       </compileType>
       <item path="GLee/GLee.c" ex="true" tool="0">
       </item>
