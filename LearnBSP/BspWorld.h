@@ -34,6 +34,7 @@
 #include "BspGeometry.h"
 #include "BspEntity.h"
 #include "BspObject.h"
+#include "Progress.h"
 
 #include <vector>
 
@@ -43,7 +44,7 @@
 class BspWorld
 {
 public:
-    BspWorld();
+    BspWorld(Progress* progress);
     virtual ~BspWorld();
 
     bool open(fs::Resource* resource, TextureLoader& textureLoader);
@@ -63,6 +64,8 @@ protected:
 protected:
     /*! \brief */
     Camera* mCamera;
+    /*! \brief */
+    Progress* mProgress;
 
     /*! \brief */
     int mLeafCount;

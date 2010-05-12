@@ -6,6 +6,7 @@
  */
 
 #include "FreeTypeFont.h"
+#include "common/data.h"
 #include <vector>
 #include <string>
 #include <GL/glu.h>
@@ -185,7 +186,58 @@ bool FreeTypeFont::initialize(const char* filename, int height)
 	for(unsigned char i=0;i<128;i++)
 	{
 		// TODO op een of andere manier moet de listbase-1 om te zorgen dat de juiste letters weer gegeven worden. Waar is dit een bug? Ik heb het idee dat het komt nadat ik ubuntu een update gegeven heb...
-		if (!make_dlist(face, i, this->mListBase-1, this->mTextures))
+		if (!make_dlist(face, i, this->mListBase, this->mTextures))
+			return false;
+	}
+
+	//We don't need the face information now that the display
+	//lists have been created, so we free the assosiated resources.
+	FT_Done_Face(face);
+
+	//Ditto for the library.
+	FT_Done_FreeType(library);
+
+	return true;
+}
+
+bool FreeTypeFont::initialize(Data& fontfile, int height)
+{
+	//Allocate some memory to store the texture ids.
+	this->mTextures = new GLuint[128];
+
+	this->mHeight = height;
+
+	//Create and initilize a freetype font library.
+	FT_Library library;
+	if (FT_Init_FreeType( &library ))
+		return false; //throw "FT_Init_FreeType failed";
+
+	//The object in which Freetype holds information on a given
+	//font is called a "face".
+	FT_Face face;
+
+	//This is where we load in the font information from the file.
+	//Of all the places where the code might die, this is the most likely,
+	//as FT_New_Face will die if the font file does not exist or is somehow broken.
+	if (FT_New_Memory_Face( library, fontfile.data, fontfile.dataSize, 0, &face ))
+		return false; //throw "FT_New_Face failed (there is probably a problem with your font file)";
+
+	//For some twisted reason, Freetype measures font size
+	//in terms of 1/64ths of pixels.  Thus, to make a font
+	//h pixels high, we need to request a size of h*64.
+	FT_Set_Char_Size( face, height * 64, height * 64, 96, 96);
+
+	//Here we ask opengl to allocate resources for
+	//all the textures and displays lists which we
+	//are about to create.
+	this->mListBase = glGenLists(128);
+	glGenTextures( 128, this->mTextures );
+
+	//This is where we actually create each of the fonts display lists.
+	for(unsigned char i=0;i<128;i++)
+	{
+		// TODO op een of andere manier moet de listbase-1 om te zorgen dat de juiste letters weer gegeven worden. Waar is dit een bug? Ik heb het idee dat het komt nadat ik ubuntu een update gegeven heb...
+		if (!make_dlist(face, i, this->mListBase, this->mTextures))
 			return false;
 	}
 

@@ -21,7 +21,8 @@
 /*!
  * \brief
  */
-Q3BspWorld::Q3BspWorld()
+Q3BspWorld::Q3BspWorld(Progress* progress)
+	: BspWorld(progress)
 {
 }
 

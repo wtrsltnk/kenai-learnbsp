@@ -28,8 +28,8 @@
 /*!
  * \brief
  */
-TextureLoader::TextureLoader(fs::FileSystem* fs)
-    : mFileSystem(fs)
+TextureLoader::TextureLoader(Progress* progress, fs::FileSystem* fs)
+    : mProgress(progress), mFileSystem(fs)
 {
 }
 

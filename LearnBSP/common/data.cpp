@@ -48,7 +48,7 @@ Data::Data(const char* name, bool readFromFile) : name(0), data(0), dataSize(0)
             if (this->dataSize > 0)
             {
                 this->data = new unsigned char[this->dataSize];
-                fread(this->data, 1, this->dataSize, file);
+                size_t res = fread(this->data, 1, this->dataSize, file);
             }
             fclose(file);
         }

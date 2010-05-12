@@ -59,6 +59,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/common/plane.o \
 	${OBJECTDIR}/BspNode.o \
 	${OBJECTDIR}/fs/zip/unzip.o \
+	${OBJECTDIR}/Console.o \
 	${OBJECTDIR}/BspCollision.o \
 	${OBJECTDIR}/fs/zip/zip.o \
 	${OBJECTDIR}/fs/mesh/hlsdk/studio_render.o \
@@ -80,8 +81,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/fs/ZipPackage.o \
 	${OBJECTDIR}/BspWorld.o \
 	${OBJECTDIR}/fs/mesh/hlsdk/mathlib.o \
-	${OBJECTDIR}/fs/FileSystemException.o \
 	${OBJECTDIR}/BspEntity.o \
+	${OBJECTDIR}/fs/FileSystemException.o \
 	${OBJECTDIR}/fs/mesh/hlsdk/studio_utils.o
 
 # C Compiler Flags
@@ -222,6 +223,10 @@ ${OBJECTDIR}/fs/zip/unzip.o: nbproject/Makefile-${CND_CONF}.mk fs/zip/unzip.c
 	${MKDIR} -p ${OBJECTDIR}/fs/zip
 	$(COMPILE.c) -g -o ${OBJECTDIR}/fs/zip/unzip.o fs/zip/unzip.c
 
+${OBJECTDIR}/Console.o: nbproject/Makefile-${CND_CONF}.mk Console.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/Console.o Console.cpp
+
 ${OBJECTDIR}/BspCollision.o: nbproject/Makefile-${CND_CONF}.mk BspCollision.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/BspCollision.o BspCollision.cpp
@@ -306,13 +311,13 @@ ${OBJECTDIR}/fs/mesh/hlsdk/mathlib.o: nbproject/Makefile-${CND_CONF}.mk fs/mesh/
 	${MKDIR} -p ${OBJECTDIR}/fs/mesh/hlsdk
 	$(COMPILE.c) -g -o ${OBJECTDIR}/fs/mesh/hlsdk/mathlib.o fs/mesh/hlsdk/mathlib.c
 
-${OBJECTDIR}/fs/FileSystemException.o: nbproject/Makefile-${CND_CONF}.mk fs/FileSystemException.cpp 
-	${MKDIR} -p ${OBJECTDIR}/fs
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/FileSystemException.o fs/FileSystemException.cpp
-
 ${OBJECTDIR}/BspEntity.o: nbproject/Makefile-${CND_CONF}.mk BspEntity.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/BspEntity.o BspEntity.cpp
+
+${OBJECTDIR}/fs/FileSystemException.o: nbproject/Makefile-${CND_CONF}.mk fs/FileSystemException.cpp 
+	${MKDIR} -p ${OBJECTDIR}/fs
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/FileSystemException.o fs/FileSystemException.cpp
 
 ${OBJECTDIR}/fs/mesh/hlsdk/studio_utils.o: nbproject/Makefile-${CND_CONF}.mk fs/mesh/hlsdk/studio_utils.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs/mesh/hlsdk

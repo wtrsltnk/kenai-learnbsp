@@ -29,7 +29,7 @@
  * \param height The height of the window created for this Application
  */
 Application::Application(int argc, char* argv[])
-        : mWidth(800), mHeight(600), mResult(-1), mRunning(true), mSpeed(500.0f), mWorld(NULL), mMap(NULL)
+        : mWidth(800), mHeight(600), mResult(-1), mRunning(true), mSpeed(500.0f), mWorld(NULL), mMap(NULL), mConsole(NULL), mShowConsole(true)
 {
     Application::sCurrent = this;
     glfwInit();
@@ -99,9 +99,13 @@ Application::~Application()
  */
 bool Application::initialize()
 {
-	BspLoader loader(this->mFileSystem);
+	this->mConsole = new Console(this->mWidth, this->mHeight);
+	
+	BspLoader loader(this, this->mFileSystem);
 
-	if (this->mWorld = loader.loadWorld(Common::getFilename(this->mMap)))
+	loader.setFilename(Common::getFilename(this->mMap));
+	loader.run();
+	if (this->mWorld = loader.getWorld())
 	{
         this->mWorld->setCamera(&this->mCamera);
         this->mWorld->setupEntities(*this->mFileSystem);
@@ -120,6 +124,12 @@ bool Application::initialize()
     return true;
 }
 
+void Application::onChange(int type, const char* msg)
+{
+	if (type == 1)
+		this->mConsole->addLine(msg);
+}
+
 /*!
  * \brief Render one frame of the application
  * \param time The current time of the framestart
@@ -129,8 +139,26 @@ void Application::render(double time)
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     this->mCamera.Update();
-
+	
     if (this->mWorld != NULL) this->mWorld->render();
+
+	if (this->mShowConsole)
+	{
+		glMatrixMode(GL_PROJECTION);
+		glPushMatrix();
+		glLoadIdentity();
+		glOrtho(0.0f, this->mWidth, this->mHeight, 0.0f, 0.1f, 50.0f);
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		glLoadIdentity();
+
+		this->mConsole->render();
+
+		glMatrixMode(GL_PROJECTION);
+		glPopMatrix();
+		glMatrixMode(GL_MODELVIEW);
+		glPopMatrix();
+	}
 }
 
 /*!
@@ -150,12 +178,23 @@ void Application::destroy()
  */
 void Application::keyPressed(int key, int action)
 {
-	if (key == 32 && action == 1)
+	if (key == GLFW_KEY_ESC && action == 1)
+	{
+		if (this->mShowConsole)
+			this->mShowConsole = false;
+		else
+			this->mRunning = false;
+	}
+	else if (key == 32 && action == 1)
 	{
 		if (this->mWorld != NULL)
 		{
 			this->mWorld->shoot();
 		}
+	}
+	else if (key == GLFW_KEY_LCTRL && action == 1)
+	{
+		this->mShowConsole = !this->mShowConsole;
 	}
 //	std::cout << key << " " << action << std::endl;
 }
@@ -233,7 +272,8 @@ void Application::run()
 
             glfwSwapBuffers();
 
-            this->mRunning = !glfwGetKey( GLFW_KEY_ESC ) && glfwGetWindowParam( GLFW_OPENED );
+            if (glfwGetWindowParam( GLFW_OPENED ) == false)
+				this->mRunning = false;
         }
         while (this->mRunning);
         this->mResult = 0;

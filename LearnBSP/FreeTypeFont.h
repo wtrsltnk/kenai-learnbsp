@@ -8,7 +8,8 @@
 #ifndef _FREETYPEFONT_H
 #define	_FREETYPEFONT_H
 
-#include <GL/gl.h>
+#include "common/opengl.h"
+#include "common/data.h"
 
 class FreeTypeFont
 {
@@ -17,6 +18,7 @@ public:
     virtual ~FreeTypeFont();
 
     bool initialize(const char* filename, int height);
+    bool initialize(Data& fontfile, int height);
     void destroy();
 
     void print(float x, float y, const char* fmt, ...);

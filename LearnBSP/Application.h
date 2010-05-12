@@ -24,11 +24,13 @@
 #include "common/opengl.h"
 #include "fs/FileSystem.h"
 #include "HlBspWorld.h"
+#include "Console.h"
+#include "BspLoader.h"
 
 /*!
  * \brief 
  */
-class Application
+class Application : Progress
 {
 public:
     Application(int argc, char* argv[]);
@@ -36,6 +38,7 @@ public:
 
     void run();
     int cleanup();
+    void onChange(int type, const char* msg);
     
 protected:
     virtual bool initialize();
@@ -65,6 +68,10 @@ private:
     fs::FileSystem* mFileSystem;
     /*! \brief */
     char* mMap;
+    /*! \brief */
+    Console* mConsole;
+    /*! \brief */
+    bool mShowConsole;
 
     bool openWindow(const char* title);
 

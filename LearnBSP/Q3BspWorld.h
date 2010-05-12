@@ -27,7 +27,7 @@
 class Q3BspWorld : public BspWorld
 {
 public:
-    Q3BspWorld();
+    Q3BspWorld(Progress* progress);
     virtual ~Q3BspWorld();
 
 protected:

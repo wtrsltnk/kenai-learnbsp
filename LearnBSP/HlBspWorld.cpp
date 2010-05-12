@@ -20,8 +20,8 @@
 #include "HlBspWorld.h"
 #include "common/common.h"
 
-HlBspWorld::HlBspWorld()
-	: BspWorld(), mTitle(NULL), mSkyName(NULL), mWad(NULL), mWaveHeight(5), mMaxRange(4096)
+HlBspWorld::HlBspWorld(Progress* progress)
+	: BspWorld(progress), mTitle(NULL), mSkyName(NULL), mWad(NULL), mWaveHeight(5), mMaxRange(4096)
 {
 }
 
@@ -36,6 +36,9 @@ bool HlBspWorld::onOpen(fs::Resource* resource, TextureLoader& textureLoader)
 	if (bsp == NULL)
 		return false;
 	
+	char tmp[256] = { 0 };
+	sprintf(tmp, "Loading map: %s", resource->getFilename());
+	this->mProgress->onChange(1, tmp);
     // Load the data structtures from the BSP file
     this->mLeafCount = bsp->leafCount;
     this->mFaceCount = bsp->faceCount;
@@ -53,21 +56,35 @@ bool HlBspWorld::onOpen(fs::Resource* resource, TextureLoader& textureLoader)
     this->mTextureUV = new IndexArray<2>;
     this->mLightmapUV = new IndexArray<2>;
 
+	this->mProgress->onChange(1, "Loading entity data...");
     if (!parseEntityData(*bsp, textureLoader))
         return false;
+	this->mProgress->onChange(1, "done!");
 
+	sprintf(tmp, "Loading %d textures...", this->mTextureCount);
+	this->mProgress->onChange(1, tmp);
     if (!parseTextures(*bsp, textureLoader))
         return false;
+	this->mProgress->onChange(1, "done!");
 
+	sprintf(tmp, "Loading %d leafs...", this->mLeafCount);
+	this->mProgress->onChange(1, tmp);
     if (!parseLeafs(*bsp))
         return false;
+	this->mProgress->onChange(1, "done!");
 
+	sprintf(tmp, "Loading %d faces...", this->mFaceCount);
+	this->mProgress->onChange(1, tmp);
     if (!parseFaces(*bsp))
         return false;
+	this->mProgress->onChange(1, "done!");
 
+	this->mProgress->onChange(1, "Loading geometry...");
     if (!parseModels(*bsp))
         return false;
+	this->mProgress->onChange(1, "done!");
 
+	this->mProgress->onChange(1, "Setup GL arrays");
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, *this->mVertexIndices);
 
@@ -78,6 +95,7 @@ bool HlBspWorld::onOpen(fs::Resource* resource, TextureLoader& textureLoader)
     glClientActiveTexture(GL_TEXTURE1);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     glTexCoordPointer(2, GL_FLOAT, 0, *this->mLightmapUV);
+	this->mProgress->onChange(1, "done!");
 
     return true;
 }

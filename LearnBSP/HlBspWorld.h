@@ -26,7 +26,7 @@
 class HlBspWorld : public BspWorld
 {
 public:
-    HlBspWorld();
+    HlBspWorld(Progress* progress);
     virtual ~HlBspWorld();
 
     const char* getTitle() const;

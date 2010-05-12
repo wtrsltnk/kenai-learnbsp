@@ -29,7 +29,7 @@
 class TextureLoader
 {
 public:
-    TextureLoader(fs::FileSystem* fs);
+    TextureLoader(Progress* progress, fs::FileSystem* fs);
     virtual ~TextureLoader();
 
     void setWadFiles(const char* wadstring);
@@ -37,6 +37,7 @@ public:
     bool loadTextureFromFile(fs::Texture& texture, const char* filename);
 
 private:
+    Progress* mProgress;
     fs::FileSystem* mFileSystem;
     
 };

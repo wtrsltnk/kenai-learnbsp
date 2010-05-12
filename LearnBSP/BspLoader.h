@@ -21,18 +21,27 @@
 #define	_BSPLOADER_H
 
 #include "BspWorld.h"
+#include "Progress.h"
+#include "common/thread.h"
 
-class BspLoader
+class BspLoader : public Thread
 {
 public:
-    BspLoader(fs::FileSystem* filesystem);
+    BspLoader(Progress* progress, fs::FileSystem* filesystem);
     virtual ~BspLoader();
 
+    void setFilename(const char* filename);
+    virtual void run();
     BspWorld* loadWorld(const char* filename);
+    BspWorld* getWorld();
 
 private:
+    BspWorld* mWorld;
+    char mFilename[256];
+    Progress* mProgress;
     TextureLoader* mTextureLoader;
     fs::FileSystem* mFileSystem;
+    GLFWmutex mMutex;
 
 };
 

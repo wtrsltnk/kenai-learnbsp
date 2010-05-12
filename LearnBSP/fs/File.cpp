@@ -37,7 +37,7 @@ File::File(const char* filename)
         fseek(file, 0, SEEK_SET);
 
         this->data = new unsigned char[this->dataSize];
-        fread(this->data, this->dataSize, 1, file);
+        size_t res = fread(this->data, this->dataSize, 1, file);
 
         fclose(file);
     }

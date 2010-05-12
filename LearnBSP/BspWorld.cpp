@@ -26,8 +26,8 @@
 /*!
  * \brief
  */
-BspWorld::BspWorld()
-    : mLeafCount(0), mLeafs(NULL), mFaceCount(0), mFaces(NULL), mModelCount(0), mGeometries(NULL),
+BspWorld::BspWorld(Progress* progress)
+    : mProgress(progress), mLeafCount(0), mLeafs(NULL), mFaceCount(0), mFaces(NULL), mModelCount(0), mGeometries(NULL),
         mTextureCount(0), mTextures(NULL), mWorldEntity(NULL),
         mVertexIndices(NULL), mTextureUV(NULL), mLightmapUV(NULL)
 {
@@ -76,7 +76,6 @@ bool BspWorld::setupEntities(fs::FileSystem& filesystem)
 		}
 		if (Common::stringCompare(classname, "cycler_sprite") == 0)
 		{
-//			entity->print();
 			const char* origin = entity->getValue("origin");
 			float position[3];
 			if (sscanf(origin, "%f %f %f", &position[0], &position[1], &position[2]))
