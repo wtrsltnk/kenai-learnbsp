@@ -23,6 +23,8 @@
 #include "fs/image/texture.h"
 #include "fs/FileSystem.h"
 
+class Progress;
+
 /*!
  * \brief
  */
