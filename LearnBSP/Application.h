@@ -45,6 +45,7 @@ protected:
     virtual void render(double time);
     virtual void destroy();
     virtual void keyPressed(int key, int action);
+    virtual void resized(int w, int h);
     virtual void setPerspective(float fieldOfView, float nearClipping, float farClipping);
 
 private:
@@ -77,6 +78,7 @@ private:
 
     static Application* sCurrent;
     static void staticKeyPressed(int key, int action);
+    static void staticResized(int w, int h);
 
 };
 

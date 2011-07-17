@@ -342,13 +342,13 @@ void HlBspWorld::setWorldEntity(BspEntity* world)
     const char* chaptertitle = world->getValue("chaptertitle");
     if (chaptertitle != NULL)
     {
-        this->mWad = new char[Common::stringLength(chaptertitle) + 1];
-        Common::stringCopy(this->mWad, chaptertitle);
+        this->mTitle = new char[Common::stringLength(chaptertitle) + 1];
+        Common::stringCopy(this->mTitle, chaptertitle);
     }
     else
     {
-        this->mWad = new char[9];
-        Common::stringCopy(this->mWad, "No Title");
+        this->mTitle = new char[16];
+        Common::stringCopy(this->mTitle, "No Chapter Title");
     }
 
     const char* skyname = world->getValue("skyname");
@@ -359,8 +359,8 @@ void HlBspWorld::setWorldEntity(BspEntity* world)
     }
     else
     {
-        this->mWad = new char[5];
-        Common::stringCopy(this->mWad, "dusk");
+        this->mSkyName = new char[5];
+        Common::stringCopy(this->mSkyName, "dusk");
     }
 
     const char* waveheight = world->getValue("WaveHeight");

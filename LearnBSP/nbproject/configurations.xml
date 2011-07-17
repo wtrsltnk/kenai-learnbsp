@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="62">
-  <logicalFolder name="root" displayName="root" projectFiles="true">
+<configurationDescriptor version="79">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="f1" displayName="Common" projectFiles="true">
       <itemPath>common/boundingbox.cpp</itemPath>
       <itemPath>common/boundingbox.h</itemPath>
@@ -100,6 +100,7 @@
       <itemPath>Progress.h</itemPath>
       <itemPath>RenderMode.h</itemPath>
       <itemPath>RenderOptions.h</itemPath>
+      <itemPath>SkyBox.h</itemPath>
       <itemPath>TextureLoader.h</itemPath>
     </logicalFolder>
     <logicalFolder name="f3" displayName="HlBsp" projectFiles="true">
@@ -134,6 +135,7 @@
       <itemPath>FreeTypeFont.cpp</itemPath>
       <itemPath>RenderMode.cpp</itemPath>
       <itemPath>RenderOptions.cpp</itemPath>
+      <itemPath>SkyBox.cpp</itemPath>
       <itemPath>TextureLoader.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
@@ -147,9 +149,8 @@
   <confs>
     <conf name="linuxDebug" type="1">
       <toolsSet>
-        <developmentServer>localhost</developmentServer>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>2</platform>
         <dependencyChecking>false</dependencyChecking>
       </toolsSet>
       <compileType>
@@ -171,16 +172,15 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="GLee/GLee.c" ex="true" tool="0">
+      <item path="GLee/GLee.c" ex="true" tool="0" flavor="0">
       </item>
-      <item path="GLee/GLee.h" ex="true" tool="3">
+      <item path="GLee/GLee.h" ex="true" tool="3" flavor="0">
       </item>
     </conf>
     <conf name="linuxRelease" type="1">
       <toolsSet>
-        <developmentServer>localhost</developmentServer>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>GNU|GNU</compilerSet>
-        <platform>2</platform>
         <dependencyChecking>false</dependencyChecking>
       </toolsSet>
       <compileType>
@@ -210,16 +210,15 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="GLee/GLee.c" ex="true" tool="0">
+      <item path="GLee/GLee.c" ex="true" tool="0" flavor="0">
       </item>
-      <item path="GLee/GLee.h" ex="true" tool="3">
+      <item path="GLee/GLee.h" ex="true" tool="3" flavor="0">
       </item>
     </conf>
     <conf name="win32Debug" type="1">
       <toolsSet>
-        <developmentServer>localhost</developmentServer>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>MinGW|MinGW</compilerSet>
-        <platform>2</platform>
       </toolsSet>
       <compileType>
         <linkerTool>
@@ -233,9 +232,8 @@
     </conf>
     <conf name="win32Release" type="1">
       <toolsSet>
-        <developmentServer>localhost</developmentServer>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>MinGW|MinGW</compilerSet>
-        <platform>2</platform>
       </toolsSet>
       <compileType>
         <cTool>

@@ -109,7 +109,7 @@ bool Application::initialize()
 	{
         this->mWorld->setCamera(&this->mCamera);
         this->mWorld->setupEntities(*this->mFileSystem);
-        this->setPerspective(45.0f, 0.1f, 4096);
+        this->setPerspective(65.0f, 0.1f, 4096);
     }
     glClearColor(0.4f, 0.6f, 1.0f, 1.0f);
 
@@ -201,6 +201,17 @@ void Application::keyPressed(int key, int action)
 
 /*!
  * \brief
+ * \param w The new width
+ * \param h The new Height
+ */
+void Application::resized(int w, int h)
+{
+	this->mWidth = w;
+	this->mHeight = h;
+}
+
+/*!
+ * \brief
  * \param title The title of the window
  * \return true means that the window is opened and initialization went OK.
  */
@@ -210,6 +221,7 @@ bool Application::openWindow(const char* title)
     {
         glfwSetWindowTitle(title);
         glfwSetKeyCallback(Application::staticKeyPressed);
+		glfwSetWindowSizeCallback(Application::staticResized);
         return this->initialize();
     }
     return false;
@@ -318,4 +330,15 @@ void Application::staticKeyPressed(int key, int action)
 {
     if (Application::sCurrent != NULL)
         Application::sCurrent->keyPressed(key, action);
+}
+
+/*!
+ * \brief
+ * \param key The key number
+ * \param action The action of the key press
+ */
+void Application::staticResized(int w, int h)
+{
+    if (Application::sCurrent != NULL)
+        Application::sCurrent->resized(w, h);
 }
