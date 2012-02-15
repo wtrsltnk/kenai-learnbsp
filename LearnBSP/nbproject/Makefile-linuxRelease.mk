@@ -94,8 +94,8 @@ OBJECTFILES= \
 CFLAGS=
 
 # CC Compiler Flags
-CCFLAGS=-m32
-CXXFLAGS=-m32
+CCFLAGS=
+CXXFLAGS=
 
 # Fortran Compiler Flags
 FFLAGS=
@@ -104,13 +104,11 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-lglfw -lGLU -lpthread -lXrandr lib/libz.a -ljpeg -lpng -lfreetype
+LDLIBSOPTIONS=-lglfw -lGLU -lpthread -lXrandr -ljpeg -lpng -lfreetype -lz
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/learnbsp
-
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/learnbsp: lib/libz.a
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/learnbsp: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}

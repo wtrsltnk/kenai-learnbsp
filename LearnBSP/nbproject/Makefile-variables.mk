@@ -23,21 +23,21 @@ CND_PACKAGE_DIR_linuxRelease=dist/linuxRelease/GNU-Linux-x86/package
 CND_PACKAGE_NAME_linuxRelease=learnbsp.tar
 CND_PACKAGE_PATH_linuxRelease=dist/linuxRelease/GNU-Linux-x86/package/learnbsp.tar
 # win32Debug configuration
-CND_PLATFORM_win32Debug=
-CND_ARTIFACT_DIR_win32Debug=dist/win32Debug/
+CND_PLATFORM_win32Debug=MinGW-Linux-x86
+CND_ARTIFACT_DIR_win32Debug=dist/win32Debug/MinGW-Linux-x86
 CND_ARTIFACT_NAME_win32Debug=learnbsp
-CND_ARTIFACT_PATH_win32Debug=dist/win32Debug//learnbsp
-CND_PACKAGE_DIR_win32Debug=dist/win32Debug//package
+CND_ARTIFACT_PATH_win32Debug=dist/win32Debug/MinGW-Linux-x86/learnbsp
+CND_PACKAGE_DIR_win32Debug=dist/win32Debug/MinGW-Linux-x86/package
 CND_PACKAGE_NAME_win32Debug=learnbsp.tar
-CND_PACKAGE_PATH_win32Debug=dist/win32Debug//package/learnbsp.tar
+CND_PACKAGE_PATH_win32Debug=dist/win32Debug/MinGW-Linux-x86/package/learnbsp.tar
 # win32Release configuration
-CND_PLATFORM_win32Release=
-CND_ARTIFACT_DIR_win32Release=dist/win32Release/
+CND_PLATFORM_win32Release=MinGW-Linux-x86
+CND_ARTIFACT_DIR_win32Release=dist/win32Release/MinGW-Linux-x86
 CND_ARTIFACT_NAME_win32Release=learnbsp
-CND_ARTIFACT_PATH_win32Release=dist/win32Release//learnbsp
-CND_PACKAGE_DIR_win32Release=dist/win32Release//package
+CND_ARTIFACT_PATH_win32Release=dist/win32Release/MinGW-Linux-x86/learnbsp
+CND_PACKAGE_DIR_win32Release=dist/win32Release/MinGW-Linux-x86/package
 CND_PACKAGE_NAME_win32Release=learnbsp.tar
-CND_PACKAGE_PATH_win32Release=dist/win32Release//package/learnbsp.tar
+CND_PACKAGE_PATH_win32Release=dist/win32Release/MinGW-Linux-x86/package/learnbsp.tar
 #
 # include compiler specific variables
 #

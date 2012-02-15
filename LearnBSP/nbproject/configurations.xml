@@ -151,7 +151,6 @@
       <toolsSet>
         <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>GNU|GNU</compilerSet>
-        <dependencyChecking>false</dependencyChecking>
       </toolsSet>
       <compileType>
         <ccTool>
@@ -189,7 +188,6 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
-          <architecture>1</architecture>
           <incDir>
             <pElem>/usr/include/freetype2</pElem>
           </incDir>
@@ -203,10 +201,10 @@
             <linkerLibLibItem>GLU</linkerLibLibItem>
             <linkerLibLibItem>pthread</linkerLibLibItem>
             <linkerLibLibItem>Xrandr</linkerLibLibItem>
-            <linkerLibFileItem>lib/libz.a</linkerLibFileItem>
             <linkerLibLibItem>jpeg</linkerLibLibItem>
             <linkerLibLibItem>png</linkerLibLibItem>
             <linkerLibLibItem>freetype</linkerLibLibItem>
+            <linkerLibLibItem>z</linkerLibLibItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>

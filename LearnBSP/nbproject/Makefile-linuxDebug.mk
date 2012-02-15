@@ -116,219 +116,273 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/learnbsp: ${OBJECTFILES}
 
 ${OBJECTDIR}/Application.o: Application.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/Application.o Application.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Application.o Application.cpp
 
 ${OBJECTDIR}/BspProp.o: BspProp.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/BspProp.o BspProp.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspProp.o BspProp.cpp
 
 ${OBJECTDIR}/common/boundingbox.o: common/boundingbox.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/common/boundingbox.o common/boundingbox.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/boundingbox.o common/boundingbox.cpp
 
 ${OBJECTDIR}/fs/File.o: fs/File.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/File.o fs/File.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/File.o fs/File.cpp
 
 ${OBJECTDIR}/fs/mesh/hlsdk/mathlib.o: fs/mesh/hlsdk/mathlib.c 
 	${MKDIR} -p ${OBJECTDIR}/fs/mesh/hlsdk
-	$(COMPILE.c) -g -o ${OBJECTDIR}/fs/mesh/hlsdk/mathlib.o fs/mesh/hlsdk/mathlib.c
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/mesh/hlsdk/mathlib.o fs/mesh/hlsdk/mathlib.c
 
 ${OBJECTDIR}/RenderOptions.o: RenderOptions.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/RenderOptions.o RenderOptions.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/RenderOptions.o RenderOptions.cpp
 
 ${OBJECTDIR}/RenderMode.o: RenderMode.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/RenderMode.o RenderMode.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/RenderMode.o RenderMode.cpp
 
 ${OBJECTDIR}/BspGeometry.o: BspGeometry.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/BspGeometry.o BspGeometry.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspGeometry.o BspGeometry.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/main.o main.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
 
 ${OBJECTDIR}/BspFace.o: BspFace.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/BspFace.o BspFace.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspFace.o BspFace.cpp
 
 ${OBJECTDIR}/BspCollision.o: BspCollision.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/BspCollision.o BspCollision.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspCollision.o BspCollision.cpp
 
 ${OBJECTDIR}/BspEntity.o: BspEntity.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/BspEntity.o BspEntity.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspEntity.o BspEntity.cpp
 
 ${OBJECTDIR}/fs/FileSystemException.o: fs/FileSystemException.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/FileSystemException.o fs/FileSystemException.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/FileSystemException.o fs/FileSystemException.cpp
 
 ${OBJECTDIR}/fs/zip/mztools.o: fs/zip/mztools.c 
 	${MKDIR} -p ${OBJECTDIR}/fs/zip
-	$(COMPILE.c) -g -o ${OBJECTDIR}/fs/zip/mztools.o fs/zip/mztools.c
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/zip/mztools.o fs/zip/mztools.c
 
 ${OBJECTDIR}/Console.o: Console.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/Console.o Console.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Console.o Console.cpp
 
 ${OBJECTDIR}/common/math3d.o: common/math3d.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/common/math3d.o common/math3d.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/math3d.o common/math3d.cpp
 
 ${OBJECTDIR}/common/camera.o: common/camera.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/common/camera.o common/camera.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/camera.o common/camera.cpp
 
 ${OBJECTDIR}/common/vector3.o: common/vector3.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/common/vector3.o common/vector3.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/vector3.o common/vector3.cpp
 
 ${OBJECTDIR}/fs/image/png.o: fs/image/png.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs/image
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/image/png.o fs/image/png.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/image/png.o fs/image/png.cpp
 
 ${OBJECTDIR}/common/plane.o: common/plane.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/common/plane.o common/plane.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/plane.o common/plane.cpp
 
 ${OBJECTDIR}/BspLeaf.o: BspLeaf.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/BspLeaf.o BspLeaf.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspLeaf.o BspLeaf.cpp
 
 ${OBJECTDIR}/fs/image/bitmap.o: fs/image/bitmap.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs/image
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/image/bitmap.o fs/image/bitmap.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/image/bitmap.o fs/image/bitmap.cpp
 
 ${OBJECTDIR}/fs/ZipPackage.o: fs/ZipPackage.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/ZipPackage.o fs/ZipPackage.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/ZipPackage.o fs/ZipPackage.cpp
 
 ${OBJECTDIR}/fs/FileSystem.o: fs/FileSystem.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/FileSystem.o fs/FileSystem.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/FileSystem.o fs/FileSystem.cpp
 
 ${OBJECTDIR}/fs/zip/unzip.o: fs/zip/unzip.c 
 	${MKDIR} -p ${OBJECTDIR}/fs/zip
-	$(COMPILE.c) -g -o ${OBJECTDIR}/fs/zip/unzip.o fs/zip/unzip.c
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/zip/unzip.o fs/zip/unzip.c
 
 ${OBJECTDIR}/fs/image/jpeg.o: fs/image/jpeg.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs/image
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/image/jpeg.o fs/image/jpeg.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/image/jpeg.o fs/image/jpeg.cpp
 
 ${OBJECTDIR}/BspWorld.o: BspWorld.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/BspWorld.o BspWorld.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspWorld.o BspWorld.cpp
 
 ${OBJECTDIR}/SkyBox.o: SkyBox.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/SkyBox.o SkyBox.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/SkyBox.o SkyBox.cpp
 
 ${OBJECTDIR}/HlBspData.o: HlBspData.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/HlBspData.o HlBspData.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/HlBspData.o HlBspData.cpp
 
 ${OBJECTDIR}/fs/mesh/hlsdk/studio_render.o: fs/mesh/hlsdk/studio_render.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs/mesh/hlsdk
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/mesh/hlsdk/studio_render.o fs/mesh/hlsdk/studio_render.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/mesh/hlsdk/studio_render.o fs/mesh/hlsdk/studio_render.cpp
 
 ${OBJECTDIR}/fs/image/targa.o: fs/image/targa.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs/image
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/image/targa.o fs/image/targa.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/image/targa.o fs/image/targa.cpp
 
 ${OBJECTDIR}/fs/mesh/hlsdk/cmdlib.o: fs/mesh/hlsdk/cmdlib.c 
 	${MKDIR} -p ${OBJECTDIR}/fs/mesh/hlsdk
-	$(COMPILE.c) -g -o ${OBJECTDIR}/fs/mesh/hlsdk/cmdlib.o fs/mesh/hlsdk/cmdlib.c
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/mesh/hlsdk/cmdlib.o fs/mesh/hlsdk/cmdlib.c
 
 ${OBJECTDIR}/BspNode.o: BspNode.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/BspNode.o BspNode.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspNode.o BspNode.cpp
 
 ${OBJECTDIR}/fs/Resource.o: fs/Resource.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/Resource.o fs/Resource.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/Resource.o fs/Resource.cpp
 
 ${OBJECTDIR}/BspLoader.o: BspLoader.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/BspLoader.o BspLoader.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspLoader.o BspLoader.cpp
 
 ${OBJECTDIR}/HlBspWorld.o: HlBspWorld.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/HlBspWorld.o HlBspWorld.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/HlBspWorld.o HlBspWorld.cpp
 
 ${OBJECTDIR}/fs/zip/zip.o: fs/zip/zip.c 
 	${MKDIR} -p ${OBJECTDIR}/fs/zip
-	$(COMPILE.c) -g -o ${OBJECTDIR}/fs/zip/zip.o fs/zip/zip.c
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/zip/zip.o fs/zip/zip.c
 
 ${OBJECTDIR}/Q3BspData.o: Q3BspData.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/Q3BspData.o Q3BspData.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Q3BspData.o Q3BspData.cpp
 
 ${OBJECTDIR}/fs/zip/ioapi.o: fs/zip/ioapi.c 
 	${MKDIR} -p ${OBJECTDIR}/fs/zip
-	$(COMPILE.c) -g -o ${OBJECTDIR}/fs/zip/ioapi.o fs/zip/ioapi.c
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/zip/ioapi.o fs/zip/ioapi.c
 
 ${OBJECTDIR}/TextureLoader.o: TextureLoader.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/TextureLoader.o TextureLoader.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/TextureLoader.o TextureLoader.cpp
 
 ${OBJECTDIR}/Q3BspWorld.o: Q3BspWorld.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/Q3BspWorld.o Q3BspWorld.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Q3BspWorld.o Q3BspWorld.cpp
 
 ${OBJECTDIR}/fs/mesh/Mesh.o: fs/mesh/Mesh.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs/mesh
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/mesh/Mesh.o fs/mesh/Mesh.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/mesh/Mesh.o fs/mesh/Mesh.cpp
 
 ${OBJECTDIR}/FreeTypeFont.o: FreeTypeFont.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/FreeTypeFont.o FreeTypeFont.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/FreeTypeFont.o FreeTypeFont.cpp
 
 ${OBJECTDIR}/fs/image/texture.o: fs/image/texture.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs/image
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/image/texture.o fs/image/texture.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/image/texture.o fs/image/texture.cpp
 
 ${OBJECTDIR}/common/thread.o: common/thread.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/common/thread.o common/thread.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/thread.o common/thread.cpp
 
 ${OBJECTDIR}/fs/mesh/hlsdk/studio_utils.o: fs/mesh/hlsdk/studio_utils.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs/mesh/hlsdk
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/mesh/hlsdk/studio_utils.o fs/mesh/hlsdk/studio_utils.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/mesh/hlsdk/studio_utils.o fs/mesh/hlsdk/studio_utils.cpp
 
 ${OBJECTDIR}/common/tokenizer.o: common/tokenizer.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/common/tokenizer.o common/tokenizer.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/tokenizer.o common/tokenizer.cpp
 
 ${OBJECTDIR}/fs/mesh/Mdl.o: fs/mesh/Mdl.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs/mesh
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/mesh/Mdl.o fs/mesh/Mdl.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/mesh/Mdl.o fs/mesh/Mdl.cpp
 
 ${OBJECTDIR}/common/common.o: common/common.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/common/common.o common/common.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/common.o common/common.cpp
 
 ${OBJECTDIR}/common/data.o: common/data.cpp 
 	${MKDIR} -p ${OBJECTDIR}/common
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/common/data.o common/data.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/common/data.o common/data.cpp
 
 ${OBJECTDIR}/fs/Package.o: fs/Package.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/Package.o fs/Package.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/Package.o fs/Package.cpp
 
 ${OBJECTDIR}/fs/WadPackage.o: fs/WadPackage.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/WadPackage.o fs/WadPackage.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/WadPackage.o fs/WadPackage.cpp
 
 ${OBJECTDIR}/fs/image/miptex.o: fs/image/miptex.cpp 
 	${MKDIR} -p ${OBJECTDIR}/fs/image
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/fs/image/miptex.o fs/image/miptex.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/fs/image/miptex.o fs/image/miptex.cpp
 
 ${OBJECTDIR}/BspObject.o: BspObject.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	$(COMPILE.cc) -g -I/usr/include/freetype2 -o ${OBJECTDIR}/BspObject.o BspObject.cpp
+	${RM} $@.d
+	$(COMPILE.cc) -g -I/usr/include/freetype2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/BspObject.o BspObject.cpp
 
 # Subprojects
 .build-subprojects:
@@ -340,3 +394,8 @@ ${OBJECTDIR}/BspObject.o: BspObject.cpp
 
 # Subprojects
 .clean-subprojects:
+
+# Enable dependency checking
+.dep.inc: .depcheck-impl
+
+include .dep.inc
