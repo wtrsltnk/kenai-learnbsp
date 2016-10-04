@@ -38,7 +38,7 @@ public:
 
     void run();
     int cleanup();
-    void onChange(int type, const char* msg);
+    virtual void onChange(int type, const char* msg);
     
 protected:
     virtual bool initialize();
@@ -49,6 +49,7 @@ protected:
     virtual void setPerspective(float fieldOfView, float nearClipping, float farClipping);
 
 private:
+    GLFWwindow* mWindow;
     /*! \brief */
     int mWidth;
     /*! \brief */
@@ -77,8 +78,8 @@ private:
     bool openWindow(const char* title);
 
     static Application* sCurrent;
-    static void staticKeyPressed(int key, int action);
-    static void staticResized(int w, int h);
+    static void staticKeyPressed(GLFWwindow* window, int key, int action, int, int);
+    static void staticResized(GLFWwindow* window, int w, int h);
 
 };
 

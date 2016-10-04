@@ -9,6 +9,7 @@
 #define	_CONSOLE_H
 
 #include "FreeTypeFont.h"
+#include <mutex>
 
 class Console
 {
@@ -34,7 +35,7 @@ private:
     int mWidth, mHeight;
     FreeTypeFont mFont;
     Line* mFirstLine;
-    GLFWmutex mMutex;
+    std::mutex mMutex;
 
 };
 

@@ -8,14 +8,10 @@
 #ifndef _OPENGL_H
 #define	_OPENGL_H
 
-#define GL_GLEXT_PROTOTYPES
-
-#ifdef WIN32
-#include "GLee/GLee.h"
-#endif
+#include <GL/glextl.h>
 #include <GL/gl.h>
-#include <GL/glfw.h>
-#include <GL/glext.h>
+#include <GLFW/glfw3.h>
+#include <GL/glu.h>
 
 #endif	/* _OPENGL_H */
 

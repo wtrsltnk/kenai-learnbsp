@@ -156,14 +156,14 @@ bool TextureLoader::loadTextureFromFile(fs::Texture& texture, const char* filena
     {
         return openBitmap(texture, data);
     }
-    else if (Common::stringCompare(ext, ".jpg") == 0)
-    {
-        return openJpeg(texture, data);
-    }
-    else if (Common::stringCompare(ext, ".png") == 0)
-    {
-        return openPng(texture, data);
-    }
+//    else if (Common::stringCompare(ext, ".jpg") == 0)
+//    {
+//        return openJpeg(texture, data);
+//    }
+//    else if (Common::stringCompare(ext, ".png") == 0)
+//    {
+//        return openPng(texture, data);
+//    }
     return false;
 }
 

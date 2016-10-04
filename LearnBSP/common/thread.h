@@ -1,7 +1,8 @@
 #ifndef _THREAD_H
 #define	_THREAD_H
 
-#include <GL/glfw.h>
+#include <thread>
+#include <mutex>
 
 /*
  * \brief
@@ -13,9 +14,9 @@ public:
      * \brief
      * \param mutex
      */
-    Mutexer(GLFWmutex& mutex) : mMutex(mutex)
+    Mutexer(std::mutex& mutex) : mMutex(mutex)
     {
-        glfwLockMutex(mMutex);
+        this->mMutex.lock();
     }
 
     /*
@@ -23,22 +24,12 @@ public:
      */
     virtual ~Mutexer()
     {
-        glfwUnlockMutex(mMutex);
-    }
-
-    static GLFWmutex createMutex()
-    {
-        return glfwCreateMutex();
-    }
-
-    static void destroyMutex(GLFWmutex mutex)
-    {
-        glfwDestroyMutex(mutex);
+        this->mMutex.unlock();
     }
 
 private:
     /* \brief */
-    GLFWmutex& mMutex;
+    std::mutex& mMutex;
 };
 
 /*
@@ -56,7 +47,7 @@ protected:
 
 private:
     /* \brief */
-    GLFWthread mThread;
+    std::thread mThread;
 
 private:
     static void staticRun(void* ptr);

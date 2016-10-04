@@ -17,6 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define GLEXTL_IMPLEMENTATION
+#include <GL/glextl.h>
+
 #include "Application.h"
 #include "common/math3d.h"
 #include "common/common.h"
@@ -53,7 +56,7 @@ Application::Application(int argc, char* argv[])
 		{
 			this->mMap = argv[argc - 1];
 			std::cout << "Map: " << this->mMap << std::endl;
-			glfwSetWindowTitle(this->mMap);
+//			glfwSetWindowTitle(this->mMap);
 		}
 	}
 	
@@ -178,7 +181,7 @@ void Application::destroy()
  */
 void Application::keyPressed(int key, int action)
 {
-	if (key == GLFW_KEY_ESC && action == 1)
+    if (key == GLFW_KEY_ESCAPE && action == 1)
 	{
 		if (this->mShowConsole)
 			this->mShowConsole = false;
@@ -192,7 +195,7 @@ void Application::keyPressed(int key, int action)
 			this->mWorld->shoot();
 		}
 	}
-	else if (key == GLFW_KEY_LCTRL && action == 1)
+    else if (key == GLFW_KEY_LEFT_CONTROL && action == 1)
 	{
 		this->mShowConsole = !this->mShowConsole;
 	}
@@ -217,15 +220,20 @@ void Application::resized(int w, int h)
  */
 bool Application::openWindow(const char* title)
 {
-    if (glfwOpenWindow(mWidth, mHeight, 8, 8, 8, 8, 24, 0, GLFW_WINDOW))
+    this->mWindow = glfwCreateWindow(mWidth, mHeight, "window", nullptr, nullptr);
+    if (this->mWindow != nullptr)
     {
-        glfwSetWindowTitle(title);
-        glfwSetKeyCallback(Application::staticKeyPressed);
-		glfwSetWindowSizeCallback(Application::staticResized);
+        glfwSetWindowTitle(this->mWindow, title);
+        glfwSetKeyCallback(this->mWindow, Application::staticKeyPressed);
+        glfwSetWindowSizeCallback(this->mWindow, Application::staticResized);
+
         return this->initialize();
     }
     return false;
 }
+
+#define M_PI 3.141592f
+#define M_PI_2 M_PI * 2.0f
 
 /*!
  * \brief Run the application
@@ -249,25 +257,25 @@ void Application::run()
                 mFPS = double(fps) / (newTime - time);
                 char str[128];
                 sprintf(str, "FPS: %f", mFPS);
-                glfwSetWindowTitle(str);
+                glfwSetWindowTitle(this->mWindow, str);
                 fps = 0;
                 time = newTime;
             }
 
             this->mCamera.resetChanged();
-            if (glfwGetKey('W'))
-                mCamera.MoveLocal(-mSpeed * timeDiff, 0, 0);
-            if (glfwGetKey('S'))
-                mCamera.MoveLocal(mSpeed * timeDiff, 0, 0);
+            if (glfwGetKey(this->mWindow, 'W'))
+                mCamera.MoveLocal(-mSpeed * float(timeDiff), 0, 0);
+            if (glfwGetKey(this->mWindow, 'S'))
+                mCamera.MoveLocal(mSpeed * float(timeDiff), 0, 0);
 
-            if (glfwGetKey('A'))
-                mCamera.MoveLocal(0, -mSpeed * timeDiff, 0);
-            if (glfwGetKey('D'))
-                mCamera.MoveLocal(0, mSpeed * timeDiff, 0);
+            if (glfwGetKey(this->mWindow, 'A'))
+                mCamera.MoveLocal(0, -mSpeed * float(timeDiff), 0);
+            if (glfwGetKey(this->mWindow, 'D'))
+                mCamera.MoveLocal(0, mSpeed * float(timeDiff), 0);
 
-            int mx, my;
+            double mx, my;
             float rot[3] = { 0 };
-            glfwGetMousePos(&mx, &my);
+            glfwGetCursorPos(this->mWindow, &mx, &my);
 
             // Now the rotatins do not depent on the speed of rendering
             rot[2] = ((float(mx) / mWidth) * M_PI - M_PI_2) * 4.0f;
@@ -282,10 +290,7 @@ void Application::run()
 
             render(newTime);
 
-            glfwSwapBuffers();
-
-            if (glfwGetWindowParam( GLFW_OPENED ) == false)
-				this->mRunning = false;
+            glfwSwapBuffers(this->mWindow);
         }
         while (this->mRunning);
         this->mResult = 0;
@@ -326,7 +331,7 @@ Application* Application::sCurrent = NULL;
  * \param key The key number
  * \param action The action of the key press
  */
-void Application::staticKeyPressed(int key, int action)
+void Application::staticKeyPressed(GLFWwindow* window, int key, int action, int, int)
 {
     if (Application::sCurrent != NULL)
         Application::sCurrent->keyPressed(key, action);
@@ -337,7 +342,7 @@ void Application::staticKeyPressed(int key, int action)
  * \param key The key number
  * \param action The action of the key press
  */
-void Application::staticResized(int w, int h)
+void Application::staticResized(GLFWwindow* window, int w, int h)
 {
     if (Application::sCurrent != NULL)
         Application::sCurrent->resized(w, h);

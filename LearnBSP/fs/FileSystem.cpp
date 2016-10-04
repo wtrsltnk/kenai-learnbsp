@@ -196,14 +196,14 @@ bool FileSystem::openTexture(Texture& texture, const Data& data, const char* pac
     {
         result = openBitmap(texture, data);
     }
-    else if (Common::stringCompare(ext, ".jpg") == 0)
-    {
-        result = openJpeg(texture, data);
-    }
-    else if (Common::stringCompare(ext, ".png") == 0)
-    {
-        result = openPng(texture, data);
-    }
+//    else if (Common::stringCompare(ext, ".jpg") == 0)
+//    {
+//        result = openJpeg(texture, data);
+//    }
+//    else if (Common::stringCompare(ext, ".png") == 0)
+//    {
+//        result = openPng(texture, data);
+//    }
     return result;
 }
 
@@ -263,26 +263,26 @@ Resource* FileSystem::openResource(const char* name)
 			}
 			result = texture;
 		}
-		else if (Common::stringCompare(ext, ".jpg") == 0)
-		{
-			Texture* texture = new Texture(find);
-			if (openJpeg(*texture, file) == false)
-			{
-				delete texture;
-				return NULL;
-			}
-			result = texture;
-		}
-		else if (Common::stringCompare(ext, ".png") == 0)
-		{
-			Texture* texture = new Texture(find);
-			if (openPng(*texture, file) == false)
-			{
-				delete texture;
-				return NULL;
-			}
-			result = texture;
-		}
+//		else if (Common::stringCompare(ext, ".jpg") == 0)
+//		{
+//			Texture* texture = new Texture(find);
+//			if (openJpeg(*texture, file) == false)
+//			{
+//				delete texture;
+//				return NULL;
+//			}
+//			result = texture;
+//		}
+//		else if (Common::stringCompare(ext, ".png") == 0)
+//		{
+//			Texture* texture = new Texture(find);
+//			if (openPng(*texture, file) == false)
+//			{
+//				delete texture;
+//				return NULL;
+//			}
+//			result = texture;
+//		}
 		else if (Common::stringCompare(ext, ".mdl") == 0)
 		{
 			result = new Mdl(file, *this);

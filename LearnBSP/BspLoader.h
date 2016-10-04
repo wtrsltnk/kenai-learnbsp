@@ -23,6 +23,7 @@
 #include "BspWorld.h"
 #include "Progress.h"
 #include "common/thread.h"
+#include <mutex>
 
 class BspLoader : public Thread
 {
@@ -41,7 +42,7 @@ private:
     Progress* mProgress;
     TextureLoader* mTextureLoader;
     fs::FileSystem* mFileSystem;
-    GLFWmutex mMutex;
+    std::mutex mMutex;
 
 };
 

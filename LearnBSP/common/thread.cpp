@@ -12,7 +12,7 @@ Thread::~Thread()
  */
 void Thread::execute()
 {
-    this->mThread = glfwCreateThread(Thread::staticRun, this);
+    this->mThread = std::thread(Thread::staticRun, this);
 }
 
 /*

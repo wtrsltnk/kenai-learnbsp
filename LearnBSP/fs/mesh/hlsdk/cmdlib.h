@@ -55,8 +55,8 @@ char *strlower (char *in);
 int Q_strncasecmp (char *s1, char *s2, int n);
 int Q_strcasecmp (char *s1, char *s2);
 
-int filelength (FILE *f);
-int	FileTime (char *path);
+int Q_filelength (FILE *f);
+int	Q_FileTime (char *path);
 
 void	Q_mkdir (char *path);
 

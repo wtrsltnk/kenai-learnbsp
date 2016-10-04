@@ -22,8 +22,8 @@
 #include "../../common/data.h"
 
 bool openTarga(fs::Texture& texture, const Data& data);
-bool openJpeg(fs::Texture& texture, const Data& data);
-bool openPng(fs::Texture& texture, const Data& data);
+//bool openJpeg(fs::Texture& texture, const Data& data);
+//bool openPng(fs::Texture& texture, const Data& data);
 bool openBitmap(fs::Texture& texture, const Data& data);
 bool openMiptex(fs::Texture& texture, const Data& data);
 
