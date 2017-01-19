@@ -16,8 +16,11 @@ Console::Console(int w, int h)
 	: mWidth(w), mHeight(h), mFirstLine(NULL)
 {
 //	Mutexer m(this->mMutex);
-	
+#ifdef _WIN32
+    fs::File font("C:\\windows\\fonts\\verdana.ttf");
+#else
 	fs::File font("/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf");
+#endif
 	if (this->mFont.initialize(font, 14.0f) == false)
 		std::cout << "Initialize font failed" << std::endl;
 }

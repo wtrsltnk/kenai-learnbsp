@@ -103,13 +103,14 @@ Application::~Application()
 bool Application::initialize()
 {
 	this->mConsole = new Console(this->mWidth, this->mHeight);
+    this->mConsole->addLine("First line!");
 	
-	BspLoader loader(this, this->mFileSystem);
+    BspLoader loader(this, this->mFileSystem);
 
-	loader.setFilename(Common::getFilename(this->mMap));
-	loader.run();
-	if (this->mWorld = loader.getWorld())
-	{
+    loader.setFilename(Common::getFilename(this->mMap));
+    loader.run();
+    if (this->mWorld = loader.getWorld())
+    {
         this->mWorld->setCamera(&this->mCamera);
         this->mWorld->setupEntities(*this->mFileSystem);
         this->setPerspective(65.0f, 0.1f, 4096);
@@ -195,11 +196,11 @@ void Application::keyPressed(int key, int action)
 			this->mWorld->shoot();
 		}
 	}
-    else if (key == GLFW_KEY_LEFT_CONTROL && action == 1)
+    else if (key == GLFW_KEY_F1 && action == 1)
 	{
 		this->mShowConsole = !this->mShowConsole;
 	}
-//	std::cout << key << " " << action << std::endl;
+    std::cout << key << " " << action << std::endl;
 }
 
 /*!
@@ -227,6 +228,11 @@ bool Application::openWindow(const char* title)
         glfwSetKeyCallback(this->mWindow, Application::staticKeyPressed);
         glfwSetWindowSizeCallback(this->mWindow, Application::staticResized);
 
+        glfwMakeContextCurrent(this->mWindow);
+
+        if (glExtLoadAll((PFNGLGETPROC*)&glfwGetProcAddress) == GL_FALSE)
+            return false;
+
         return this->initialize();
     }
     return false;
@@ -246,53 +252,55 @@ void Application::run()
         double prevTime = time;
         int fps = 0;
 
-        do
+        while (glfwWindowShouldClose(this->mWindow) == 0 && this->mRunning)
         {
-            fps++;
-            double newTime = glfwGetTime();
-            double timeDiff = newTime - prevTime;
-            prevTime = newTime;
-            if ((newTime - time) > 1)
-            {
-                mFPS = double(fps) / (newTime - time);
-                char str[128];
-                sprintf(str, "FPS: %f", mFPS);
-                glfwSetWindowTitle(this->mWindow, str);
-                fps = 0;
-                time = newTime;
-            }
+            glfwPollEvents();
 
-            this->mCamera.resetChanged();
-            if (glfwGetKey(this->mWindow, 'W'))
-                mCamera.MoveLocal(-mSpeed * float(timeDiff), 0, 0);
-            if (glfwGetKey(this->mWindow, 'S'))
-                mCamera.MoveLocal(mSpeed * float(timeDiff), 0, 0);
+//            fps++;
+//            double newTime = glfwGetTime();
+//            double timeDiff = newTime - prevTime;
+//            prevTime = newTime;
+//            if ((newTime - time) > 1)
+//            {
+//                mFPS = double(fps) / (newTime - time);
+//                char str[128];
+//                sprintf(str, "FPS: %f", mFPS);
+//                glfwSetWindowTitle(this->mWindow, str);
+//                fps = 0;
+//                time = newTime;
+//            }
 
-            if (glfwGetKey(this->mWindow, 'A'))
-                mCamera.MoveLocal(0, -mSpeed * float(timeDiff), 0);
-            if (glfwGetKey(this->mWindow, 'D'))
-                mCamera.MoveLocal(0, mSpeed * float(timeDiff), 0);
+//            this->mCamera.resetChanged();
+//            if (glfwGetKey(this->mWindow, 'W'))
+//                mCamera.MoveLocal(-mSpeed * float(timeDiff), 0, 0);
+//            if (glfwGetKey(this->mWindow, 'S'))
+//                mCamera.MoveLocal(mSpeed * float(timeDiff), 0, 0);
 
-            double mx, my;
-            float rot[3] = { 0 };
-            glfwGetCursorPos(this->mWindow, &mx, &my);
+//            if (glfwGetKey(this->mWindow, 'A'))
+//                mCamera.MoveLocal(0, -mSpeed * float(timeDiff), 0);
+//            if (glfwGetKey(this->mWindow, 'D'))
+//                mCamera.MoveLocal(0, mSpeed * float(timeDiff), 0);
 
-            // Now the rotatins do not depent on the speed of rendering
-            rot[2] = ((float(mx) / mWidth) * M_PI - M_PI_2) * 4.0f;
-            rot[0] = -90.0f + (float(my) / mHeight) * M_PI - M_PI_2;
+//            double mx, my;
+//            float rot[3] = { 0 };
+//            glfwGetCursorPos(this->mWindow, &mx, &my);
 
-            mCamera.SetRotation(rot);
+//            // Now the rotatins do not depent on the speed of rendering
+//            rot[2] = ((float(mx) / mWidth) * M_PI - M_PI_2) * 4.0f;
+//            rot[0] = -90.0f + (float(my) / mHeight) * M_PI - M_PI_2;
 
-            glMatrixMode(GL_MODELVIEW);
-            glLoadIdentity();
+//            mCamera.SetRotation(rot);
+
+//            glMatrixMode(GL_MODELVIEW);
+//            glLoadIdentity();
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            render(newTime);
+//            render(newTime);
 
             glfwSwapBuffers(this->mWindow);
         }
-        while (this->mRunning);
+
         this->mResult = 0;
     }
 }
@@ -331,7 +339,7 @@ Application* Application::sCurrent = NULL;
  * \param key The key number
  * \param action The action of the key press
  */
-void Application::staticKeyPressed(GLFWwindow* window, int key, int action, int, int)
+void Application::staticKeyPressed(GLFWwindow* window, int key, int symcode, int action, int)
 {
     if (Application::sCurrent != NULL)
         Application::sCurrent->keyPressed(key, action);

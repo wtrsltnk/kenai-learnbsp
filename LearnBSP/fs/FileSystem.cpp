@@ -359,10 +359,13 @@ bool FileSystem::findFileInFolder(const char* folder, const char* file, char* re
             if (Common::stringCompare(item->d_name, ".") == 0 || Common::stringCompare(item->d_name, "..") == 0 || Common::stringCompare(item->d_name, ".svn") == 0)
                 continue;
 
+            std::string fullpath(folder);
+            fullpath += "\\";
+            fullpath += item->d_name;
 #ifdef WIN32
-			struct stat stat_base;
-            stat(item->d_name, &stat_base);
-            if (stat_base.st_mode == S_IFDIR)
+            struct __stat64 lst;
+            _stat64(fullpath.c_str(), &lst );
+            if (S_ISDIR(lst.st_mode))
 #else
             if (item->d_type == 4)	// FOLDER
 #endif
